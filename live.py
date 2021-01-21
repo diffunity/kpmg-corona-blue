@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 import tensorflow as tf
+import torch
+import model
 
-
-
-if __name__=="__main__":
-    
+torch.load("./example.pth")
+model.eval

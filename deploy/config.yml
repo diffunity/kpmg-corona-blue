@@ -1,0 +1,6 @@
+model_settings:
+  task: "video"      # choose from ["text" | "audio" | "video"]
+  package: "pytorch"
+  gpu: false
+  pretrained_filepath: "./saved_models/torch_example.pt"
+  load_directly: true     # load directly 
