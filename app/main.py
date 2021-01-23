@@ -20,7 +20,6 @@ if config["load_directly"]:
     else:
         model = torch.load(config["pretrained_filepath"])
         model.eval()
-        # to_tensor = lambda x: torch.Tensor(x).type(np.float32).to(device)
         to_tensor = lambda x: torch.Tensor(x).to(device)
 else:
     model = getattr(custom_model, custom_model)
@@ -41,7 +40,6 @@ def pip_list():
         pips = f.readlines()
         print(pips)
         pips = [i.strip().split("==") for i in pips]
-
 
     pip_list = []
     for pip in pips:

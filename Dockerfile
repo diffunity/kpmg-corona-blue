@@ -1,16 +1,15 @@
 FROM continuumio/miniconda3
-
-RUN conda install python
-# RUN sudo apt-get upgrade && sudo apt-get update
-# RUN sudo apt-get install make && sudo apt-get install gcc && sudo apt-get install build-essential
+  
+COPY ./app /app
 
 COPY . /worker
 WORKDIR /worker
 
-RUN ./deploy/deploy.sh
+RUN pip install --upgrade pip
+RUN pip install fastapi uvicorn pipreqs PyYAML
 
-COPY ./app /app
+RUN bash ./deploy/deploy.sh
+
+EXPOSE 80
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
-
-#ENTRYPOINT uvicorn demo:app
