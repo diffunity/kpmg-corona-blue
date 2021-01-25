@@ -1,15 +1,19 @@
-FROM continuumio/miniconda3
-  
-COPY ./app /app
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
+FROM python:3.8.3
 
 COPY . /worker
 WORKDIR /worker
 
 RUN pip install --upgrade pip
-RUN pip install fastapi uvicorn pipreqs PyYAML
 
-RUN bash ./deploy/deploy.sh
+RUN pip install -r ./conf/requirements.txt
 
-EXPOSE 80
+RUN echo "export PYTHONPATH=/worker:${PYTHONPATH}" >> ~/.profile
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["python3", "./src/model.py"]
