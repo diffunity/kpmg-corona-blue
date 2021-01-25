@@ -52,7 +52,7 @@ class model:
         # 
         ###########
         
-        look_at_queue = {"message": np.ndarray(self.config["unittest_settings"]["input_dimension"])}
+        look_at_queue = {"input": np.ndarray(self.config["unittest_settings"]["input_dimension"])}
         output = self.inference(look_at_queue)
 
         ###########
@@ -63,12 +63,12 @@ class model:
     def run(self):
         print("Model successfully deployed")
         while True:
-            model.deploy()
+            self.deploy()
 
 if __name__=="__main__":
     
     ###########
-    # initialization for sqs queue (backend)
+    # sqs queue initialization (backend)
     # 
     # 
     # 
