@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # unittest
 echo "begin unittest"
 python3 ./src/test.py
@@ -14,10 +16,21 @@ pyver=$(python --version)
 img="FROM python:${pyver:7:${#pyver}}"
 
 # set dockerfile
-echo -e "${img}\n$(cat Dockerfile)" > Dockerfile
+dockerLines=$(cat Dockerfile)
+if [[ "${dockerLines:0:17}" != "${img:0:17}" ]]
+then 
+  if [[ "${dockerLines:0:4}" == "FROM" ]]
+  then
+    echo -e "${img}\n${dockerLines:18:${#dockerLines}}" > Dockerfile
+    echo "Python version updated in dockerfile"
+  else
+    echo -e "${img}\n${dockerLines}" > Dockerfile
+    echo "Python version inserted in dockerfile"
+  fi
+fi
 
 # build and run dockerfile
-if ["${1}" == ""]
+if [ "${1}" == "" ]
 then
   echo "please give the image name as the first argument"
   echo "exiting due to no given image name"
@@ -25,7 +38,7 @@ then
 else
   echo "building image ${1}"
   sudo docker build -t "${1}" .
-  if ["${2}" == ""]
+  if [ "${2}" == "" ]
   then
     echo -e "container name was not given.\nto give container name, pass it as the second argument" 
     sudo docker run "${1}"
