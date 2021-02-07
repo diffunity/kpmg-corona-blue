@@ -76,7 +76,6 @@ bash deploy.sh [image_name] [container_name]
 # example of docker deployment
 bash deploy.sh vid_docker_img dockerize_video
 ```
-* 재배포시 Dockerfile에서 첫번째 줄이 "FROM python:x.x.x"로 되어 있으면 이 줄만 삭제 하고 다시 배포해주세요 (권장사항)
 
 ## 총 과정 요약
 (원하는 환경에서 모델 실험/개발)
