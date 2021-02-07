@@ -18,6 +18,8 @@ class Test(unittest.TestCase):
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
+
+        print("input",r)
                 
         output = self.model.inference(r)
 
