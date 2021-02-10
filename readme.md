@@ -67,8 +67,24 @@ python ./src/test.py
 ```
 
 ## Deployment
-* docker를 통한 배포는 아래 코드로 진행합니다. 배포전에 unit test를 자동으로 한 번 진행하니 혹시 실패한다면 배포를 중지 하고 디버깅을 진행해주시기 바랍니다.
-* image name은 필수로 정의하여야 하고, container name은 필수는 아니지만 정의하시는 것을 권장합니다.
+
+* local에서 배포 (모델러)
+
+  * 개발 완료된 repository는 아래 코드를 실행하여 git에 push합니다.
+
+  * git용 배포랑 서버용 배포랑 다르니 모델러는 git에 잘 push된 것만 확인 하시면 됩니다.
+
+  * 배포전에 unit test를 자동으로 한 번 진행하니 혹시 실패한다면 배포를 중지 하고 디버깅을 진행해주시기 바랍니다.
+
+``` shell
+# deployment from local
+bash deploy.sh
+``` 
+
+* 서버용 배포 (백엔드)
+
+  * docker를 통한 배포는 아래 코드로 진행합니다. 배포전에 unit test를 자동으로 한 번 진행하니 혹시 실패한다면 배포를 중지 하고 디버깅을 진행해주시기 바랍니다.
+  * image name은 필수로 정의하여야 하고, container name은 필수는 아니지만 정의하시는 것을 권장합니다.
 ``` shell
 # docker deployment code
 bash deploy.sh [image_name] [container_name]
