@@ -1,3 +1,4 @@
+FROM python:3.8.3
 
 COPY . /worker
 WORKDIR /worker
