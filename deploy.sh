@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # unittest
-echo "Begin unittest"
+echo -e "Begin unittest... \n"
 python3 ./src/test.py
 
 # deployment
-echo -e "Unittest finished"
+echo -e "Unittest finished \n"
 echo "========================================================="
-echo "Begin deployment"
+echo -e "Begin deployment... \n"
 
 # export requirements
 pip install --upgrade pip
@@ -33,17 +33,19 @@ then
 fi
 
 echo "========================================================="
-echo "Pushing to git"
+echo -e "Pushing to git \n"
 git add .
 git commit -m "!pushed for deployment!"
 git push
+echo "!!!!!!!!!!!!!!!!!!!"
 echo "!!!pushed to git!!!"
-echo "   Commit message: pushed for deployment"
+echo "!!!!!!!!!!!!!!!!!!!"
+echo -e "   Commit message: pushed for deployment\n"
 echo "========================================================="
 
-echo "Building Dockerfile"
+echo -e "Building Dockerfile \n"
 echo "** Note: If you are deploying this on your local computer, you may ignore the messages below"
-echo "**       The below process is for the purposes of actual deployment"
+echo -e "**       The below process is for the purposes of actual deployment \n"
 
 # build and run dockerfile
 if [ "${1}" == "" ]
@@ -64,5 +66,5 @@ else
   fi
 fi
 
-echo "Successfully Deployed"
+echo -e "\n!Successfully Deployed!\n"
 echo "========================================================="
