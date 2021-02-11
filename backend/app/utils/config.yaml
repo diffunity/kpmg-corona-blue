@@ -1,0 +1,8 @@
+Database:
+  bucket: "naver-news-dev"
+  key: "config/db_config.json"
+SQS:
+  text: sqs
+  photo: sqs
+  call: sqs
+alert_info_webhook_url: ""
