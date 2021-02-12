@@ -1,4 +1,4 @@
-from config import CONFIG
+from utils.config import CONFIG
 import psycopg2 as pg
 import boto3
 import json
