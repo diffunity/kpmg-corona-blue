@@ -11,7 +11,7 @@ echo -e "Begin deployment... \n"
 
 # export requirements
 pip install --upgrade pip
-pipreqs . --print >> ./conf/requirements.txt
+pipreqs . --print > ./conf/requirements.txt
 
 # export python version
 pyver=$(python --version)
