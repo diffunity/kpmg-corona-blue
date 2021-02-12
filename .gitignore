@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 saved_models/vgg19_finetuned_all.pth
+*.jpg

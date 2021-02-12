@@ -1,4 +1,5 @@
 # code partially from: https://github.com/fabiocarrara/visual-sentiment-analysis
+# code partially from: https://github.com/siqueira-hc/Efficient-Facial-Feature-Learning-with-Wide-Ensemble-based-Convolutional-Neural-Networks
 import os
 import sys
 import json
@@ -7,12 +8,15 @@ import yaml
 import torch
 import numpy as np
 from tqdm import tqdm
+import face_recognition
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
 
 from vgg19 import KitModel as VGG19
 from alexnet import KitModel as AlexNet
+
+from facial_emotion_recognition import facial_emotion_recognition_image
 
 class ImageListDataset (Dataset):
 
@@ -67,16 +71,34 @@ class model:
     def inference(self, message:json):
 
         # mock message from backend
-
         message["db_directory"] = "./TestData"
         message["file_list"] = "./image_list.txt"
+        message["user_image"] = "./known_image.jpg"
 
         result = dict()
+
+        # user image encoding
+        user_image = face_recognition.load_image_file(message["user_image"])
+        user_image_encoded = face_recognition.face_encodings(user_image)[0]
 
         data = ImageListDataset(message["file_list"], root=message["db_directory"], transform=self.transform)
         dataloader = DataLoader(data, batch_size=10, num_workers=8, pin_memory=True)
         with torch.no_grad():
             for e,x in enumerate(tqdm(dataloader)):
+                
+                image_enc = face_recognition.face_encodings(x)
+
+                if image_enc != []:
+                    for deteced_image_enc in image_enc:
+                        if face_recognition.compare_faces([user_image], detected_image_enc[0]):
+                            
+                            # model for facial emotion recognition
+                            print(f"Looks like this {x}")
+                            fer_result = facial_emotion_recognition_image(x, path=False)
+                            result[f"output{e}"] = fer_result
+                            continue
+
+                # inference for non-facial image (inferenced also when face was detected but no face matched user's face)
                 p = self.model(x.to('cpu')).cpu().numpy().tolist()  # order is (NEG, NEU, POS)
                 result[f"output{e}"] = p
 
