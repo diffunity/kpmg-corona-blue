@@ -152,7 +152,7 @@ def _dlib_face_detection(image):
 
     # Verifies if dlib is initialized
     if _FACE_DETECTOR_DLIB is None:
-        _FACE_DETECTOR_DLIB = dlib.cnn_face_detection_model_v1('./fer_model/utils/templates/dlib/cnn_face_detector.dat')
+        _FACE_DETECTOR_DLIB = dlib.cnn_face_detection_model_v1('./src/fer_model/utils/templates/dlib/cnn_face_detector.dat')
 
     # Calls dlib's face detection method
     faces = _FACE_DETECTOR_DLIB(image)
@@ -183,7 +183,7 @@ def _haar_cascade_face_detection(image, scale_factor, neighbors, min_size):
 
     # Verifies if haar cascade classifiers are initialized
     if _FACE_DETECTOR_HAAR_CASCADE is None:
-        _FACE_DETECTOR_HAAR_CASCADE = cv2.CascadeClassifier("./fer_model/utils/templates/haar_cascade/frontal_face.xml")
+        _FACE_DETECTOR_HAAR_CASCADE = cv2.CascadeClassifier("./src/fer_model/utils/templates/haar_cascade/frontal_face.xml")
 
     # Runs haar cascade classifiers
     faces = _FACE_DETECTOR_HAAR_CASCADE.detectMultiScale(image, scale_factor, neighbors, minSize=min_size)

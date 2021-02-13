@@ -183,7 +183,7 @@ class ESR(nn.Module):
     INPUT_IMAGE_NORMALIZATION_MEAN = [0.0, 0.0, 0.0]
     INPUT_IMAGE_NORMALIZATION_STD = [1.0, 1.0, 1.0]
     # Path to saved network
-    PATH_TO_SAVED_NETWORK = "./fer_model/ml/trained_models/esr_9"
+    PATH_TO_SAVED_NETWORK = "./src/fer_model/ml/trained_models/esr_9"
     FILE_NAME_BASE_NETWORK = "Net-Base-Shared_Representations.pt"
     FILE_NAME_CONV_BRANCH = "Net-Branch_{}.pt"
 
