@@ -94,7 +94,7 @@ def wav_to_raw(wav):
 
 def raw_to_text(raw):
     openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Recognition"
-    accessKey = "cbbbb2ef-7dbc-4dae-8727-56f9c5226b97"  # Enter the api key
+    accessKey = "#####"  # Enter the api key
 
     try:
         file = open(raw, "rb")
