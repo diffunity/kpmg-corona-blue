@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		0E3D21DF25CEC46B00AE8EA0 /* VoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3D21DE25CEC46B00AE8EA0 /* VoiceViewController.swift */; };
 		0E3D21E425CEC48000AE8EA0 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3D21E325CEC48000AE8EA0 /* TextViewController.swift */; };
 		0E3D21E925CEC48B00AE8EA0 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3D21E825CEC48B00AE8EA0 /* PhotoViewController.swift */; };
+		0E8054C925D8353900141FC4 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8054C825D8353900141FC4 /* Chart.swift */; };
 		0E8E0C0B25CF90B20096413C /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C0A25CF90B20096413C /* ProviderDelegate.swift */; };
 		0E8E0C1025CF90E40096413C /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C0F25CF90E40096413C /* Call.swift */; };
 		0E8E0C1525CF910B0096413C /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C1425CF910B0096413C /* CallManager.swift */; };
@@ -67,6 +68,7 @@
 		0E3D21DE25CEC46B00AE8EA0 /* VoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceViewController.swift; sourceTree = "<group>"; };
 		0E3D21E325CEC48000AE8EA0 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		0E3D21E825CEC48B00AE8EA0 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		0E8054C825D8353900141FC4 /* Chart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		0E8E0C0A25CF90B20096413C /* ProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
 		0E8E0C0F25CF90E40096413C /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		0E8E0C1425CF910B0096413C /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				0E8E0C2725CFBDDA0096413C /* App */,
 				0E93E12C25CEFD8900404409 /* ViewControllers */,
 				0E28057825CC5A1000CF8837 /* Main.storyboard */,
+				0E8054C825D8353900141FC4 /* Chart.swift */,
 				0E28057D25CC5A1200CF8837 /* LaunchScreen.storyboard */,
 				0E28057B25CC5A1200CF8837 /* Assets.xcassets */,
 				0E28058025CC5A1200CF8837 /* Info.plist */,
@@ -209,7 +212,6 @@
 				BA81D5E021C2D7909AAD4104 /* Pods-MHCareTests.debug.xcconfig */,
 				074CE1DB82C4B1A5B64E0953 /* Pods-MHCareTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -469,6 +471,7 @@
 				0E28057325CC5A1000CF8837 /* AppDelegate.swift in Sources */,
 				0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */,
 				0E28057525CC5A1000CF8837 /* SceneDelegate.swift in Sources */,
+				0E8054C925D8353900141FC4 /* Chart.swift in Sources */,
 				0E3D21E925CEC48B00AE8EA0 /* PhotoViewController.swift in Sources */,
 				0E2805A925CC5A4A00CF8837 /* HomeViewController.swift in Sources */,
 				0E8E0C1025CF90E40096413C /* Call.swift in Sources */,

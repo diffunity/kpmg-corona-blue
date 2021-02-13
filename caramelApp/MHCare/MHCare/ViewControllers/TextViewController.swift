@@ -11,29 +11,31 @@ import Charts
 class TextViewController: UIViewController {
 
     
+    
+    
+    @IBOutlet weak var overalOuterView: UIView!
+    @IBOutlet weak var overalView: UIView!
+    
+    @IBOutlet weak var combinedTabOuterView: UIView!
+    @IBOutlet weak var combinedTabView: UIView!
     @IBOutlet weak var combinedChartView: CombinedChartView!
     @IBOutlet weak var pieChartView: PieChartView!
     @IBOutlet weak var pieChartOuterView: UIView!
     @IBOutlet weak var pieChartTabView: UIView!
     
-    @IBOutlet weak var levelLabel: UILabel!
-    
-    @IBOutlet weak var positiveCircle: UIView!
-    @IBOutlet weak var negativeCircle: UIView!
-    
-    @IBOutlet weak var positiveLabel: UILabel!
-    @IBOutlet weak var negativeLabel: UILabel!
-    
-    
+
     @IBOutlet weak var horizontalBarChartView: HorizontalBarChartView!
-    
-    
     @IBOutlet weak var horizontalBarChartTabView: UIView!
-    
     @IBOutlet weak var horizontalBarChartOuterView: UIView!
     
-    let lightColor = UIColor(displayP3Red: 131/255, green: 182/255, blue: 255/255, alpha: 1.0)
-    let darkColor = UIColor(displayP3Red: 66/255, green: 56/255, blue: 242/255, alpha: 1.0)
+    
+    @IBOutlet weak var radarChartOuterView: UIView!
+    @IBOutlet weak var radarChartTabView: UIView!
+    @IBOutlet weak var radarChartView: RadarChartView!
+    
+    
+    let lightColor = UIColor(displayP3Red: 255/255, green: 196/255, blue: 211/255, alpha: 1.0)
+    let darkColor = UIColor(displayP3Red: 235/255, green: 81/255, blue: 190/255, alpha: 1.0)
 
     
     var graphArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -60,6 +62,7 @@ class TextViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setOveralTabUI()
 
         combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
 
@@ -68,10 +71,38 @@ class TextViewController: UIViewController {
         pieChart(dataPoints: emotions, values: unitsSold)
 
         // Radar Chart
+        radarChart(dataPoints: subjects, values: array)
         
         // Horizontal Bar Chart
         horizontalBarChart(dataPoints: wordList, barValues: wordcount)
         // Do any additional setup after loading the view.
+    }
+    
+    
+    func setOveralTabUI() {
+        overalOuterView.clipsToBounds = false
+        overalOuterView.layer.shadowColor = UIColor.black.cgColor
+        overalOuterView.layer.shadowOpacity = 0.1
+        overalOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        overalOuterView.layer.shadowRadius = 15
+        
+        overalView.clipsToBounds = true
+        overalView.layer.cornerRadius = 15
+        
+        overalOuterView.addSubview(overalView)
+    }
+    
+    func setCombinedChartUI() {
+        combinedTabOuterView.clipsToBounds = false
+        combinedTabOuterView.layer.shadowColor = UIColor.black.cgColor
+        combinedTabOuterView.layer.shadowOpacity = 0.1
+        combinedTabOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        combinedTabOuterView.layer.shadowRadius = 15
+        
+        combinedTabView.clipsToBounds = true
+        combinedTabView.layer.cornerRadius = 15
+        
+        combinedTabOuterView.addSubview(combinedTabView)
     }
     
     func setPieChartUI() {
@@ -87,22 +118,6 @@ class TextViewController: UIViewController {
         pieChartOuterView.addSubview(pieChartTabView)
         
         
-        
-        positiveCircle.layer.cornerRadius = positiveCircle.bounds.height/2
-        positiveCircle.layer.masksToBounds = true
-        negativeCircle.layer.cornerRadius = positiveCircle.bounds.height/2
-        negativeCircle.layer.masksToBounds = true
-        
-        positiveLabel.text = String(unitsSold[0]) + "%"
-        negativeLabel.text = String(unitsSold[1]) + "%"
-        
-        if unitsSold[0] < unitsSold[1] {
-            levelLabel.textColor = darkColor
-            levelLabel.text = "High"
-        } else {
-            levelLabel.textColor = lightColor
-            levelLabel.text = "Low"
-        }
 
     }
     
@@ -119,8 +134,21 @@ class TextViewController: UIViewController {
         horizontalBarChartOuterView.addSubview(horizontalBarChartTabView)
     }
     
+    func setRadarChartUI() {
+        radarChartOuterView.clipsToBounds = false
+        radarChartOuterView.layer.shadowColor = UIColor.black.cgColor
+        radarChartOuterView.layer.shadowOpacity = 0.1
+        radarChartOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        radarChartOuterView.layer.shadowRadius = 15
+        
+        radarChartTabView.clipsToBounds = true
+        radarChartTabView.layer.cornerRadius = 15
+        
+        radarChartOuterView.addSubview(radarChartTabView)
+    }
     
     func combinedChart(dataPoints: [String], barValues: [Double],barValues2: [Double], lineValues: [Double]) {
+        setCombinedChartUI()
         combinedChartView.noDataText = "You need to provide data for the chart."
         // bar, line 엔트리 생성
         var barDataEntries: [BarChartDataEntry] = []
@@ -319,6 +347,51 @@ class TextViewController: UIViewController {
         horizontalBarChartView.doubleTapToZoomEnabled = false
     }
 
-    
+    func radarChart(dataPoints: [String], values: [Double]) {
+        setRadarChartUI()
+
+        radarChartView.noDataText = "You need to provide data for the chart."
+        var dataEntries: [ChartDataEntry] = []
+        for i in 0..<dataPoints.count {
+            let dataEntry = RadarChartDataEntry(value: values[i], data: dataPoints[i])
+            dataEntries.append(dataEntry)
+        }
+        let RadarchartDataSet = RadarChartDataSet(entries: dataEntries, label: "Units Sold")
+        
+        let data3: RadarChartData = RadarChartData(dataSet: RadarchartDataSet)
+
+        
+        // 데이터 지정
+        radarChartView.data = data3
+  
+        //Options of radarChart
+        radarChartView.sizeToFit()
+
+        //Options for the axis from here. The range is 0-100, the interval is 20
+        radarChartView.yAxis.labelCount = 7
+        //RadarChartView.yAxis.axisMinValue = 0.0
+        //RadarChartView.yAxis.axisMaxValue = 100.0
+
+        radarChartView.rotationEnabled = false
+        RadarchartDataSet.drawFilledEnabled = true
+        
+        // value formatter
+        RadarchartDataSet.valueFormatter = DataSetValueFormatter()
+
+        //Other options
+        radarChartView.legend.enabled = false
+        radarChartView.yAxis.gridAntialiasEnabled = true
+        radarChartView.animate(yAxisDuration: 2.0)
+        
+        let xAxis = radarChartView.xAxis
+        xAxis.labelFont = .systemFont(ofSize: 9, weight: .bold)
+        xAxis.labelTextColor = .black
+        xAxis.xOffset = 10
+        xAxis.yOffset = 10
+        xAxis.valueFormatter = XAxisFormatter()
+
+        // 여백 지정
+        radarChartView.setExtraOffsets(left: 30.0, top: 30.0, right: 30.0, bottom: 30.0)
+    }
 
 }
