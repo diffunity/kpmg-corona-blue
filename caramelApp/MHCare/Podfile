@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'MHCare' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MHCare
+  pod 'Charts'
+
+  target 'MHCareTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MHCareUITests' do
+    # Pods for testing
+  end
+
+end
