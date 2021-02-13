@@ -3,7 +3,7 @@ unittest_settings:
   input_type: "number"    # choose from ["number" | "text"]
 model_settings:
   gpu: false
-  pretrained_filepath: "./saved_models/torch_example.pt"
+  pretrained_filepath: "./saved_models/saved_model.h5"
   # pretrained_filepath: "/home/eppen/kpmg/corona-blue/Emotion-detection/mymodel"
 
 aws_settings:

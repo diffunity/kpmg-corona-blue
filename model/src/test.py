@@ -18,8 +18,11 @@ class Test(unittest.TestCase):
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
-                
-        output = self.model.inference(r)
+
+        message = dict()
+        message["audio_file"] = "asfdasdfasfda.txt"
+
+        output = self.model.inference("sample.txt")
 
         print("Unittest output: ", output)
 
@@ -30,7 +33,7 @@ class Test(unittest.TestCase):
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
 
-        output = self.model.inference(r)
+        output = self.model.inference("sample.txt")
 
         print("Unittest output: ", output)
 
