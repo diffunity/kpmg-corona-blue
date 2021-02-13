@@ -12,6 +12,7 @@ echo -e "Begin deployment... \n"
 # export requirements
 pip install --upgrade pip
 pipreqs . --print > ./conf/requirements.txt
+python3 conf/pipreqs_bugfix.py
 
 # export python version
 pyver=$(python --version)
