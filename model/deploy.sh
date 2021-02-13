@@ -22,7 +22,7 @@ img="FROM python:${pyver:7:${#pyver}}"
 # set dockerfile
 dockerLines=$(cat Dockerfile)
 if [[ "${dockerLines:0:17}" != "${img:0:17}" ]]
-then 
+then
   if [[ "${dockerLines:0:4}" == "FROM" ]]
   then
     echo -e "${img}\n${dockerLines:18:${#dockerLines}}" > Dockerfile

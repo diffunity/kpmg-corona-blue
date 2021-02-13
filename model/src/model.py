@@ -1,17 +1,12 @@
 import json
 import yaml
+import logging
 
 import torch
 import numpy as np
-import tensorflow as tf 
+import tensorflow as tf
 
-###########
-# import necessary 
-# 
-# 
-# 
-# 
-###########
+logger = logging.getLogger(__name__)
 
 class model:
     def __init__(self):
@@ -49,7 +44,6 @@ class model:
 
         ###########
         # sqs queue initialization (backend)
-        # 
         ###########
         
         look_at_queue = {"input": np.ndarray(self.config["unittest_settings"]["input_dimension"])}
