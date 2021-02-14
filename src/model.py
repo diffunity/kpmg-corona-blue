@@ -2,6 +2,7 @@ import json
 import yaml
 import torch
 import numpy as np
+import sys
 
 from transformers import BertTokenizer
 from BertModel import BertForMultiLabelClassification
@@ -52,7 +53,13 @@ class model:
         posts = message["input"]
         if type(posts) != list:
             print("Input text must be a list")
-            system.exit()
+            sys.exit()
+
+        GET_SENTENCE_COUNT = False
+        try:
+            sentence_count = message["sentence_count"]
+            GET_SENTENCE_COUNT = True
+        except: pass
             
         class_result = self.goemotions(posts)
         for i in range(len(class_result)):
@@ -82,7 +89,8 @@ class model:
             #print(words)
         
             word_count_result.append(dict(FreqDist(words)))
-            sentence_count_result.append(len(sent_tokenize(post)))
+            if GET_SENTENCE_COUNT == False:
+                sentence_count_result.append(len(sent_tokenize(post)))
                 
         return {"class": class_result, "word_count": word_count_result, "sentence_count": sentence_count_result}
     
