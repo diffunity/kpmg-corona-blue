@@ -10,3 +10,11 @@ SQS:
     text: sqs
     photo: sqs
     call: sqs
+Columns:
+  project: ["type", "create_date_time", "request_time", "status"]
+  job_call: ["project_id", "request_time", "create_date_time", "type", "status", "data"]
+  job_text: ["project_id", "request_time", "create_date_time", "type", "status", "content"]
+  job_photo: ["project_id", "request_time", "create_date_time", "type", "status", "img_url"]
+  result_call :
+  result_text:
+  result_photo:

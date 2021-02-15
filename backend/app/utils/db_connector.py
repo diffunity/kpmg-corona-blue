@@ -49,39 +49,36 @@ class Connector:
         cur.execute(query)
         return cur
 
-    def upsert(self, table, columns_list, values_list, batch_size=10000, action_on_conflict='update'):
-        values_list = list(set(values_list))
-        length_index = len(values_list)
-        start_index = 0
-        queries = []
-        while start_index < length_index:
-            batch_values_list = values_list[start_index: start_index + batch_size]
-            values = ','.join(batch_values_list)
-            if action_on_conflict == 'update':
-                query = f"""INSERT INTO {table} ({','.join(columns_list)})
-                            VALUES {values}
-                            ON CONFLICT ON CONSTRAINT {table}_unique
-                            DO UPDATE
-                            SET ({','.join(columns_list)}) = ({','.join(['excluded.' + x for x in columns_list])})
-                         """
-            elif action_on_conflict == 'nothing':
-                query = f"""INSERT INTO {table} ({','.join(columns_list)})
-                            VALUES {values}
-                            ON CONFLICT ON CONSTRAINT {table}_unique
-                            DO NOTHING;
-                         """
-            else:
-                query = f"""INSERT INTO {table} ({','.join(columns_list)})
-                            VALUES {values}
-                            ON CONFLICT ON CONSTRAINT {table}_unique
-                            DO UPDATE
-                            SET ({','.join(columns_list)}) = ({','.join(['excluded.' + x for x in columns_list])})
-                         """
-            start_index += batch_size
-            queries.append(query)
+    def upsert_query(self, table, columns_list, values, action_on_conflict='update'):
+        if action_on_conflict == 'update':
+            query = f"""INSERT INTO {table} ({','.join(columns_list)})
+                        VALUES {values}
+                        ON CONFLICT ON CONSTRAINT {table}_unique
+                        DO UPDATE
+                        SET ({','.join(columns_list)}) = ({','.join(['excluded.' + x for x in columns_list])})
+                     """
+        elif action_on_conflict == 'nothing':
+            query = f"""INSERT INTO {table} ({','.join(columns_list)})
+                        VALUES {values}
+                        ON CONFLICT ON CONSTRAINT {table}_unique
+                        DO NOTHING;
+                     """
+        else:
+            query = f"""INSERT INTO {table} ({','.join(columns_list)})
+                        VALUES {values}
+                        ON CONFLICT ON CONSTRAINT {table}_unique
+                        DO UPDATE
+                        SET ({','.join(columns_list)}) = ({','.join(['excluded.' + x for x in columns_list])})
+                     """
 
-            for q in queries:
-                self.execute_query(q)
+        return query
+
+    def insert_query(self, table, columns_list, values):
+        query = f"""INSERT INTO {table} ({','.join(columns_list)})
+                    VALUES {values}
+                 """
+
+        return query
 
     @staticmethod
     def values_query_formatter(values_list):
