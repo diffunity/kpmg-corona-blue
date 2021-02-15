@@ -13,8 +13,8 @@ class TextViewController: UIViewController {
     
     
     
-    @IBOutlet weak var overalOuterView: UIView!
-    @IBOutlet weak var overalView: UIView!
+    @IBOutlet weak var overallOuterView: UIView!
+    @IBOutlet weak var overallView: UIView!
     
     @IBOutlet weak var combinedTabOuterView: UIView!
     @IBOutlet weak var combinedTabView: UIView!
@@ -62,7 +62,7 @@ class TextViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setOveralTabUI()
+        setOverallTabUI()
 
         combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
 
@@ -79,17 +79,17 @@ class TextViewController: UIViewController {
     }
     
     
-    func setOveralTabUI() {
-        overalOuterView.clipsToBounds = false
-        overalOuterView.layer.shadowColor = UIColor.black.cgColor
-        overalOuterView.layer.shadowOpacity = 0.1
-        overalOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
-        overalOuterView.layer.shadowRadius = 15
+    func setOverallTabUI() {
+        overallOuterView.clipsToBounds = false
+        overallOuterView.layer.shadowColor = UIColor.black.cgColor
+        overallOuterView.layer.shadowOpacity = 0.1
+        overallOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        overallOuterView.layer.shadowRadius = 15
         
-        overalView.clipsToBounds = true
-        overalView.layer.cornerRadius = 15
+        overallView.clipsToBounds = true
+        overallView.layer.cornerRadius = 15
         
-        overalOuterView.addSubview(overalView)
+        overallOuterView.addSubview(overallView)
     }
     
     func setCombinedChartUI() {
@@ -274,7 +274,7 @@ class TextViewController: UIViewController {
         pieChartView.centerText = ""
     
         // 랜덤 컬러 지정
-        var colors: [UIColor] = [lightColor, darkColor]
+        let colors: [UIColor] = [lightColor, darkColor]
         
         // 숫자 퍼센트 formatter
         let pFormatter = NumberFormatter()
