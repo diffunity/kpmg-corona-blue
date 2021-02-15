@@ -1,8 +1,12 @@
 Database:
-  bucket: "naver-news-dev"
+  bucket: "kpmg-ybigta"
   key: "config/db_config.json"
 SQS:
-  text: sqs
-  photo: sqs
-  call: sqs
-alert_info_webhook_url: ""
+  request:
+    text: sqs
+    photo: sqs
+    call: sqs
+  result:
+    text: sqs
+    photo: sqs
+    call: sqs

@@ -7,5 +7,5 @@ print(cwd)
 
 sys.path.append(f"{cwd}/app")
 
-with Path(f"{cwd}/app/utils/config.yaml").open() as config_file:
+with Path(f"./config.yaml").open() as config_file:
     CONFIG = yaml.load(config_file, Loader=yaml.FullLoader)
