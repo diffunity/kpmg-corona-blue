@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import yaml
+import logging
 
 import torch
 import numpy as np
@@ -13,6 +14,8 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
 
 from facial_emotion_recognition import facial_emotion_recognition_video
+
+logger = logging.getLogger(__name__)
 
 class model:
     def __init__(self):
@@ -33,7 +36,6 @@ class model:
 
         ###########
         # sqs queue initialization (backend)
-        # 
         ###########
         
         look_at_queue = {"input": np.ndarray(self.config["unittest_settings"]["input_dimension"])}

@@ -127,5 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+<<<<<<< HEAD
 *jpg
 *.mp4
+=======
+
+.idea/inspectionProfiles/
+
+.DS_Store
+
+.idea/
+>>>>>>> 9945ffe67b338d58669fabcca8ba678dae61aec0
