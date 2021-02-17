@@ -10,6 +10,8 @@ __email__ = "siqueira.hc@outlook.com"
 __license__ = "MIT license"
 __version__ = "1.0"
 
+## further modified by team YBIGTA for KPMG competition
+
 # External Libraries
 import numpy as np
 import torch
@@ -83,8 +85,6 @@ def recognize_facial_expression(image, on_gpu, face_detection_method, grad_cam, 
                 if face_recognition.compare_faces([user_image_enc], face_enc[0])[0]:
                     matched = True
                     break
-            else:
-                return FER(image)
 
         if not matched:
             print("NOT MATCHED!")
