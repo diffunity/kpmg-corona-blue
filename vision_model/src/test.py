@@ -19,8 +19,11 @@ class Test(unittest.TestCase):
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
 
-        print("input",r)
-                
+        # mock message from backend
+        r["db_directory"] = "../TestData"
+        r["file_list"] = "../image_list.txt"
+        r["user_image"] = "../known_image.jpg"
+
         output = self.model.inference(r)
 
         print("Unittest output: ", output)
@@ -31,6 +34,11 @@ class Test(unittest.TestCase):
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
+        
+        # mock message from backend
+        r["db_directory"] = "../TestData"
+        r["file_list"] = "../image_list.txt"
+        r["user_image"] = "../known_image.jpg"
 
         output = self.model.inference(r)
 

@@ -128,5 +128,14 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-saved_models/vgg19_finetuned_all.pth
+.idea/inspectionProfiles/
+
+.DS_Store
+
+.idea/
 *.jpg
+*.jpeg
+*.png
+TestData
+*.pt
+*.pth

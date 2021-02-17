@@ -16,7 +16,7 @@ from torchvision.datasets.folder import default_loader
 from vgg19 import KitModel as VGG19
 from alexnet import KitModel as AlexNet
 
-def facial_emotion_recognition_image(input_image, path=False, output_csv_file=None):
+def facial_emotion_recognition_image(input_image, user_image_enc, face_locations, path=False, output_csv_file=None):
 
     # FER for image (SNS)
     img = uimage.read(input_image) if path else input_image
@@ -24,7 +24,9 @@ def facial_emotion_recognition_image(input_image, path=False, output_csv_file=No
     fer = cvision.recognize_facial_expression(image=img,
                                               on_gpu=torch.cuda.is_available(), 
                                               face_detection_method=1, 
-                                              grad_cam=False)
+                                              grad_cam=False,
+                                              user_image_enc=user_image_enc,
+                                              face_coordinates=face_locations)
 
     write_to_file = not (output_csv_file is None)
 
