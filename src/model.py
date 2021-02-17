@@ -1,43 +1,33 @@
+# code partially from: https://github.com/siqueira-hc/Efficient-Facial-Feature-Learning-with-Wide-Ensemble-based-Convolutional-Neural-Networks
+import os
+import sys
 import json
 import yaml
 
 import torch
 import numpy as np
-import tensorflow as tf 
+from tqdm import tqdm
+import face_recognition
+import torchvision.transforms as t
+from torch.utils.data import Dataset, DataLoader
+from torchvision.datasets.folder import default_loader
 
-from facial_emotion_recognition import video
+from facial_emotion_recognition import facial_emotion_recognition_video
 
 class model:
     def __init__(self):
-        
-        ###########
-        # model initialization (modeller)
-        # 
-        # 
-        # 
-        # 
-        ###########
 
-        ########### example
         self.config = yaml.load(open("./conf/config.yml", "r"), Loader=yaml.SafeLoader)
         self.model = torch.load(self.config["model_settings"]["pretrained_filepath"])
         self.model.eval()
-        ###########
+
 
     def inference(self, message:json):
-        ###########
-        # jsonify model results (modeller)
-        # 
-        # 
-        # 
-        # 
-        ###########
 
-        ########### example
-        frame = message["input"]
-        output = self.model(torch.Tensor(frame))
-        return {"output": output.detach().numpy().tolist()}
-        ###########
+        result = facial_emotion_recognition_video(message["video_path"], message["user_image"])
+
+        return result
+        
 
     def deploy(self):
 

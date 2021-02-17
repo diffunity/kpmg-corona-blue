@@ -18,7 +18,11 @@ class Test(unittest.TestCase):
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
-                
+        
+        r["db_directory"] = "./"
+        r["video_path"] = "./test_ver2.mp4"
+        r["user_image"] = "./known_image.jpg"
+
         output = self.model.inference(r)
 
         print("Unittest output: ", output)
@@ -29,6 +33,10 @@ class Test(unittest.TestCase):
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
+
+        r["db_directory"] = "./"
+        r["video_path"] = "./test_ver2.mp4"
+        r["user_image"] = "./known_image.jpg"
 
         output = self.model.inference(r)
 
