@@ -50,3 +50,8 @@ result = {
 ```
 
 **pending fixes**: select only necessary features for FER result contents
+
+
+## Pretrained Models
+
+* pretrained models to be manually scp-ed to server
