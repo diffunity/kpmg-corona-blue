@@ -91,4 +91,4 @@ class Connector:
 
 if __name__ == "__main__":
     connector = Connector()
-    print(connector.db_config())
+    print(connector.db_config)
