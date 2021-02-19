@@ -1,9 +1,16 @@
 from typing import List, Optional, Dict
+from enum import Enum
 from pydantic import BaseModel, Field
 
 
+class TypeEnum(str, Enum):
+    call = 'call'
+    text = 'text'
+    photo = 'photo'
+
+
 class InputData(BaseModel):
-    data_type: str = Field(..., example="call, text, photo")
+    data_type: TypeEnum = TypeEnum.text
     create_date_time: str
     content: str
 
@@ -28,3 +35,6 @@ class ErrorBody(BaseModel):
     def from_error(cls, error: Error):
         return cls(error_message=error.error_message)
 
+
+print(InputData(data_type='call', create_date_time='now', content='test'))
+print(InputData(data_type='other', create_date_time='now', content='test'))
