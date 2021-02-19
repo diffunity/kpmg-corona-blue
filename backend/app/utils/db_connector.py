@@ -76,6 +76,7 @@ class Connector:
     def insert_query(self, table, columns_list, values):
         query = f"""INSERT INTO {table} ({','.join(columns_list)})
                     VALUES {values}
+                    RETURNING id
                  """
 
         return query
