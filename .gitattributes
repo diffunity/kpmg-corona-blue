@@ -1,3 +1,0 @@
-saved_models/saved_models.h5 filter=lfs diff=lfs merge=lfs -text
-model/features.csv filter=lfs diff=lfs merge=lfs -text
-model/saved_models/saved_model.h5 filter=lfs diff=lfs merge=lfs -text
