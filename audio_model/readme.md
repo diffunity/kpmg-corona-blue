@@ -55,7 +55,7 @@ For Text Sentiment Analysis
 - Recognize the voice of raw format through [ETRI API](https://aiopen.etri.re.kr/guide_recognition.php)
  
 ## Demo
-You can run [voice_demo.ipynb](./audio_model/voice_demo.ipynb) directly by linking it to Google Colaboratory.
+You can run voice_demo.ipynb directly by linking it to Google Colaboratory. [Link](https://github.com/diffunity/kpmg-corona-blue/blob/audio/audio_model/voice_demo.ipynb) 
 
 ## Detailed Description
-You can check the dataset and details in the github wiki. [Link](https://github.com/diffunity/kpmg-corona-blue/blob/audio/audio_model/voice_demo.ipynb)
+You can check the dataset and details in the github wiki. [Link](https://github.com/diffunity/kpmg-corona-blue/wiki/Notes-on-Speech-Emotion-Recognition)
