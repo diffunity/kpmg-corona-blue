@@ -1,5 +1,5 @@
 from config import CONFIG
-import psycopg2 as pg
+import psycopg2.extras
 import boto3
 import json
 import datetime
@@ -27,7 +27,7 @@ class Connector:
         return db_config
 
     def connect_database(self):
-        con_pg = pg.connect(database=self.database,
+        con_pg = psycopg2.connect(database=self.database,
                             host=self.host,
                             port=self.port,
                             user=self.user,
@@ -45,7 +45,7 @@ class Connector:
 
     def execute_query(self, query):
         con_pg = self.connection
-        cur = con_pg.cursor()
+        cur = con_pg.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(query)
         return cur
 
@@ -81,6 +81,13 @@ class Connector:
 
         return query
 
+    def update_status_query(self, table, request_id, status):
+        query = f"""
+        UPDATE {table} SET status = {status} 
+        WHERE id = {request_id}
+        """
+        return query
+
     def get_data_query(self, table, request_id):
         query = f"""SELECT * 
                     FROM {table}
@@ -100,4 +107,8 @@ class Connector:
 
 if __name__ == "__main__":
     connector = Connector()
-    print(connector.db_config)
+    query = connector.get_data_query("job_call", 1)
+    r = connector.execute_query(query)
+    result = r.fetchall()[0]
+    print(result)
+    print(dict(result))
