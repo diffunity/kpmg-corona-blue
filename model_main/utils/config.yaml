@@ -1,5 +1,5 @@
 Database:
-  bucket: "kpmg-ybigta"
+  bucket: "kpmgybigta"
   key: "config/db_config.json"
 SQS:
   request:
