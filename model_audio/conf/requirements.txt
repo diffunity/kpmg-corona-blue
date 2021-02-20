@@ -1,4 +1,4 @@
-scikit-learn==0.24.0
+Cython
 Keras==2.4.3
 Keras-Preprocessing==1.1.2
 librosa==0.7.0
@@ -7,10 +7,11 @@ numpy==1.20.1
 pandas==1.2.0
 pydub==0.24.1
 PyYAML==5.3.1
-urllib3==1.22
+urllib3==1.26
 soundfile
 gdown
 boto3==1.17.5
 pygelf==0.4.0
 psycopg2-binary==2.8.6
+scikit-learn
 pytz
