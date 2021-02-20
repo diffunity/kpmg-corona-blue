@@ -1,0 +1,20 @@
+Database:
+  bucket: "kpmgybigta"
+  key: "config/db_config.json"
+SQS:
+  request:
+    text: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/request_text"
+    photo: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/request_photo"
+    call: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/request_call"
+  result:
+    text: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/result_text"
+    photo: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/result_photo"
+    call: "https://sqs.ap-northeast-2.amazonaws.com/532214462726/result_call"
+Columns:
+  project: ["type", "create_date_time", "request_time", "status"]
+  job_call: ["request_time", "create_date_time", "type", "status", "data"]
+  job_text: ["request_time", "create_date_time", "type", "status", "content"]
+  job_photo: ["request_time", "create_date_time", "type", "status", "img_url"]
+  result_call :
+  result_text:
+  result_photo:
