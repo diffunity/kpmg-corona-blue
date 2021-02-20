@@ -1,0 +1,29 @@
+unittest_settings:
+  input_dimension: [1,4]    # specify dimension of input
+  input_type: "number"    # choose from ["number" | "text"]
+model_settings:
+  gpu: false
+  pretrained_filepath: "./saved_models/saved_model.h5"
+  # pretrained_filepath: "/home/eppen/kpmg/corona-blue/Emotion-detection/mymodel"
+
+aws_settings:
+  sqs:
+    request:
+      audio:
+      nlp:
+      video:
+      vision:
+    result:
+      audio:
+      nlp:
+      video:
+      vision:
+  ecr:
+    audio:
+    nlp:
+    video:
+    vision:
+Database:
+  bucket: "kpmgybigta"
+  key: "config/db_config.json"
+
