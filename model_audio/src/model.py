@@ -24,7 +24,7 @@ url = 'https://drive.google.com/uc?id=1m2NDz9MBvKIh5E26i_4ke_tgPRd9ZmZc'
 output = 'features.csv'
 gdown.download(url, output, quiet=False)
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/audio_config.json
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/audio_config.json"
 
 class model:
     def __init__(self):
