@@ -27,6 +27,18 @@ while True:
             # TODO: data는 db에서 받아올 request data, model에 들어갈 형식으로 맞춰주세요.
             analysis_result = model.inference(data)
 
+            message = dict()
+            message["input"] = data
+
+            # inference for audio 
+            audio_result = model.inference(message)
+
+            # inference for nlp
+            nlp_result = model.inference(message)
+        
+            # inference for vision task
+            vision_result = model.inference(message)
+
         except IndexError:
             logger.error(f"No id {request_id} in job_call table")
             continue
