@@ -133,10 +133,3 @@ dmypy.json
 .DS_Store
 
 .idea/
-*.jpg
-*.jpeg
-*.png
-TestData
-*.pt
-*.pth
-*.mp4
