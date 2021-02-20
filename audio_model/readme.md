@@ -41,21 +41,3 @@ Output: Analyzed Emotions and Speech Recognition Text
 # Example 
 {'output': {'Depressed': 6, 'Non-depressed': 76}, 'text': {'count': 84, 'text': "also we almost ran out of it next what do you want for snack some chocolate cookies would be fine with me you probably want your ice cream i better write down all these things otherwise i will forget them by the time i get to the market... 
 ```
-
-## Process
-For Speech Emotion Recognition
-- Decode base64 to wav
-- Split voice by silence
-- Normalize the volume of audio
-- Extract features through ZCR, stft, mfcc, etc.
-- Predict the emotions of individual chunks add up the results.
-
-For Text Sentiment Analysis
-- Convert wav to raw format.
-- Recognize the voice of raw format through [ETRI API](https://aiopen.etri.re.kr/guide_recognition.php)
- 
-## Demo
-You can run voice_demo.ipynb directly by linking it to Google Colaboratory. [Link](https://github.com/diffunity/kpmg-corona-blue/blob/audio/audio_model/voice_demo.ipynb) 
-
-## Detailed Description
-You can check the dataset and details in the github wiki. [Link](https://github.com/diffunity/kpmg-corona-blue/wiki/Notes-on-Speech-Emotion-Recognition)
