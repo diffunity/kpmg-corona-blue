@@ -142,3 +142,4 @@ model_video/face_results
 model_vision/images
 model_video/images
 *.pt*
+

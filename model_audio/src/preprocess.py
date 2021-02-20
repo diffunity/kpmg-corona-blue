@@ -10,6 +10,8 @@ import base64
 import ast
 import os
 import shutil
+from google.cloud import speech
+import io
 
 
 ############################################################
@@ -87,43 +89,86 @@ def get_features(path):
 ############################################################
 # speech to text
 ############################################################
-def wav_to_raw(wav):
-    sound = AudioSegment.from_wav(wav)
-    sound = sound.set_channels(1)
-    sound.export("./raw/" + wav[8:-4] + '.raw', format="raw")
+# Google API
+def split_by_30s(speech_file):
+    audio_np = librosa.load(speech_file, sr=16000)[0]
 
-def raw_to_text(raw):
-    openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Recognition"
-    accessKey = "#####"  # Enter the api key
+    duration = 30
+    split_num = len(audio_np) // (16000 * duration) + 1
 
-    try:
-        file = open(raw, "rb")
-        audioContents = base64.b64encode(file.read()).decode("utf8")
-        file.close()
+    rest_list = [0 for i in range(split_num * 16000 * duration - len(audio_np))]
+    refined = np.append(audio_np, rest_list)
+    reshaped = refined.reshape(split_num, -1)
 
-        requestJson = {
-            "access_key": accessKey,
-            "argument": {
-                "language_code": "english",
-                "audio": audioContents
-            }
-        }
+    for i, chunk in enumerate(reshaped):
+        out_file = "./stt_chunk/{}.wav".format(str(i).zfill(4))
+        sf.write(out_file, chunk, 16000)
 
-        http = urllib3.PoolManager()
-        response = http.request(
-            "POST",
-            openApiURL,
-            headers={"Content-Type": "application/json; charset=UTF-8"},
-            body=json.dumps(requestJson)
-        )
+def transcribe_file(speech_file):
+    """Transcribe the given audio file."""
 
-        byte_str = response.data
-        dict_str = byte_str.decode("UTF-8")
-        dict_data = ast.literal_eval(dict_str)
-        text = dict_data['return_object']['recognized']
+    client = speech.SpeechClient()
 
-        f = open("./text/" + raw[6:-4] + ".txt", 'w')
-        f.write(text)
-        f.close()
-    except:
-        pass
+    with io.open(speech_file, "rb") as audio_file:
+        content = audio_file.read()
+
+    audio = speech.RecognitionAudio(content=content)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=16000,
+        language_code="en-US",
+    )
+
+    response = client.recognize(config=config, audio=audio)
+
+    # Each result is for a consecutive portion of the audio. Iterate through
+    # them to get the transcripts for the entire audio file.
+
+    result_list = []
+    for result in response.results:
+        result_list.append("{}".format(result.alternatives[0].transcript))
+
+    return " ".join(result_list)
+
+############################################################
+# Etri API
+# def wav_to_raw(wav):
+#     sound = AudioSegment.from_wav(wav)
+#     sound = sound.set_channels(1)
+#     sound.export("./raw/" + wav[8:-4] + '.raw', format="raw")
+#
+# def raw_to_text(raw):
+#     openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Recognition"
+#     accessKey = "#####"  # Enter the api key
+#
+#     try:
+#         file = open(raw, "rb")
+#         audioContents = base64.b64encode(file.read()).decode("utf8")
+#         file.close()
+#
+#         requestJson = {
+#             "access_key": accessKey,
+#             "argument": {
+#                 "language_code": "english",
+#                 "audio": audioContents
+#             }
+#         }
+#
+#         http = urllib3.PoolManager()
+#         response = http.request(
+#             "POST",
+#             openApiURL,
+#             headers={"Content-Type": "application/json; charset=UTF-8"},
+#             body=json.dumps(requestJson)
+#         )
+#
+#         byte_str = response.data
+#         dict_str = byte_str.decode("UTF-8")
+#         dict_data = ast.literal_eval(dict_str)
+#         text = dict_data['return_object']['recognized']
+#
+#         f = open("./text/" + raw[6:-4] + ".txt", 'w')
+#         f.write(text)
+#         f.close()
+#     except:
+#         pass
