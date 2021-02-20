@@ -64,10 +64,21 @@ class Analysis:
 
         return request_id
 
-    # def wait_model_result(self, ):
+    def wait_project_done(self, project_id: int):
+        wait_time = 60
+        while wait_time > 0:
+            status = self.db_conn.get_project_status("project", project_id)
+            if status == 'DONE':
+                return 'DONE'
+            else:
+                wait_time -= 1
+                time.sleep(1)
+
+        return 'FAILED'
 
 
 if __name__ == '__main__':
     r = Analysis()
-    project_id = r.make_project('test', time.strftime('%Y-%m-%d %H:%M:%S'))
-    r.make_job(project_id, 'test', time.strftime('%Y-%m-%d %H:%M:%S'), {"create_date_time": time.strftime('%Y-%m-%d %H:%M:%S'), "content": "test data", "type": "call"})
+    projectid = r.make_project('test', time.strftime('%Y-%m-%d %H:%M:%S'))
+    r.make_job(projectid, 'test', time.strftime('%Y-%m-%d %H:%M:%S'), {"create_date_time": time.strftime('%Y-%m-%d %H:%M:%S'), "content": "test data", "type": "call"})
+    print(r.wait_project_done(projectid))

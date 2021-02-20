@@ -88,6 +88,14 @@ class Connector:
         """
         return query
 
+    def get_project_status(self, table, project_id):
+        query = f"""
+        SELECT status FROM {table} WHERE id = {project_id}
+        """
+        r = self.execute_query(query)
+        status = r.fetchall()[0][0]
+        return status
+
     @staticmethod
     def values_query_formatter(values_list):
         format_str_values = ["NULL" if x is None else "'" + str(x).replace("'", "''") + "'" if x != '' else "'None'"
