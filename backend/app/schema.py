@@ -10,15 +10,19 @@ class TypeEnum(str, Enum):
 
 
 class InputData(BaseModel):
-    data_type: TypeEnum = TypeEnum.text
+    type: TypeEnum = TypeEnum.text
     create_date_time: str
     content: str
 
 
-class JobRequest(BaseModel):
+class JobRequestBody(BaseModel):
     project_type: str = Field(..., example="twitter, call")
     request_time: str
     data: List[InputData]
+
+
+class JobRequestResponse(BaseModel):
+    request_ids: List[int]
 
 
 class Error:
@@ -36,5 +40,3 @@ class ErrorBody(BaseModel):
         return cls(error_message=error.error_message)
 
 
-print(InputData(data_type='call', create_date_time='now', content='test'))
-print(InputData(data_type='other', create_date_time='now', content='test'))

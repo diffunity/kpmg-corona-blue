@@ -10,9 +10,12 @@ from fastapi import Depends
 # from db_connector import Connector
 # from sqs import SQS
 # for my local
+import sys
+sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue")
 from backend.app.utils.config import CONFIG
 from backend.app.utils.db_connector import Connector
 from backend.app.utils.sqs import SQS
+from backend.app.schema import InputData
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s : %(message)s',
@@ -30,10 +33,11 @@ class MakeRequest:
         self.columns = CONFIG["Columns"]
         self.sqs_path = CONFIG["SQS"]["request"]
 
-    def make_job(self, project_type: str, request_time: str, data: List[Dict]) -> List[int]:
+    def make_job(self, project_type: str, request_time: str, data: List[InputData]) -> List[int]:
         """ user의 요청내용을 분석하고 기록한 뒤 자료형에 맞게 sqs 메시지를 보낸다. """
         request_ids = []
         for d in data:
+            d = dict(d)
             try:
                 value_list = [request_time, d["create_date_time"], project_type, "REGISTERED", d["content"]]
                 values = self.db_conn.values_query_formatter(value_list)
