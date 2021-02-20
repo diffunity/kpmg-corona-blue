@@ -14,27 +14,11 @@ class Test(unittest.TestCase):
 
     def test_case1(self):
         if self.test_configs["input_type"] == "text":
-            r = {"input": ["Hello worlds", "Hi worlds"]}
+            r = {"input": "안녕 세계"}
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
 
-        # mock message from backend
-        r["db_directory"] = "../TestData"
-        r["file_list"] = "../image_list.txt"
-        r["user_image"] = "../known_image.jpg"
-
-        output = self.model.inference(r)
-
-        print("Unittest output: ", output)
-
-    def test_case2(self):
-        if self.test_configs["input_type"] == "text":
-            r = {"input": ["Hello again worlds", "Hi again worlds"]}
-        else:
-            dim = self.test_configs["input_dimension"]
-            r = {"input": np.ndarray(dim).tolist()}
-        
         # mock message from backend
         r["db_directory"] = "../TestData"
         r["file_list"] = "../image_list.txt"

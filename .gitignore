@@ -137,3 +137,6 @@ dmypy.json
 
 TestData
 image_list.txt
+model_vision/face_results
+model_vision/images
+*.pt*
