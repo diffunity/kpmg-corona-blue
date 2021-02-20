@@ -8,6 +8,7 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
+from PIL import Image
 import face_recognition
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
@@ -36,7 +37,7 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
     write_to_file = not (output_csv_file is None)
 
     cumulated_fer = []
-
+    result = dict()
     if not uimage.initialize_video_capture(input_video_path):
         raise RuntimeError("Error on initializing video capture." +
                            "\nCheck whether working versions of ffmpeg or gstreamer is installed." +
@@ -70,6 +71,14 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
                                                                                      user_image_enc)
  
                 cumulated_fer.append(fer.__dict__)
+                
+                # save images
+                if fer.list_emotion is not None:
+                    Image.fromarray(fer.face_image).save(f"./face_results/frame_{timestamp}.jpg","JPEG")
+
+                    result[f"output_{timestamp}"] = {"results": {"emotions": fer.list_emotion, "affects": fer.list_affect},
+                                                     "method": "FER"}
+
                 # Display blank screen if no face is detected, otherwise,
                 # display detected faces and perceived facial expression labels
 
@@ -87,5 +96,5 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
 
         if write_to_file:
             ufile.close_file()
-
+    return result
     return cumulated_fer

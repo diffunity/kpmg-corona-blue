@@ -35,9 +35,9 @@ fi
 
 echo "========================================================="
 echo -e "Pushing to git \n"
-git add .
-git commit -m "!pushed for deployment!"
-git push
+#git add .
+#git commit -m "!pushed for deployment!"
+#git push
 echo "!!!!!!!!!!!!!!!!!!!"
 echo "!!!pushed to git!!!"
 echo "!!!!!!!!!!!!!!!!!!!"
