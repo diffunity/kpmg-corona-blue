@@ -10,7 +10,7 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import face_recognition
-from PIL import ImageOps
+from PIL import Image, ImageOps
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
@@ -93,7 +93,8 @@ class model:
                                                                   face_locations,
                                                                   path=False)
                     if fer_result is not False:
-                        result[f"output_{e}"] = {"contents": fer_result.__dict__,
+                        Image.fromarray(fer_result.face_image).save(f"./face_results/output_{e}.jpg","JPEG")
+                        result[f"output_{e}"] = {"results": {"emotions": fer_result.list_emotion, "affects": fer_result.list_affect},
                                                  "method": "FER"}
                         continue
 

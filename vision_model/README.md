@@ -40,17 +40,22 @@ result = {
         'method': 'VSA'}, 
 
     'output_1': 
-    	{'contents': 
-            {'input_image': <some-array-of-image>, 
-            'face_coordinates': (357, 726, 911, 171), 
-            'face_image': <some-array-of-image>, 
-            'list_emotion': ['Sad', 'Sad', 'Neutral', 'Sad', 'Sad', 'Sad', 'Neutral', 'Neutral', 'Neutral', 'Sad'], 
-            'list_affect': array([[-0.21209078,  0.43655968],...])}, 
-        'method': 'FER'}}
+    	{'results': 
+        {'emotions': ['Sad', 'Sad', 'Sad', 'Sad', 'Sad', 'Sad', 'Sad', 'Sad', 'Sad', 'Sad'], 
+          'affects': array([[-0.20710072,  0.41372514],
+                            [-0.2923277 ,  0.5747444 ],
+                            [-0.27150244,  0.42269933],
+                            [-0.23067674,  0.56988555],
+                            [-0.41185334,  0.48492265],
+                            [-0.3649952 ,  0.47604904],
+                            [ 0.02373752,  0.67886865],
+                            [-0.31549323,  0.43870547],
+                            [-0.06729096,  0.5077689 ],
+                            [-0.23750032,  0.50748545]], dtype=float32)}, 
+          'method': 'FER'}}
 ```
 
-**pending fixes**: select only necessary features for FER result contents
-
+* Note that FER saves the facial image
 
 ## Pretrained Models
 
