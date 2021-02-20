@@ -135,6 +135,5 @@ dmypy.json
 
 .idea/
 
-vision_model/
 TestData
 image_list.txt
