@@ -23,3 +23,7 @@ aws_settings:
     nlp:
     video:
     vision:
+Database:
+  bucket: "kpmgybigta"
+  key: "config/db_config.json"
+
