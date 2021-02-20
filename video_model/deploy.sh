@@ -2,7 +2,7 @@
 
 # unittest
 echo -e "Begin unittest... \n"
-#python3 ./src/test.py
+python3 ./src/test.py
 
 # deployment
 echo -e "Unittest finished \n"
@@ -10,9 +10,9 @@ echo "========================================================="
 echo -e "Begin deployment... \n"
 
 # export requirements
-#pip install --upgrade pip
-#pipreqs . --print > ./conf/requirements.txt
-#python3 conf/pipreqs_bugfix.py
+pip install --upgrade pip
+pipreqs . --print > ./conf/requirements.txt
+python3 conf/pipreqs_bugfix.py
 
 # export python version
 pyver=$(python --version)
@@ -35,9 +35,9 @@ fi
 
 echo "========================================================="
 echo -e "Pushing to git \n"
-git add .
-git commit -m "!pushed for deployment!"
-git push
+#git add .
+#git commit -m "!pushed for deployment!"
+#git push
 echo "!!!!!!!!!!!!!!!!!!!"
 echo "!!!pushed to git!!!"
 echo "!!!!!!!!!!!!!!!!!!!"
