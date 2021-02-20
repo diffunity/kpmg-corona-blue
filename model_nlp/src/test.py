@@ -14,7 +14,8 @@ class Test(unittest.TestCase):
 
     def test_case1(self):
         if self.test_configs["input_type"] == "text":
-            r = {"input": ["Hello worlds", "Hi worlds"]}
+#            r = {"input": ["Hello worlds", "Hi worlds"]}
+            r = {"input": "Hello worlds. Hi Worlds"}
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}
@@ -30,7 +31,8 @@ class Test(unittest.TestCase):
 
     def test_case2(self):
         if self.test_configs["input_type"] == "text":
-            r = {"input": ["Hello again worlds", "Hi again worlds"]}
+#            r = {"input": ["Hello again worlds", "Hi again worlds"]}
+            r = {"input": "Hello again worlds. Hi again Worlds"}
         else:
             dim = self.test_configs["input_dimension"]
             r = {"input": np.ndarray(dim).tolist()}

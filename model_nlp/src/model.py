@@ -35,25 +35,12 @@ class model:
         self.lm = WordNetLemmatizer()
 
     def inference(self, message: json):
-        ###########
-        # jsonify model results (modeller)
-        
-#         tokenizer = BertTokenizer.from_pretrained(
-#             "monologg/bert-base-cased-goemotions-ekman")
-#         model = BertForMultiLabelClassification.from_pretrained(
-#             "monologg/bert-base-cased-goemotions-ekman")
-#         goemotions = MultiLabelPipeline(
-#             model=self.model,
-#             tokenizer=self.tokenizer,
-#             threshold=0.3
-#         )
-
         ## Expected input: {input: [whole text of the day until requested moment]}
         
-        posts = message["input"]
-        if type(posts) != list:
-            print("Input text must be a list")
-            sys.exit()
+        post = message["input"]
+#        if type(posts) != list:
+#            print("Input text must be a list")
+#            sys.exit()
 
         GET_SENTENCE_COUNT = False
         try:
@@ -61,36 +48,37 @@ class model:
             GET_SENTENCE_COUNT = True
         except: pass
             
-        class_result = self.goemotions(posts)
-        for i in range(len(class_result)):
-            if len(class_result[i]['labels'])>1:
-                best_score = max(class_result[i]['scores'])
-                best_index = class_result[i]['scores'].index(best_score)
-                best_label = class_result[i]['labels'][best_index]
+        class_result = self.goemotions([post])[0]
+#        for i in range(len(class_result)):
+        if len(class_result['labels'])>1:
+            best_score = max(class_result['scores'])
+            best_index = class_result['scores'].index(best_score)
+            best_label = class_result['labels'][best_index]
 
-                class_result[i]['labels'] = best_label
-                class_result[i]['scores'] = best_score
-            else:
-                class_result[i]['labels'] = class_result[i]['labels'][0]
-                class_result[i]['scores'] = class_result[i]['scores'][0]
+            class_result['labels'] = best_label
+            class_result['scores'] = best_score
+        else:
+            class_result['labels'] = class_result['labels'][0]
+            class_result['scores'] = class_result['scores'][0]
         
         punct = self.punct
         lm = self.lm
-        word_count_result = []
-        sentence_count_result = []
-        for post in posts:
-            print(post)
-            words = punct.tokenize(post)
-            words = [lm.lemmatize(w) for w in words]
+#        word_count_result = []
+#        sentence_count_result = []
+#        for post in posts:
+        print(post)
+        words = punct.tokenize(post)
+        words = [lm.lemmatize(w) for w in words]
 
-            words = list(map(lambda x: re.sub('[^a-zA-Z]', '', x), words))
-            words = list(filter(lambda x: len(x)>2, words))
-            words = [t[0] for t in pos_tag(words) if t[1] not in ["IN", "CC", "TO", "PRP", "MD", "DT", "CD", "EX"]]
+        words = list(map(lambda x: re.sub('[^a-zA-Z]', '', x), words))
+        words = list(filter(lambda x: len(x)>2, words))
+        words = [t[0] for t in pos_tag(words) if t[1] not in ["IN", "CC", "TO", "PRP", "MD", "DT", "CD", "EX"]]
             #print(words)
-        
-            word_count_result.append(dict(FreqDist(words)))
-            if GET_SENTENCE_COUNT == False:
-                sentence_count_result.append(len(sent_tokenize(post)))
+        word_count_result = dict(FreqDist(words))        
+#        word_count_result.append(dict(FreqDist(words)))
+        if GET_SENTENCE_COUNT == False:
+#            sentence_count_result.append(len(sent_tokenize(post)))
+            sentence_count_result = len(sent_tokenize(post))
                 
         return {"class": class_result, "word_count": word_count_result, "sentence_count": sentence_count_result}
     
