@@ -22,6 +22,8 @@ url = 'https://drive.google.com/uc?id=1m2NDz9MBvKIh5E26i_4ke_tgPRd9ZmZc'
 output = 'features.csv'
 gdown.download(url, output, quiet=False)
 
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'real-267703-b0f5ad8aabcb.json'
+
 class model:
     def __init__(self):
 
@@ -51,8 +53,7 @@ class model:
 
         # temp directory
         os.makedirs('./chunk', exist_ok=True)
-        os.makedirs("./raw", exist_ok=True)
-        os.makedirs("./text", exist_ok=True)
+        os.makedirs("./stt_chunk", exist_ok=True)
 
         # mock data
         message = dict()
@@ -107,24 +108,16 @@ class model:
         ##############################################################
         # Speech to text
         ##############################################################
-        for wav in os.listdir("./chunk"):
-            wav_to_raw("./chunk/" + wav)
-
-        for raw in os.listdir("./raw"):
-            raw_to_text("./raw/" + raw)
+        split_by_30s("sample.wav")
 
         text_list = []
-        for text in os.listdir("./text"):
-            f = open("./text/" + text, 'r')
-            sentence = f.read()
-            f.close()
-            text_list.append(sentence.strip())
+        for wav in os.listdir("./stt_chunk"):
+            text_list.append(transcribe_file("./stt_chunk/" + wav))
 
-        model_output["text"] = {"count": len(text_list), "text": " ".join(text_list)}
+        model_output["text"] = {"count": num_depressed+num_non_depressed, "text": " ".join(text_list)}
 
         shutil.rmtree("./chunk")
-        shutil.rmtree("./raw")
-        shutil.rmtree("./text")
+        shutil.rmtree("./stt_chunk")
 
         return model_output
         ###########

@@ -39,5 +39,5 @@ Output: Analyzed Emotions and Speech Recognition Text
 {'output': {'Depressed': Depressed_num, 'Non-depressed': Non-depressed_num}, 'text': {'count': text_num, 'text': STT results}
 
 # Example 
-{'output': {'Depressed': 6, 'Non-depressed': 76}, 'text': {'count': 84, 'text': "also we almost ran out of it next what do you want for snack some chocolate cookies would be fine with me you probably want your ice cream i better write down all these things otherwise i will forget them by the time i get to the market... 
+{'output': {'Depressed': 6, 'Non-depressed': 76}, 'text': {'count': 82, 'text': "chocolate cookies would be fine with me you probably want your ice cream I better write down all these things otherwise I will forget them by the time I get to the market right as far as meat mom wants some beef and some chicken  just any kind of beef I forgot to ask Mom about that but I think it would be...
 ```
