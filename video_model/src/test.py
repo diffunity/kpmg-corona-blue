@@ -27,21 +27,6 @@ class Test(unittest.TestCase):
 
         print("Unittest output: ", output)
 
-    def test_case2(self):
-        if self.test_configs["input_type"] == "text":
-            r = {"input": "다시 안녕 세계"}
-        else:
-            dim = self.test_configs["input_dimension"]
-            r = {"input": np.ndarray(dim).tolist()}
-
-        r["db_directory"] = "../"
-        r["video_path"] = "../test_ver2.mp4"
-        r["user_image"] = "../known_image.jpg"
-
-        output = self.model.inference(r)
-
-        print("Unittest output: ", output)
-
 
 if __name__ == '__main__':
     unittest.main()
