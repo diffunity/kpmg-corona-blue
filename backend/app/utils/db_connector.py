@@ -81,6 +81,13 @@ class Connector:
 
         return query
 
+    def update_status_query(self, table, id, status):
+        query = f"""
+        UPDATE {table} SET status = '{status}' 
+        WHERE id = {id}
+        """
+        return query
+
     @staticmethod
     def values_query_formatter(values_list):
         format_str_values = ["NULL" if x is None else "'" + str(x).replace("'", "''") + "'" if x != '' else "'None'"

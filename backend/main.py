@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.utils.log import setup_logger
-from app.dependencies.make_request import MakeRequest
+from app.dependencies.Analysis import MakeRequest
 from app.schema import *
 
 setup_logger()

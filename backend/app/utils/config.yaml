@@ -12,10 +12,10 @@ SQS:
     photo: "https://sqs.ap-northeast-2.amazonaws.com/475985888665/result_photo"
     call: "https://sqs.ap-northeast-2.amazonaws.com/475985888665/result_call"
 Columns:
-  project: ["type", "create_date_time", "request_time", "status"]
-  job_call: ["request_time", "create_date_time", "type", "status", "data"]
-  job_text: ["request_time", "create_date_time", "type", "status", "content"]
-  job_photo: ["request_time", "create_date_time", "type", "status", "img_url"]
+  project: ["type", "registered_time", "status"]
+  job_call: ["project_id", "request_time", "create_date_time", "type", "status", "data"]
+  job_text: ["project_id", "request_time", "create_date_time", "type", "status", "content"]
+  job_photo: ["project_id", "request_time", "create_date_time", "type", "status", "img_url"]
   result_call :
   result_text:
   result_photo:

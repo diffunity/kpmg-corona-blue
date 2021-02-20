@@ -18,7 +18,7 @@ class InputData(BaseModel):
 class JobRequestBody(BaseModel):
     project_type: str = Field(..., example="twitter, call")
     request_time: str
-    data: List[InputData]
+    data: InputData
 
 
 class JobRequestResponse(BaseModel):
