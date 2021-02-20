@@ -30,8 +30,8 @@ class SQS:
         return response["ResponseMetadata"]["HTTPStatusCode"]
 
     @classmethod
-    def receive_message(cls, sqs_url: str) -> Optional[Dict]:
-        response = client.receive_message(QueueUrl=sqs_url, MaxNumberOfMessages=1, WaitTimeSeconds=20)
+    def receive_message(cls, sqs_url: str, WaitTimeSeconds=20) -> Optional[Dict]:
+        response = client.receive_message(QueueUrl=sqs_url, MaxNumberOfMessages=1, WaitTimeSeconds=WaitTimeSeconds)
         # no message
         # {'ResponseMetadata': {'RequestId': 'b3ae256f-45f4-5c03-8c32-7dc733716d9e',
         #                       'HTTPStatusCode': 200,

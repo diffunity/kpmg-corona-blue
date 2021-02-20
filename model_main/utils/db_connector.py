@@ -81,6 +81,13 @@ class Connector:
 
         return query
 
+    def get_data_query(self, table, request_id):
+        query = f"""SELECT * 
+                    FROM {table}
+                    WHERE id = {request_id}
+        """
+
+        return query
 
     @staticmethod
     def values_query_formatter(values_list):
