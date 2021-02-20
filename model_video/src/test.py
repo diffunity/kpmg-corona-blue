@@ -21,7 +21,7 @@ class Test(unittest.TestCase):
         
         r["db_directory"] = "../"
         r["video_path"] = "../test_ver2.mp4"
-        r["user_image"] = "../known_image.jpg"
+        r["user_image"] = "./user_image.jpg"
 
         output = self.model.inference(r)
 

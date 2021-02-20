@@ -27,7 +27,7 @@ class model:
 
     def inference(self, message:json):
 
-        result = facial_emotion_recognition_video(message["video_path"], message["user_image"])
+        result = facial_emotion_recognition_video(message["video_path"], "./user_image.jpg")
 
         return result
         
