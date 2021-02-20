@@ -5,6 +5,7 @@ import sys
 import json
 import yaml
 import logging
+import requests
 
 import torch
 import numpy as np
@@ -70,43 +71,45 @@ class model:
 
         result = dict()
 
+        message["user_image"] = "./user_image.jpg"
+
         # user image encoding
         user_image = face_recognition.load_image_file(message["user_image"])
         user_image_enc = face_recognition.face_encodings(user_image)[0]
 
         # retrieve image data to be analyzed
-        data = ImageListDataset(message["file_list"], root=message["db_directory"], transform=self.transform)
+#        data = ImageListDataset(message["file_list"], root=message["db_directory"], transform=self.transform)
 
         # for individual files from url
-        # im = Image.open(requests.get(url, stream=True).raw)
-        # get rid of enumerate(tqdm(data)) for individual url
-
+        x = Image.open(requests.get(message["input"], stream=True).raw)
+#        data = [im]
         with torch.no_grad():
-            for e, x in enumerate(tqdm(data)):
+#            for e, x in enumerate(tqdm(data)):
 
-                x = ImageOps.exif_transpose(x) 
-                x_np = np.array(x)
-                image_enc = face_recognition.face_encodings(x_np)
+            x = ImageOps.exif_transpose(x) 
+            x_np = np.array(x)
+            image_enc = face_recognition.face_encodings(x_np)
 
-                face_locations = face_recognition.face_locations(x_np)
+            face_locations = face_recognition.face_locations(x_np)
 
-                if len(face_locations) > 0:
+            if len(face_locations) > 0:
 
-                    fer_result = facial_emotion_recognition_image(x_np, 
-                                                                  user_image_enc,
-                                                                  face_locations,
-                                                                  path=False)
-                    if fer_result is not False:
-                        Image.fromarray(fer_result.face_image).save(f"./face_results/output_{e}.jpg","JPEG")
-                        result[f"output_{e}"] = {"results": {"emotions": fer_result.list_emotion, "affects": fer_result.list_affect},
-                                                 "method": "FER"}
-                        continue
+                fer_result = facial_emotion_recognition_image(x_np, 
+                                                              user_image_enc,
+                                                              face_locations,
+                                                              path=False)
+                if fer_result is not False:
+                    Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
+                    result[f"output"] = {"results": {"emotions": fer_result.list_emotion, "affects": fer_result.list_affect},
+                                             "method": "FER"}
+#                    continue
+                    return result
 
                 # inference for non-facial image (inferenced also when face was detected but no face matched user's face)
-                x = self.transform(x).unsqueeze(0)
-                p = self.model(x.to('cpu')).cpu().numpy().tolist()  # order is (NEG, NEU, POS)
-                result[f"output_{e}"] = {"contents": p,
-                                         "method": "VSA"}
+            x = self.transform(x).unsqueeze(0)
+            p = self.model(x.to('cpu')).cpu().numpy().tolist()  # order is (NEG, NEU, POS)
+            result[f"output"] = {"contents": p,
+                                     "method": "VSA"}
 
         return result
 
