@@ -4,6 +4,7 @@ import os
 import json
 import yaml
 import gdown
+import requests
 
 import pandas as pd
 import numpy as np
@@ -16,6 +17,7 @@ from sklearn.model_selection import train_test_split
 from pydub import AudioSegment, effects
 
 import boto3
+from google.oauth2 import service_account
 
 import warnings
 warnings.filterwarnings(action='ignore')
@@ -24,7 +26,10 @@ url = 'https://drive.google.com/uc?id=1m2NDz9MBvKIh5E26i_4ke_tgPRd9ZmZc'
 output = 'features.csv'
 gdown.download(url, output, quiet=False)
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/audio_config.json"
+r = requests.get("https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/audio_config.json")
+with open("audio_config.json", "w") as f:
+    json.dump(r.json(), f)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "audio_config.json"
 
 class model:
     def __init__(self):
@@ -59,11 +64,11 @@ class model:
 #        message["audio_file"] = "sample.txt"
 
 #        f = open('sample.txt', 'rb')
-        f = open(message["input"], 'rb')
-        encoded_string = f.read()  # bytes
-        f.close()
+        # f = open(message["input"], 'rb')
+        # encoded_string = f.read()  # bytes
+        # f.close()
 
-        decoded_audio = decode_audio(encoded_string)
+        decoded_audio = decode_audio(message["input"])
 
         save_audio(decoded_audio, "sample.wav")
 
