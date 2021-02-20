@@ -17,12 +17,11 @@ class InputData(BaseModel):
 
 class JobRequestBody(BaseModel):
     project_type: str = Field(..., example="twitter, call")
-    request_time: str
     data: InputData
 
 
 class JobRequestResponse(BaseModel):
-    request_ids: List[int]
+    project_id: int
 
 
 class Error:

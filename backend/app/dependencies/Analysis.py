@@ -6,22 +6,16 @@ import psycopg2.extras
 
 from fastapi import Depends
 
-# for container
-# from app.utils.config import CONFIG
-# from app.utils.db_connector import Connector
-# from app.utils.sqs import SQS
-# from app.schema import InputData
 # for my local
-import sys
-sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue")
-from backend.app.utils.config import CONFIG
-from backend.app.utils.db_connector import Connector
-from backend.app.utils.sqs import SQS
-from backend.app.schema import InputData
+# import sys
+# sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue/backend")
+# # for container
+from app.utils.config import CONFIG
+from app.utils.db_connector import Connector
+from app.utils.sqs import SQS
+from app.schema import InputData, Error
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s : %(message)s',
-                    datefmt="%Y-%m-%d %H:%M:%S")
 logger = logging.getLogger(__name__)
 
 
