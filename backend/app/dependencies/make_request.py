@@ -6,16 +6,18 @@ import psycopg2.extras
 
 from fastapi import Depends
 
-# from config import CONFIG
-# from db_connector import Connector
-# from sqs import SQS
+# for container
+from app.utils.config import CONFIG
+from app.utils.db_connector import Connector
+from app.utils.sqs import SQS
+from app.schema import InputData
 # for my local
-import sys
-sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue")
-from backend.app.utils.config import CONFIG
-from backend.app.utils.db_connector import Connector
-from backend.app.utils.sqs import SQS
-from backend.app.schema import InputData
+# import sys
+# sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue")
+# from backend.app.utils.config import CONFIG
+# from backend.app.utils.db_connector import Connector
+# from backend.app.utils.sqs import SQS
+# from backend.app.schema import InputData
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s : %(message)s',
@@ -53,6 +55,8 @@ class MakeRequest:
         logger.info(f"New request is registered: {request_ids}, {len(data)} inputs")
 
         return request_ids
+
+    # def wait_model_result(self, ):
 
 
 if __name__ == '__main__':
