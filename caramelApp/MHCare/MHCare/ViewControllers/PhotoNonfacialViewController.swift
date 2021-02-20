@@ -1,5 +1,5 @@
 //
-//  PhotoFacialViewController.swift
+//  PhotoNonfacialViewController.swift
 //  MHCare
 //
 //  Created by 허진욱 on 2021/02/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoFacialViewController: UIViewController {
+class PhotoNonfacialViewController: UIViewController {
 
     let photoManager = PhotoManager()
     
@@ -18,10 +18,9 @@ class PhotoFacialViewController: UIViewController {
     }
     
 
-
 }
 
-extension PhotoFacialViewController: UICollectionViewDataSource {
+extension PhotoNonfacialViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoManager.photos.count
     }
@@ -47,9 +46,9 @@ extension PhotoFacialViewController: UICollectionViewDataSource {
     
 }
 
-extension PhotoFacialViewController: UICollectionViewDelegateFlowLayout {
+
+extension PhotoNonfacialViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 120, height: 160)
     }
 }
-

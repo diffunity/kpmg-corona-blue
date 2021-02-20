@@ -26,6 +26,11 @@
 		0E8E0C1A25CFAF560096413C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C1925CFAF560096413C /* Audio.swift */; };
 		0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C3225D11BDB0096413C /* RecordingManager.swift */; };
 		0E93E12825CEFA8700404409 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E93E12725CEFA8700404409 /* HistoryViewController.swift */; };
+		0EE278DC25E186F70012A16C /* DetailPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */; };
+		0EE278ED25E18A470012A16C /* PhotoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */; };
+		0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278F125E18AF70012A16C /* PhotoCell.swift */; };
+		0EE2790325E194D70012A16C /* VideoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790225E194D70012A16C /* VideoFacialViewController.swift */; };
+		0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */; };
 		0EF12D8C25E15DDE008CE09B /* PhotoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */; };
 		0EF12DB425E16E35008CE09B /* self_15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF12DAD25E16E35008CE09B /* self_15.jpg */; };
 		0EF12DB525E16E35008CE09B /* image_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF12DAE25E16E35008CE09B /* image_2.jpg */; };
@@ -83,6 +88,11 @@
 		0E8E0C1925CFAF560096413C /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		0E8E0C3225D11BDB0096413C /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		0E93E12725CEFA8700404409 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoViewController.swift; sourceTree = "<group>"; };
+		0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoNonfacialViewController.swift; sourceTree = "<group>"; };
+		0EE278F125E18AF70012A16C /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		0EE2790225E194D70012A16C /* VideoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFacialViewController.swift; sourceTree = "<group>"; };
+		0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNonfacialViewController.swift; sourceTree = "<group>"; };
 		0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFacialViewController.swift; sourceTree = "<group>"; };
 		0EF12DAD25E16E35008CE09B /* self_15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = self_15.jpg; sourceTree = "<group>"; };
 		0EF12DAE25E16E35008CE09B /* image_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image_2.jpg; sourceTree = "<group>"; };
@@ -163,6 +173,7 @@
 				0E28057B25CC5A1200CF8837 /* Assets.xcassets */,
 				0E28058025CC5A1200CF8837 /* Info.plist */,
 				0E8E0C2B25CFBDE30096413C /* Call */,
+				0EE278F125E18AF70012A16C /* PhotoCell.swift */,
 			);
 			path = MHCare;
 			sourceTree = "<group>";
@@ -216,6 +227,10 @@
 				0E3D21E325CEC48000AE8EA0 /* TextViewController.swift */,
 				0E93E12725CEFA8700404409 /* HistoryViewController.swift */,
 				0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */,
+				0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */,
+				0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */,
+				0EE2790225E194D70012A16C /* VideoFacialViewController.swift */,
+				0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -503,6 +518,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E8E0C1A25CFAF560096413C /* Audio.swift in Sources */,
+				0EE2790325E194D70012A16C /* VideoFacialViewController.swift in Sources */,
+				0EE278DC25E186F70012A16C /* DetailPhotoViewController.swift in Sources */,
 				0E8E0C0B25CF90B20096413C /* ProviderDelegate.swift in Sources */,
 				0E3D21DF25CEC46B00AE8EA0 /* VoiceViewController.swift in Sources */,
 				0E8E0C1525CF910B0096413C /* CallManager.swift in Sources */,
@@ -511,12 +528,15 @@
 				0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */,
 				0E28057525CC5A1000CF8837 /* SceneDelegate.swift in Sources */,
 				0E8054C925D8353900141FC4 /* Chart.swift in Sources */,
+				0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */,
 				0E3D21E925CEC48B00AE8EA0 /* PhotoViewController.swift in Sources */,
 				0E2805A925CC5A4A00CF8837 /* HomeViewController.swift in Sources */,
+				0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */,
 				0E8E0C1025CF90E40096413C /* Call.swift in Sources */,
 				0E3D21E425CEC48000AE8EA0 /* TextViewController.swift in Sources */,
 				0E93E12825CEFA8700404409 /* HistoryViewController.swift in Sources */,
 				0EF12D8C25E15DDE008CE09B /* PhotoFacialViewController.swift in Sources */,
+				0EE278ED25E18A470012A16C /* PhotoNonfacialViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -58,6 +58,15 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var videoBarChartView: BarChartView!
     
     
+    @IBOutlet weak var photoResultOuterView: UIView!
+    @IBOutlet weak var photoResultTabView: UIView!
+    
+    
+    
+    @IBOutlet weak var videoResultOuterView: UIView!
+    @IBOutlet weak var videoResultTabView: UIView!
+    
+    
     let lightColor = UIColor(displayP3Red: 198/255, green: 192/255, blue: 255/255, alpha: 1.0)
     let darkColor = UIColor(displayP3Red: 134/255, green: 114/255, blue: 244/255, alpha: 1.0)
 
@@ -98,6 +107,7 @@ class PhotoViewController: UIViewController {
         circleChart(Values: circlevalues)
         // Do any additional setup after loading the view.
         barChart(dataPoints: graphArray, barValues: bardata1)
+        setPhotoResultUI()
 
         // Pie Chart
     }
@@ -109,6 +119,7 @@ class PhotoViewController: UIViewController {
             setOverallTabUI()
             barChart(dataPoints: graphArray, barValues: bardata1)
             circleChart(Values: circlevalues)
+            setPhotoResultUI()
             
             videoButton.alpha = 0.3
             photoButton.alpha = 1.0
@@ -124,6 +135,7 @@ class PhotoViewController: UIViewController {
             setVideoOverallTabUI()
             videoBarChart(dataPoints: graphArray, barValues: bardata1)
             videoCircleChart(Values: circlevalues)
+            setVideoResultUI()
             
             
             photoButton.alpha = 0.3
@@ -461,4 +473,32 @@ class PhotoViewController: UIViewController {
         videoBarChartView.setExtraOffsets(left: 30.0, top: 0.0, right: 30.0, bottom: 15.0)
     }
 
+    
+    func setPhotoResultUI() {
+        photoResultOuterView.clipsToBounds = false
+        photoResultOuterView.layer.shadowColor = UIColor.black.cgColor
+        photoResultOuterView.layer.shadowOpacity = 0.1
+        photoResultOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        photoResultOuterView.layer.shadowRadius = 15
+        
+        photoResultTabView.clipsToBounds = true
+        photoResultTabView.layer.cornerRadius = 15
+        
+        photoResultOuterView.addSubview(photoResultTabView)
+    }
+    
+    
+    func setVideoResultUI() {
+        videoResultOuterView.clipsToBounds = false
+        videoResultOuterView.layer.shadowColor = UIColor.black.cgColor
+        videoResultOuterView.layer.shadowOpacity = 0.1
+        videoResultOuterView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        videoResultOuterView.layer.shadowRadius = 15
+        
+        videoResultTabView.clipsToBounds = true
+        videoResultTabView.layer.cornerRadius = 15
+        
+        videoResultOuterView.addSubview(videoResultTabView)
+    }
+    
 }
