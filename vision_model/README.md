@@ -54,4 +54,8 @@ result = {
 
 ## Pretrained Models
 
-* pretrained models to be manually scp-ed to server
+* Pretrained models can be downloaded by running the below bash file. This file is provided in [github](https://github.com/fabiocarrara/visual-sentiment-analysis)
+
+```shell
+bash download_models.sh
+```
