@@ -10,6 +10,7 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import face_recognition
+from PIL import ImageOps
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
@@ -78,7 +79,8 @@ class model:
 
         with torch.no_grad():
             for e, x in enumerate(tqdm(data)):
-                
+
+                x = ImageOps.exif_transpose(x) 
                 x_np = np.array(x)
                 image_enc = face_recognition.face_encodings(x_np)
 

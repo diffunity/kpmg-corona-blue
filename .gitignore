@@ -139,3 +139,4 @@ dmypy.json
 TestData
 *.pt
 *.pth
+*.mp4
