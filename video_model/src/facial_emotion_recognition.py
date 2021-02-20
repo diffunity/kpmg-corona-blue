@@ -89,12 +89,3 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
             ufile.close_file()
 
     return cumulated_fer
-
-
-if __name__=="__main__":
-    r = dict()
-    r["db_directory"] = "./"
-    r["video_path"] = "./test_ver2.mp4"
-    r["user_image"] = "./known_image.jpg"
-
-    facial_emotion_recognition_video(r["video_path"],r["user_image"])

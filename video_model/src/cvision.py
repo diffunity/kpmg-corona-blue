@@ -12,6 +12,8 @@ __version__ = "1.0"
 
 ## further modified by team YBIGTA for KPMG competition
 
+import face_recognition
+
 # External Libraries
 import numpy as np
 import torch
@@ -25,8 +27,6 @@ from fer_model.ml.fer import FER
 from fer_model.utils import uimage, udata
 from fer_model.ml.esr_9 import ESR
 from fer_model.ml.grad_cam import GradCAM
-
-import face_recognition
 
 # Haar cascade parameters
 _HAAR_SCALE_FACTOR = 1.2
