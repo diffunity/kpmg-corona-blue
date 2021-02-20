@@ -46,19 +46,17 @@ class model:
 
 
     def inference(self, message:json):
-        ###########
-        # jsonify model results (modeller)
-
         # temp directory
         os.makedirs('./chunk', exist_ok=True)
         os.makedirs("./raw", exist_ok=True)
         os.makedirs("./text", exist_ok=True)
 
         # mock data
-        message = dict()
-        message["audio_file"] = "sample.txt"
+#        message = dict()
+#        message["audio_file"] = "sample.txt"
 
-        f = open('sample.txt', 'rb')
+#        f = open('sample.txt', 'rb')
+        f = open(message["input"], 'rb')
         encoded_string = f.read()  # bytes
         f.close()
 
@@ -127,7 +125,6 @@ class model:
         shutil.rmtree("./text")
 
         return model_output
-        ###########
 
     def deploy(self):
 
