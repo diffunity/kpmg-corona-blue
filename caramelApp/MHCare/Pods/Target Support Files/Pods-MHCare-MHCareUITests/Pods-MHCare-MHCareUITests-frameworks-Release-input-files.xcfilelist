@@ -1,2 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-MHCare-MHCareUITests/Pods-MHCare-MHCareUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
+${BUILT_PRODUCTS_DIR}/ConcentricProgressRingView/ConcentricProgressRingView.framework
+${BUILT_PRODUCTS_DIR}/LionheartExtensions/LionheartExtensions.framework

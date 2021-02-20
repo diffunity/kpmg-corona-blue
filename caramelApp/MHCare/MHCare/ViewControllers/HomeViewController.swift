@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ConcentricProgressRingView
 
 class HomeViewController: UIViewController {
 
@@ -19,6 +20,22 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileBGView: UIVisualEffectView!
     
+    
+    @IBOutlet weak var overallCircleView: UIView!
+    @IBOutlet weak var detailCircleView: UIView!
+    
+    
+    let overallColor = UIColor(displayP3Red: 249/255, green: 114/255, blue: 40/255, alpha: 1.0)
+    let textLightColor = UIColor(displayP3Red: 255/255, green: 196/255, blue: 211/255, alpha: 1.0)
+    let textDarkColor = UIColor(displayP3Red: 235/255, green: 81/255, blue: 190/255, alpha: 1.0)
+    let voiceLightColor = UIColor(displayP3Red: 131/255, green: 182/255, blue: 255/255, alpha: 1.0)
+    let voiceDarkColor = UIColor(displayP3Red: 66/255, green: 56/255, blue: 242/255, alpha: 1.0)
+    let photoLightColor = UIColor(displayP3Red: 198/255, green: 192/255, blue: 255/255, alpha: 1.0)
+    let photoDarkColor = UIColor(displayP3Red: 134/255, green: 114/255, blue: 244/255, alpha: 1.0)
+    
+    let circlevalues = [0.8, 0.4, 0.6]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +45,8 @@ class HomeViewController: UIViewController {
         setTableView()
         setTitleImage()
         // Do any additional setup after loading the view.
+        circleChart(Values: circlevalues)
+        detailCircleChart(Values: circlevalues)
     }
     
     func setNavigationBar() {
@@ -77,6 +96,49 @@ class HomeViewController: UIViewController {
         outerView.addSubview(containerView)
     }
 
+    func circleChart(Values: [Double]){
+        let fgColor1 = overallColor
+        let bgColor1 = UIColor.systemGray5
+//        let fgColor2 = photoDarkColor
+//        let fgColor3 = textDarkColor
+        let rings = [
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 10),
+//            ProgressRing(color: fgColor2, backgroundColor: bgColor1, width: 10),
+//            ProgressRing(color: fgColor3, backgroundColor: bgColor1, width: 10),
+        ]
+        let margin: CGFloat = 2
+        let radius: CGFloat = 60
+        let progressRingView = ConcentricProgressRingView(center: CGPoint(x: overallCircleView.bounds.midX, y: overallCircleView.bounds.midY), radius: radius, margin: margin, rings: rings)
+        progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
+//        progressRingView.arcs[1].setProgress(CGFloat(Values[1]), duration: 2)
+//        progressRingView.arcs[2].setProgress(CGFloat(Values[2]), duration: 2)
+
+        overallCircleView.addSubview(progressRingView)
+        
+    }
+    
+    func detailCircleChart(Values: [Double]){
+        let fgColor1 = voiceDarkColor
+        let bgColor1 = UIColor.systemGray5
+        let fgColor2 = photoDarkColor
+        let fgColor3 = textDarkColor
+        let rings = [
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 10),
+            ProgressRing(color: fgColor2, backgroundColor: bgColor1, width: 10),
+            ProgressRing(color: fgColor3, backgroundColor: bgColor1, width: 10),
+        ]
+        let margin: CGFloat = 2
+        let radius: CGFloat = 60
+        let progressRingView = ConcentricProgressRingView(center: CGPoint(x: detailCircleView.bounds.midX, y: detailCircleView.bounds.midY), radius: radius, margin: margin, rings: rings)
+        progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
+        progressRingView.arcs[1].setProgress(CGFloat(Values[1]), duration: 2)
+        progressRingView.arcs[2].setProgress(CGFloat(Values[2]), duration: 2)
+
+        detailCircleView.addSubview(progressRingView)
+        
+    }
+    
+    
     
 
     @IBAction func callButtonToggled(_ sender: Any) {

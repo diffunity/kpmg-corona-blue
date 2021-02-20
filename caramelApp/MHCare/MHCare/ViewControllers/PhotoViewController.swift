@@ -7,6 +7,7 @@
 
 import UIKit
 import Charts
+import ConcentricProgressRingView
 
 class PhotoViewController: UIViewController {
 
@@ -27,10 +28,17 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var pieChartTabView: UIView!
     @IBOutlet weak var pieChartView: PieChartView!
     
+    
+    
+    @IBOutlet weak var circleChartView: UIView!
+    
+    
     @IBOutlet weak var combinedTabOuterView: UIView!
     @IBOutlet weak var combinedTabView: UIView!
-    @IBOutlet weak var combinedChartView: CombinedChartView!
     
+    
+    @IBOutlet weak var barChartView: BarChartView!
+        
     
     @IBOutlet weak var videoOverallOuterView: UIView!
     @IBOutlet weak var videoOverallView: UIView!
@@ -40,9 +48,15 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var videoPieChartTabView: UIView!
     @IBOutlet weak var videoPieChartView: PieChartView!
     
+    
+    @IBOutlet weak var videoCircleChartView: UIView!
+    
+    
     @IBOutlet weak var videoCombinedTabOuterView: UIView!
     @IBOutlet weak var videoCombinedTabView: UIView!
-    @IBOutlet weak var videoCombinedChartView: CombinedChartView!
+    
+    @IBOutlet weak var videoBarChartView: BarChartView!
+    
     
     let lightColor = UIColor(displayP3Red: 198/255, green: 192/255, blue: 255/255, alpha: 1.0)
     let darkColor = UIColor(displayP3Red: 134/255, green: 114/255, blue: 244/255, alpha: 1.0)
@@ -67,8 +81,8 @@ class PhotoViewController: UIViewController {
     let wordList = ["tired", "lonely", "lost", "regret", "happy"]
     let wordcount = [20.0, 15.0, 10.0, 5.0, 5.0]
     
-    
-    
+    let circlevalues = [0.7]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,11 +95,11 @@ class PhotoViewController: UIViewController {
         
         
         setOverallTabUI()
-
+        circleChart(Values: circlevalues)
         // Do any additional setup after loading the view.
-        combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
+        barChart(dataPoints: graphArray, barValues: bardata1)
+
         // Pie Chart
-        pieChart(dataPoints: emotions, values: unitsSold)
     }
     
     
@@ -93,9 +107,8 @@ class PhotoViewController: UIViewController {
         if photoScrollView.isHidden {
             
             setOverallTabUI()
-            pieChart(dataPoints: emotions, values: unitsSold)
-            combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
-            
+            barChart(dataPoints: graphArray, barValues: bardata1)
+            circleChart(Values: circlevalues)
             
             videoButton.alpha = 0.3
             photoButton.alpha = 1.0
@@ -109,8 +122,8 @@ class PhotoViewController: UIViewController {
         if videoScrollView.isHidden {
             
             setVideoOverallTabUI()
-            videoPieChart(dataPoints: emotions, values: unitsSold)
-            videoCombinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
+            videoBarChart(dataPoints: graphArray, barValues: bardata1)
+            videoCircleChart(Values: circlevalues)
             
             
             photoButton.alpha = 0.3
@@ -165,155 +178,124 @@ class PhotoViewController: UIViewController {
         combinedTabOuterView.addSubview(combinedTabView)
     }
     
-    func pieChart(dataPoints: [String], values: [Double]) {
-        pieChartView.noDataText = "You need to provide data for the chart."
-        
-        setPieChartUI()
-        var dataEntries: [ChartDataEntry] = []
-        for i in 0..<dataPoints.count {
-            let dataEntry1 = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i])
-            dataEntries.append(dataEntry1)
-        }
-      
-        let pieChartDataSet = PieChartDataSet(entries: dataEntries)
-        let pieChartData = PieChartData(dataSet: pieChartDataSet)
-        
-        pieChartView.data = pieChartData
-        pieChartView.centerText = ""
     
-        // 랜덤 컬러 지정
-        let colors: [UIColor] = [lightColor, darkColor]
+    
+    func circleChart(Values: [Double]){
+        setPieChartUI()
+        let fgColor1 = darkColor
+        let bgColor1 = UIColor.systemGray5
+        let rings = [
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15),
+            //ProgressRing(color: fgColor2, backgroundColor: bgColor2, width: 20),
+            //ProgressRing(color: fgColor3, backgroundColor: bgColor2, width: 20),
+        ]
+        let margin: CGFloat = 2
+        let radius: CGFloat = 70
+        let progressRingView = ConcentricProgressRingView(center: circleChartView.center, radius: radius, margin: margin, rings: rings)
+        progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
+        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
+        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
+        circleChartView.addSubview(progressRingView)
         
-        // 숫자 퍼센트 formatter
+//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
+//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
+//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
+    }
+    
+    func barChart(dataPoints: [String], barValues: [Double]) {
+        setCombinedChartUI()
+        barChartView.noDataText = "You need to provide data for the chart."
+        // bar, line 엔트리 생성
+        var barDataEntries: [BarChartDataEntry] = []
+
+        // bar, line 엔트리 삽입
+        for i in 0..<dataPoints.count {
+            let barDataEntry = BarChartDataEntry(x: Double(i), y: barValues[i])
+            barDataEntries.append(barDataEntry)
+
+        }
+
+        // 데이터셋 생성
+        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
+   
+        
+        // bar 데이터 지정
+        let data = BarChartData(dataSet: barChartDataSet)
+        
+        // combined 데이터 지정
+        barChartView.data = data
+//        let font2 =  UIFont.init(name: "Open Sans", size: 10.0)!
+//        barChartView.data!.setValueFont(font2)
+        barChartView.data!.setValueTextColor(UIColor.systemGray2)
         let pFormatter = NumberFormatter()
         pFormatter.numberStyle = .percent
         pFormatter.maximumFractionDigits = 1
         pFormatter.multiplier = 1
         pFormatter.percentSymbol = " %"
-        pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+        
+        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
 
-        // value 값 폰트 지정
-        pieChartData.setValueFont(.systemFont(ofSize: 11, weight: .light))
-        pieChartData.setValueTextColor(.black)
-        
-        // chart 컬러 설정
-        pieChartDataSet.colors = colors
-        
-        // 애니메이션 효과
-        pieChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-        pieChartView.legend.enabled = false
-
-    }
-    
-    
-    func combinedChart(dataPoints: [String], barValues: [Double],barValues2: [Double], lineValues: [Double]) {
-        setCombinedChartUI()
-        combinedChartView.noDataText = "You need to provide data for the chart."
-        // bar, line 엔트리 생성
-        var barDataEntries: [BarChartDataEntry] = []
-        var lineDataEntries: [ChartDataEntry] = []
-        
-        // bar, line 엔트리 삽입
-        for i in 0..<dataPoints.count {
-            let barDataEntry = BarChartDataEntry(x: Double(i), yValues: [barValues[i], barValues2[i]])
-            let lineDataEntry = ChartDataEntry(x: Double(i), y: lineValues[i])
-            barDataEntries.append(barDataEntry)
-            lineDataEntries.append(lineDataEntry)
-        }
-
-        // 데이터셋 생성
-        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
-        let lineChartDataSet = LineChartDataSet(entries: lineDataEntries, label: "일일 우울")
- 
-        
-        
-        // 데이터 생성
-        let data: CombinedChartData = CombinedChartData()
-        
-        // bar 데이터 지정
-        data.barData = BarChartData(dataSet: barChartDataSet)
-        // line 데이터 지정
-        data.lineData = LineChartData(dataSet: lineChartDataSet)
-        
-        // combined 데이터 지정
-        combinedChartView.data = data
-        
         
         // 여기서부터는 그래프 예쁘게 수정하는 내용
         // 전체
         // X축 데이터 설정
-        combinedChartView.xAxis.axisMaximum = data.xMax + 0.25
-        combinedChartView.xAxis.axisMinimum = data.xMin - 0.25
-        
+        barChartView.xAxis.axisMaximum = data.xMax + 0.25
+        barChartView.xAxis.axisMinimum = data.xMin - 0.25
+        barChartView.xAxis.drawAxisLineEnabled = false
+
         // X축 레이블 포맷 ( index -> 실제데이터 )
-        combinedChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
-        
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
+//        let font =  UIFont.init(name: "Open Sans", size: 13.0)!
+//        barChartView.xAxis.labelFont = font
+
         // 배경 그리드 라인 그릴지 여부
-        combinedChartView.xAxis.drawGridLinesEnabled = false
-        combinedChartView.leftAxis.drawGridLinesEnabled = false
-        combinedChartView.backgroundColor = .white
-        // 리미트 라인 생성 (평균 라인)
-        //combinedChartView.leftAxis.addLimitLine(ChartLimitLine(limit: 10, label: "평균"))
-        
+        barChartView.xAxis.drawGridLinesEnabled = false
+   
+        barChartView.leftAxis.drawGridLinesEnabled = false
+        barChartView.backgroundColor = .white
+        barChartView.drawBarShadowEnabled = false
+
         // 우측 레이블 제거
-        combinedChartView.rightAxis.enabled = false
+        barChartView.rightAxis.enabled = false
+        barChartView.leftAxis.enabled = false
+        
         
         // X축 레이블 위치 조정
-        combinedChartView.xAxis.labelPosition = .bottom
-        combinedChartView.leftAxis.axisMinimum = 0
-        combinedChartView.rightAxis.axisMinimum = 0
+        barChartView.xAxis.labelPosition = .bottom
+        barChartView.xAxis.labelTextColor = UIColor.systemGray
+        barChartView.leftAxis.axisMinimum = 0
+        barChartView.rightAxis.axisMinimum = 0
+        
         
         // legend
-        let l = combinedChartView.legend
-        l.wordWrapEnabled = true
-        l.horizontalAlignment = .center
-        l.verticalAlignment = .bottom
-        l.orientation = .horizontal
-        l.drawInside = false
+        barChartView.legend.enabled = false
 
-
-        
-        // line chart
-        // 라인 굵기
-        lineChartDataSet.lineWidth = 4.5
-        
-        // 라인 및 라인 원 색깔 변경
-        lineChartDataSet.colors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-        lineChartDataSet.circleColors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-        
-        // 원 구멍 반경
-        lineChartDataSet.circleHoleRadius = 5.0
-
-        // 원 반경 (꽉채우려면 홀 반경이랑 똑같게)
-        lineChartDataSet.circleRadius = 5.0
-        lineChartDataSet.mode = .cubicBezier
-        // 라인 차트에 대한 value값 보이게 할 건지
-        lineChartDataSet.drawValuesEnabled = false
-        
         
         // bar chart
         // 바 컬러, 바 두께
-        barChartDataSet.colors = [UIColor(red: 60/255, green: 220/255, blue: 78/255, alpha: 1),  UIColor.systemGray5]
 
-        let barWidth = 0.3
-        data.barData.barWidth = barWidth
-        
+        let G = UIColor(red: 0.4471, green: 1, blue: 0.8157, alpha: 1.0)
+        barChartDataSet.colors = [lightColor, lightColor, lightColor, lightColor, lightColor, lightColor,darkColor ]
 
-        
-        // 차트 선택 되게 할지 여부
-        lineChartDataSet.highlightEnabled = false
-        barChartDataSet.highlightEnabled = true
+        let barWidth = 0.5
+        data.barWidth = barWidth
+        barChartDataSet.barShadowColor = UIColor.systemGray6
+        barChartDataSet.highlightEnabled = false
         barChartDataSet.axisDependency = .left
         // 줌 안되게
         
-        combinedChartView.doubleTapToZoomEnabled = false
+        barChartView.doubleTapToZoomEnabled = false
 
         // 애니메이션 효과
         // 기본 애니메이션
-        combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         
         // 옵션 애니메이션
-        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInBounce)
+        barChartView.animate(yAxisDuration: 2.0, easingOption: .easeInBounce)
+        barChartView.drawMarkers = true
+        barChartView.marker = ChartMarker()
+        barChartView.setExtraOffsets(left: 30.0, top: 0.0, right: 30.0, bottom: 15.0)
     }
 
     
@@ -358,155 +340,125 @@ class PhotoViewController: UIViewController {
         videoCombinedTabOuterView.addSubview(videoCombinedTabView)
     }
     
+
     
-    func videoPieChart(dataPoints: [String], values: [Double]) {
-        videoPieChartView.noDataText = "You need to provide data for the chart."
-        
+    
+    func videoCircleChart(Values: [Double]){
         setVideoPieChartUI()
-        var dataEntries: [ChartDataEntry] = []
-        for i in 0..<dataPoints.count {
-            let dataEntry1 = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i])
-            dataEntries.append(dataEntry1)
-        }
-      
-        let pieChartDataSet = PieChartDataSet(entries: dataEntries)
-        let pieChartData = PieChartData(dataSet: pieChartDataSet)
+        let fgColor1 = darkColor
+        let bgColor1 = UIColor.systemGray5
+        let rings = [
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15),
+            //ProgressRing(color: fgColor2, backgroundColor: bgColor2, width: 20),
+            //ProgressRing(color: fgColor3, backgroundColor: bgColor2, width: 20),
+        ]
+        let margin: CGFloat = 2
+        let radius: CGFloat = 70
+        let progressRingView = ConcentricProgressRingView(center: videoCircleChartView.center, radius: radius, margin: margin, rings: rings)
+        progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
+        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
+        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
+        videoCircleChartView.addSubview(progressRingView)
         
-        videoPieChartView.data = pieChartData
-        videoPieChartView.centerText = ""
+//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
+//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
+//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
+    }
     
-        // 랜덤 컬러 지정
-        let colors: [UIColor] = [lightColor, darkColor]
+    func videoBarChart(dataPoints: [String], barValues: [Double]) {
+        setVideoCombinedChartUI()
+        videoBarChartView.noDataText = "You need to provide data for the chart."
+        // bar, line 엔트리 생성
+        var barDataEntries: [BarChartDataEntry] = []
+
+        // bar, line 엔트리 삽입
+        for i in 0..<dataPoints.count {
+            let barDataEntry = BarChartDataEntry(x: Double(i), y: barValues[i])
+            barDataEntries.append(barDataEntry)
+
+        }
+
+        // 데이터셋 생성
+        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
+   
         
-        // 숫자 퍼센트 formatter
+        // bar 데이터 지정
+        let data = BarChartData(dataSet: barChartDataSet)
+        
+        // combined 데이터 지정
+        videoBarChartView.data = data
+//        let font2 =  UIFont.init(name: "Open Sans", size: 10.0)!
+//        barChartView.data!.setValueFont(font2)
+        videoBarChartView.data!.setValueTextColor(UIColor.systemGray2)
         let pFormatter = NumberFormatter()
         pFormatter.numberStyle = .percent
         pFormatter.maximumFractionDigits = 1
         pFormatter.multiplier = 1
         pFormatter.percentSymbol = " %"
-        pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+        
+        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
 
-        // value 값 폰트 지정
-        pieChartData.setValueFont(.systemFont(ofSize: 11, weight: .light))
-        pieChartData.setValueTextColor(.black)
-        
-        // chart 컬러 설정
-        pieChartDataSet.colors = colors
-        
-        // 애니메이션 효과
-        videoPieChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-        videoPieChartView.legend.enabled = false
-
-    }
-    
-    
-    func videoCombinedChart(dataPoints: [String], barValues: [Double],barValues2: [Double], lineValues: [Double]) {
-        setVideoCombinedChartUI()
-        videoCombinedChartView.noDataText = "You need to provide data for the chart."
-        // bar, line 엔트리 생성
-        var barDataEntries: [BarChartDataEntry] = []
-        var lineDataEntries: [ChartDataEntry] = []
-        
-        // bar, line 엔트리 삽입
-        for i in 0..<dataPoints.count {
-            let barDataEntry = BarChartDataEntry(x: Double(i), yValues: [barValues[i], barValues2[i]])
-            let lineDataEntry = ChartDataEntry(x: Double(i), y: lineValues[i])
-            barDataEntries.append(barDataEntry)
-            lineDataEntries.append(lineDataEntry)
-        }
-
-        // 데이터셋 생성
-        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
-        let lineChartDataSet = LineChartDataSet(entries: lineDataEntries, label: "일일 우울")
- 
-        
-        
-        // 데이터 생성
-        let data: CombinedChartData = CombinedChartData()
-        
-        // bar 데이터 지정
-        data.barData = BarChartData(dataSet: barChartDataSet)
-        // line 데이터 지정
-        data.lineData = LineChartData(dataSet: lineChartDataSet)
-        
-        // combined 데이터 지정
-        videoCombinedChartView.data = data
-        
         
         // 여기서부터는 그래프 예쁘게 수정하는 내용
         // 전체
         // X축 데이터 설정
-        videoCombinedChartView.xAxis.axisMaximum = data.xMax + 0.25
-        videoCombinedChartView.xAxis.axisMinimum = data.xMin - 0.25
-        
+        videoBarChartView.xAxis.axisMaximum = data.xMax + 0.25
+        videoBarChartView.xAxis.axisMinimum = data.xMin - 0.25
+        videoBarChartView.xAxis.drawAxisLineEnabled = false
+
         // X축 레이블 포맷 ( index -> 실제데이터 )
-        videoCombinedChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
-        
+        videoBarChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
+//        let font =  UIFont.init(name: "Open Sans", size: 13.0)!
+//        barChartView.xAxis.labelFont = font
+
         // 배경 그리드 라인 그릴지 여부
-        videoCombinedChartView.xAxis.drawGridLinesEnabled = false
-        videoCombinedChartView.leftAxis.drawGridLinesEnabled = false
-        videoCombinedChartView.backgroundColor = .white
-        // 리미트 라인 생성 (평균 라인)
-        //videoCombinedChartView.leftAxis.addLimitLine(ChartLimitLine(limit: 10, label: "평균"))
-        
+        videoBarChartView.xAxis.drawGridLinesEnabled = false
+   
+        videoBarChartView.leftAxis.drawGridLinesEnabled = false
+        videoBarChartView.backgroundColor = .white
+        videoBarChartView.drawBarShadowEnabled = false
+
         // 우측 레이블 제거
-        videoCombinedChartView.rightAxis.enabled = false
+        videoBarChartView.rightAxis.enabled = false
+        videoBarChartView.leftAxis.enabled = false
+        
         
         // X축 레이블 위치 조정
-        videoCombinedChartView.xAxis.labelPosition = .bottom
-        videoCombinedChartView.leftAxis.axisMinimum = 0
-        videoCombinedChartView.rightAxis.axisMinimum = 0
+        videoBarChartView.xAxis.labelPosition = .bottom
+        videoBarChartView.xAxis.labelTextColor = UIColor.systemGray
+        videoBarChartView.leftAxis.axisMinimum = 0
+        videoBarChartView.rightAxis.axisMinimum = 0
+        
         
         // legend
-        let l = videoCombinedChartView.legend
-        l.wordWrapEnabled = true
-        l.horizontalAlignment = .center
-        l.verticalAlignment = .bottom
-        l.orientation = .horizontal
-        l.drawInside = false
+        videoBarChartView.legend.enabled = false
 
-
-        
-        // line chart
-        // 라인 굵기
-        lineChartDataSet.lineWidth = 4.5
-        
-        // 라인 및 라인 원 색깔 변경
-        lineChartDataSet.colors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-        lineChartDataSet.circleColors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-        
-        // 원 구멍 반경
-        lineChartDataSet.circleHoleRadius = 5.0
-
-        // 원 반경 (꽉채우려면 홀 반경이랑 똑같게)
-        lineChartDataSet.circleRadius = 5.0
-        lineChartDataSet.mode = .cubicBezier
-        // 라인 차트에 대한 value값 보이게 할 건지
-        lineChartDataSet.drawValuesEnabled = false
-        
         
         // bar chart
         // 바 컬러, 바 두께
-        barChartDataSet.colors = [UIColor(red: 60/255, green: 220/255, blue: 78/255, alpha: 1),  UIColor.systemGray5]
 
-        let barWidth = 0.3
-        data.barData.barWidth = barWidth
-        
+        let G = UIColor(red: 0.4471, green: 1, blue: 0.8157, alpha: 1.0)
+        barChartDataSet.colors = [lightColor, lightColor, lightColor, lightColor, lightColor, lightColor,darkColor ]
 
-        
-        // 차트 선택 되게 할지 여부
-        lineChartDataSet.highlightEnabled = false
-        barChartDataSet.highlightEnabled = true
+        let barWidth = 0.5
+        data.barWidth = barWidth
+        barChartDataSet.barShadowColor = UIColor.systemGray6
+        barChartDataSet.highlightEnabled = false
         barChartDataSet.axisDependency = .left
         // 줌 안되게
         
-        videoCombinedChartView.doubleTapToZoomEnabled = false
+        videoBarChartView.doubleTapToZoomEnabled = false
 
         // 애니메이션 효과
         // 기본 애니메이션
-        videoCombinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         
         // 옵션 애니메이션
-        //videoCombinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInBounce)
+        videoBarChartView.animate(yAxisDuration: 2.0, easingOption: .easeInBounce)
+        videoBarChartView.drawMarkers = true
+        videoBarChartView.marker = ChartMarker()
+        videoBarChartView.setExtraOffsets(left: 30.0, top: 0.0, right: 30.0, bottom: 15.0)
     }
+
 }

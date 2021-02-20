@@ -43,7 +43,7 @@ func startAudio() {
 func stopAudio() {
     print("Stopping audio")
     finishRecording(success: true)
-    saveConvertedAudio()
+//    saveConvertedAudio()
 }
 
 
@@ -107,4 +107,11 @@ func saveConvertedAudio() {
     let encodedString = audioData.base64EncodedString()
     RecordingManager.shared.addRecording(string: encodedString)
     print(RecordingManager.shared.count())
+}
+
+func sendAudio() {
+    let url = getDocumentsDirectory().appendingPathComponent("recording.m4a")
+    let audioData = try! Data(contentsOf: url)
+    let encodedString = audioData.base64EncodedString()
+    
 }
