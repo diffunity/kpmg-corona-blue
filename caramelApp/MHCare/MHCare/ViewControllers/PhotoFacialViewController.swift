@@ -27,6 +27,13 @@ extension PhotoFacialViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as? PhotoCell else {
+            return UICollectionViewCell()
+        }
+        
+        let photo = photoManager.photos[indexPath.item]
+        cell.updateUI(photo: photo)
+        return cell
         
     }
     
@@ -34,18 +41,18 @@ extension PhotoFacialViewController: UICollectionViewDataSource {
 }
 
 extension PhotoFacialViewController: UICollectionViewDelegateFlowLayout {
-
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 120, height: 160)
+    }
 }
 
-
-class photoCell: UICollectionViewCell {
+class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var photoImage: UIImageView!
     
     func updateUI(photo: UIImage) {
         photoImage.image = photo
     }
 }
-
 
 
 class PhotoManager {
