@@ -31,6 +31,7 @@
 		0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278F125E18AF70012A16C /* PhotoCell.swift */; };
 		0EE2790325E194D70012A16C /* VideoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790225E194D70012A16C /* VideoFacialViewController.swift */; };
 		0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */; };
+		0EEC48CA25E1A8A2008776A8 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEC48C925E1A8A2008776A8 /* Networking.swift */; };
 		0EF12D8C25E15DDE008CE09B /* PhotoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */; };
 		0EF12DB425E16E35008CE09B /* self_15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF12DAD25E16E35008CE09B /* self_15.jpg */; };
 		0EF12DB525E16E35008CE09B /* image_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF12DAE25E16E35008CE09B /* image_2.jpg */; };
@@ -93,6 +94,7 @@
 		0EE278F125E18AF70012A16C /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		0EE2790225E194D70012A16C /* VideoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFacialViewController.swift; sourceTree = "<group>"; };
 		0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNonfacialViewController.swift; sourceTree = "<group>"; };
+		0EEC48C925E1A8A2008776A8 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFacialViewController.swift; sourceTree = "<group>"; };
 		0EF12DAD25E16E35008CE09B /* self_15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = self_15.jpg; sourceTree = "<group>"; };
 		0EF12DAE25E16E35008CE09B /* image_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image_2.jpg; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				0E28058025CC5A1200CF8837 /* Info.plist */,
 				0E8E0C2B25CFBDE30096413C /* Call */,
 				0EE278F125E18AF70012A16C /* PhotoCell.swift */,
+				0EEC48C925E1A8A2008776A8 /* Networking.swift */,
 			);
 			path = MHCare;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				0E8E0C0B25CF90B20096413C /* ProviderDelegate.swift in Sources */,
 				0E3D21DF25CEC46B00AE8EA0 /* VoiceViewController.swift in Sources */,
 				0E8E0C1525CF910B0096413C /* CallManager.swift in Sources */,
+				0EEC48CA25E1A8A2008776A8 /* Networking.swift in Sources */,
 				0E2805C225CC653300CF8837 /* HomeTableViewController.swift in Sources */,
 				0E28057325CC5A1000CF8837 /* AppDelegate.swift in Sources */,
 				0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */,

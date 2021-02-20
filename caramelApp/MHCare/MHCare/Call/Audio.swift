@@ -7,6 +7,8 @@
 
 import AVFoundation
 
+let apiUrl = "http://ec2co-ecsel-f2k8u3ar7ixb-1602496836.ap-northeast-2.elb.amazonaws.com:8000/emotion-check/call"
+
 var audioRecorder: AVAudioRecorder!
 var recordingSession: AVAudioSession!
 
@@ -44,6 +46,10 @@ func stopAudio() {
     print("Stopping audio")
     finishRecording(success: true)
 //    saveConvertedAudio()
+    let postResult = sendAudio(url: apiUrl)
+    let str = String(decoding: postResult, as: UTF8.self)
+    print(str)
+
 }
 
 
@@ -109,9 +115,44 @@ func saveConvertedAudio() {
     print(RecordingManager.shared.count())
 }
 
-func sendAudio() {
+func sendAudio(url: String) -> Data {
+    var resultData = Data()
+    let postData = buildPostData()
+    
+    var request = URLRequest(url: URL(string: url)!)
+//    request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.httpMethod = "POST"
+    request.httpBody = postData
+    
+    let semaphore = DispatchSemaphore(value: 0)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let data = data {
+            resultData = data
+        }
+        semaphore.signal()
+    }
+    task.resume()
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    
+    return resultData
+
+}
+
+func buildPostData() -> Data {
     let url = getDocumentsDirectory().appendingPathComponent("recording.m4a")
     let audioData = try! Data(contentsOf: url)
     let encodedString = audioData.base64EncodedString()
     
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let current_date_string = formatter.string(from: Date())
+    
+    let auidoObj = AudioObj(type: "call", create_date_time: current_date_string, content: encodedString)
+    let requestObj = RequestObj(project_type: "app", data: auidoObj)
+    let encoder = JSONEncoder()
+    let jsonData = try! encoder.encode(requestObj)
+    
+    
+    print("---> Request: \(String(data: jsonData, encoding: .utf8)!)")
+    return jsonData
 }
