@@ -83,7 +83,7 @@ class Connector:
 
     def update_status_query(self, table, request_id, status):
         query = f"""
-        UPDATE {table} SET status = {status} 
+        UPDATE {table} SET status = '{status}' 
         WHERE id = {request_id}
         """
         return query
