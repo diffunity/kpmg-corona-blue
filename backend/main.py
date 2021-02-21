@@ -125,7 +125,7 @@ def get_status(request_body: StatusCheckRequest):
     return StatusCheckResponse(status=status)
 
 
-@app.get("/emotion-result/text", response_model=ResultResponse)
+@app.post("/emotion-result/text", response_model=ResultResponse)
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_text_result(project_id)
@@ -133,7 +133,7 @@ def get_result(request_body: StatusCheckRequest):
     return json.loads(result)
 
 
-@app.get("/emotion-result/photo", response_model=ResultResponse)
+@app.post("/emotion-result/photo", response_model=ResultResponse)
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_photo_result(project_id)
@@ -141,7 +141,7 @@ def get_result(request_body: StatusCheckRequest):
     return json.loads(result)
 
 
-@app.get("/emotion-result/call", response_model=ResultResponse)
+@app.post("/emotion-result/call", response_model=ResultResponse)
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_call_result(project_id)
