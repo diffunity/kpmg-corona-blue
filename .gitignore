@@ -4,3 +4,14 @@
 .idea/inspectionProfiles/
 
 .idea/
+
+
+TestData/
+image_list.txt
+known_image.jpg
+test_ver2.mp4
+video_call.mp4
+video_model/
+vision_model/
+
+
