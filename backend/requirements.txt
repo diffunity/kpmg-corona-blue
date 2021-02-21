@@ -7,3 +7,10 @@ psycopg2-binary==2.8.6
 pytz
 requests
 pyyaml
+wordcloud
+icon-font-to-png
+palettable
+fire
+matplotlib
+stylecloud
+Pillow
