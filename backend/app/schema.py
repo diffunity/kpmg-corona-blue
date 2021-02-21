@@ -20,6 +20,11 @@ class JobRequestBody(BaseModel):
     data: InputData
 
 
+class STTRequestBody(BaseModel):
+    project_id: int
+    data: InputData
+
+
 class JobRequestResponse(BaseModel):
     project_id: int
 

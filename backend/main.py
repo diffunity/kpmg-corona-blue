@@ -96,6 +96,29 @@ def emotion_check_audio(
     return JobRequestResponse(project_id=project_id)
 
 
+@app.post("/emotion-check/stt-text", response_model=JobRequestResponse)
+def emotion_check_text(
+        request_body: STTRequestBody
+):
+    logger.info(f"STT Request info: {request_body} ")
+    registered_time = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    try:
+        request_id = analysis.make_job(request_body.project_id,
+                                       "call",
+                                       registered_time,
+                                       request_body.data)
+
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Making STT analysis request FAILED: {request_body}",
+        )
+
+    return JobRequestResponse(project_id=request_id)
+
+
 @app.get("/emotion-check/status", response_model=StatusCheckResponse)
 def get_status(request_body: StatusCheckRequest):
     status = analysis.get_project_status(request_body.project_id)
@@ -118,7 +141,7 @@ def get_result(request_body: StatusCheckRequest):
     return json.loads(result)
 
 
-@app.get("/emotion-result/text", response_model=ResultResponse)
+@app.get("/emotion-result/call", response_model=ResultResponse)
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_call_result(project_id)
