@@ -5,6 +5,7 @@ import sys
 import json
 import yaml
 import logging
+import requests
 
 import torch
 import numpy as np
@@ -76,6 +77,10 @@ class model:
 
         # retrieve image data to be analyzed
         data = ImageListDataset(message["file_list"], root=message["db_directory"], transform=self.transform)
+        
+        # for individual files from url
+        # im = Image.open(requests.get(url, stream=True).raw)
+        # get rid of enumerate(tqdm(data)) for individual url
 
         with torch.no_grad():
             for e, x in enumerate(tqdm(data)):
