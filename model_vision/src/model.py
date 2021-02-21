@@ -163,6 +163,7 @@ class model:
                     else:
                         face = "false"
                         model_result = vision_result["contents"]
+
                     value_list = [project_id, job_id, result_time, create_date_time, "photo", face, model_result]
                     values = conn.values_query_formatter(value_list)
                     query = conn.insert_query("result_photo", self.columns["result_photo"], values)
@@ -177,8 +178,10 @@ class model:
                     continue
 
                 except UnidentifiedImageError:
-                    logger.error(f"Invalid images!!! job_id: {job_id}")
+                    logger.error(f"Invalid images!!! job_id: {response}")
                     conn.execute_query(conn.update_status_query("project", project_id, "FAILED"))
+                except Exception as e:
+                    logger.error(e)
 
                 sqs.delete_message(CONFIG["SQS"]["request"]["photo"], response["ReceiptHandle"])
                 logger.info(f"Sqs message for request_id {project_id} is deleted.")
