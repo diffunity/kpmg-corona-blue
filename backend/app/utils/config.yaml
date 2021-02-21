@@ -16,6 +16,6 @@ Columns:
   job_call: ["project_id", "request_time", "create_date_time", "type", "status", "data"]
   job_text: ["project_id", "request_time", "create_date_time", "type", "status", "content"]
   job_photo: ["project_id", "request_time", "create_date_time", "type", "status", "img_url"]
-  result_call : ["project_id", "job_id", "result_time", "create_date_time", "type", "face", "model_result"]
+  result_photo : ["project_id", "job_id", "result_time", "create_date_time", "type", "face", "model_result"]
   result_text: ["project_id", "job_id", "result_time", "create_date_time", "type", "model_result", "word_count", "sentence_count"]
-  result_photo: ["project_id", "job_id", "result_time", "create_date_time", "type", "tone", "model_result"]
+  result_call: ["project_id", "job_id", "result_time", "create_date_time", "type", "model_result"]
