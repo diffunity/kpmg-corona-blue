@@ -31,7 +31,6 @@
 		0EE278ED25E18A470012A16C /* PhotoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */; };
 		0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278F125E18AF70012A16C /* PhotoCell.swift */; };
 		0EE2790325E194D70012A16C /* VideoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790225E194D70012A16C /* VideoFacialViewController.swift */; };
-		0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */; };
 		0EEC48CA25E1A8A2008776A8 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEC48C925E1A8A2008776A8 /* Networking.swift */; };
 		0EF12D8C25E15DDE008CE09B /* PhotoFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */; };
 		0EF12DB425E16E35008CE09B /* self_15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF12DAD25E16E35008CE09B /* self_15.jpg */; };
@@ -95,7 +94,6 @@
 		0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoNonfacialViewController.swift; sourceTree = "<group>"; };
 		0EE278F125E18AF70012A16C /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		0EE2790225E194D70012A16C /* VideoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFacialViewController.swift; sourceTree = "<group>"; };
-		0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNonfacialViewController.swift; sourceTree = "<group>"; };
 		0EEC48C925E1A8A2008776A8 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFacialViewController.swift; sourceTree = "<group>"; };
 		0EF12DAD25E16E35008CE09B /* self_15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = self_15.jpg; sourceTree = "<group>"; };
@@ -234,7 +232,6 @@
 				0E93E12725CEFA8700404409 /* HistoryViewController.swift */,
 				0EF12D8B25E15DDE008CE09B /* PhotoFacialViewController.swift */,
 				0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */,
-				0EE2790725E1989C0012A16C /* VideoNonfacialViewController.swift */,
 				0EE2790225E194D70012A16C /* VideoFacialViewController.swift */,
 				0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */,
 			);
@@ -538,7 +535,6 @@
 				0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */,
 				0E3D21E925CEC48B00AE8EA0 /* PhotoViewController.swift in Sources */,
 				0E2805A925CC5A4A00CF8837 /* HomeViewController.swift in Sources */,
-				0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */,
 				0EB4D97325E1C73B00D8B70E /* GraphData.swift in Sources */,
 				0E8E0C1025CF90E40096413C /* Call.swift in Sources */,
 				0E3D21E425CEC48000AE8EA0 /* TextViewController.swift in Sources */,
