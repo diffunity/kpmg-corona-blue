@@ -1,0 +1,7 @@
+unittest_settings:
+  input_dimension: [1, 4] # specify dimension of input
+  input_type: "text" # choose from ["number" | "text"]
+model_settings:
+  gpu: false
+  # pretrained_filepath: "./saved_models/torch_example.pt"
+  # pretrained_filepath: "/home/eppen/kpmg/corona-blue/Emotion-detection/mymodel"

@@ -1,0 +1,28 @@
+PODS:
+  - Charts (3.6.0):
+    - Charts/Core (= 3.6.0)
+  - Charts/Core (3.6.0)
+  - ConcentricProgressRingView (2.0.1):
+    - LionheartExtensions
+  - LionheartExtensions (5.1.1):
+    - LionheartExtensions/Core (= 5.1.1)
+  - LionheartExtensions/Core (5.1.1)
+
+DEPENDENCIES:
+  - Charts
+  - ConcentricProgressRingView
+
+SPEC REPOS:
+  trunk:
+    - Charts
+    - ConcentricProgressRingView
+    - LionheartExtensions
+
+SPEC CHECKSUMS:
+  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  ConcentricProgressRingView: 00a180e1eead909ffa4463a623220fe7aa2634cf
+  LionheartExtensions: a7095285260f2817776217efe7f46204f903a80d
+
+PODFILE CHECKSUM: 3cfcd3d7cdd2b7bfa35d7ebbba64622e25377792
+
+COCOAPODS: 1.10.1

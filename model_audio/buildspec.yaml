@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+phases:
+  install:
+    commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  pre_build:
+    commands:
+        - docker version
+  build:
+    commands:
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/
+      - docker pull 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio:dev | true
+      - cd model_audio
+      - DOCKER_BUILDKIT=1 docker build --tag  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio:$CODEBUILD_SOURCE_VERSION .
+      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio:$CODEBUILD_SOURCE_VERSION
+      - docker tag 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio:$CODEBUILD_SOURCE_VERSION  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio:dev
+      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-audio

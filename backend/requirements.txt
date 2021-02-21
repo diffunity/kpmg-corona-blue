@@ -1,0 +1,10 @@
+fastapi==0.63.0
+uvicorn==0.11.8
+gunicorn
+boto3==1.17.5
+pygelf==0.4.0
+psycopg2-binary==2.8.6
+numpy
+pytz
+requests
+pyyaml
