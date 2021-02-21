@@ -151,7 +151,7 @@ class Analysis:
             
             ############
             # text
-            query = f"""SELECT model_result, word_count, sentence_count, create_data_time FROM result_text WHERE {tomorrow} <= create_date_time < {now} and type="text";"""
+            query = f"""SELECT model_result, word_count, sentence_count, create_data_time FROM result_text WHERE '{tomorrow}' <= create_date_time < '{now}' and type="text";"""
             curr = self.db_conn.execute_query(query)
 
             # results_today = list(filter(curr, key=lambda x: tomorrow < x[-1] <= now))
@@ -166,7 +166,7 @@ class Analysis:
 
             ############
             # voice content
-            query = f"""SELECT model_result, sentence_count, create_data_time FROM result_text WHERE {tomorrow} <= create_date_time < {now} and type="call"; """
+            query = f"""SELECT model_result, sentence_count, create_data_time FROM result_text WHERE '{tomorrow}' <= create_date_time < '{now}' and type="call"; """
             curr = self.db_conn.execute_query(query)
 
             # results_today = list(filter(curr, key=lambda x: tomorrow < x[-1] <= now))
@@ -182,7 +182,7 @@ class Analysis:
 
             ############
             # voice tone
-            query = f"""SELECT model_result, create_data_time FROM result_call WHERE {tomorrow} <= create_date_time < {now}; """
+            query = f"""SELECT model_result, create_data_time FROM result_call WHERE '{tomorrow}' <= create_date_time < '{now}'; """
 
             curr = self.db_conn.execute_query(query)
 
