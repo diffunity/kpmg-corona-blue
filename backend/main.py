@@ -153,7 +153,7 @@ def get_result(request_body: StatusCheckRequest):
 
 # update
 @app.get("/update/emotion-result/text")
-def get_update_result(request_body: UpdateRequest):
+def get_update_result():
 
     result = analysis.get_update_result()
 
