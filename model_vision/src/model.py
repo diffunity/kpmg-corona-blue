@@ -13,7 +13,7 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import face_recognition
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, UnidentifiedImageError
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
@@ -78,6 +78,8 @@ class model:
         self.model = self.model('./saved_models/{}.pth'.format(models[-1])).to(machine)
         self.model.eval()
 
+        self.columns = CONFIG["Columns"]
+
     def inference(self, message:json):
 
         result = dict()
@@ -105,7 +107,7 @@ class model:
                                                               path=False)
                 if fer_result is not False:
                     Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
-                    result[f"output"] = {"results": {"emotions": fer_result.list_emotion, "affects": fer_result.list_affect},
+                    result[f"output"] = {"results": {"emotions": fer_result.list_emotion, "affects": list(fer_result.list_affect)[-1]},
                                              "method": "FER"}
                     return result
 
@@ -148,18 +150,41 @@ class model:
 
                     message = dict()
                     message["input"] = data
-                    vision_result = model.inference(message)
+                    vision_result = model.inference(message)["output"]
                     logger.info(f"Executing {request_id} Done: {vision_result}")
-                    sqs.delete_message(CONFIG["SQS"]["request"]["photo"], response["ReceiptHandle"])
+
+                    project_id = data_info["project_id"]
+                    job_id = data_info["id"]
+                    result_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                    create_date_time = data_info["create_date_time"]
+
+                    if vision_result["method"] == "FER":
+                        face = 'true'
+                        model_result = vision_result["results"]
+                    else:
+                        face = 'false'
+                        model_result = vision_result["contents"]
+                    value_list = [project_id, job_id, result_time, create_date_time, "photo", face, model_result]
+                    values = conn.values_query_formatter(value_list)
+                    query = conn.insert_query("result_photo", self.columns, values)
+                    conn.execute_query(query)
+                    conn.execute_query(conn.update_status_query("project", project_id, "DONE"))
+                    logger.info(f"Analysis for image Done. project_id: {project_id}")
 
                 except IndexError:
                     logger.error(f"No id {request_id} in job_photo table")
                     continue
 
-                #TODO: API to get result and put in database
+                except UnidentifiedImageError:
+                    logger.error(f"Invalid images!!! id: {request_id}")
+                    conn.execute_query(conn.update_status_query("project", request_id, "FAILED"))
+
+                sqs.delete_message(CONFIG["SQS"]["request"]["photo"], response["ReceiptHandle"])
+                logger.info(f"Sqs message for request_id {request_id} is deleted.")
 
             else:
-                time.sleep(3)
+                time.sleep(1)
+                continue
 
 
 if __name__ == "__main__":
