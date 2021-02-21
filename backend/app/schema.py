@@ -24,6 +24,18 @@ class JobRequestResponse(BaseModel):
     project_id: int
 
 
+class StatusCheckRequest(BaseModel):
+    project_id: int
+
+
+class StatusCheckResponse(BaseModel):
+    status: str
+
+
+class ResultResponse(BaseModel):
+    status: str
+
+
 class Error:
     error_message: str
 

@@ -49,6 +49,30 @@ def emotion_check_text(
     return JobRequestResponse(project_id=project_id)
 
 
+@app.post("/emotion-check/image", response_model=JobRequestResponse)
+def emotion_check_image(
+        request_body: JobRequestBody
+):
+    logger.info(f"Request info: {request_body} ")
+    registered_time = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    try:
+        project_id = analysis.make_project("photo", registered_time)
+        request_id = analysis.make_job(project_id,
+                                       request_body.project_type,
+                                       registered_time,
+                                       request_body.data)
+
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Making text analysis request FAILED: {request_body}",
+        )
+
+    return JobRequestResponse(project_id=project_id)
+
+
 @app.post("/emotion-check/call", response_model=JobRequestResponse)
 def emotion_check_audio(
         request_body: JobRequestBody
@@ -70,5 +94,37 @@ def emotion_check_audio(
         )
 
     return JobRequestResponse(project_id=project_id)
+
+
+@app.get("/emotion-check/status", response_model=StatusCheckResponse)
+def get_status(request_body: StatusCheckRequest):
+    status = analysis.get_project_status(request_body.project_id)
+    return StatusCheckResponse(status=status)
+
+
+@app.get("/emotion-result/text", response_model=ResultResponse)
+def get_result(request_body: StatusCheckRequest):
+    project_id = request_body.project_id
+    result = analysis.get_text_result(project_id)
+
+    return json.loads(result)
+
+
+@app.get("/emotion-result/photo", response_model=ResultResponse)
+def get_result(request_body: StatusCheckRequest):
+    project_id = request_body.project_id
+    result = analysis.get_photo_result(project_id)
+
+    return json.loads(result)
+
+
+@app.get("/emotion-result/text", response_model=ResultResponse)
+def get_result(request_body: StatusCheckRequest):
+    project_id = request_body.project_id
+    result = analysis.get_call_result(project_id)
+    text_result = result[0]
+    audio_result = result[1]
+
+    return json.loads({"text_analysis": text_result, "tone_analysis": audio_result})
 
 

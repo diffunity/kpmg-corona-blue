@@ -1,5 +1,6 @@
 from config import CONFIG
 import psycopg2 as pg
+import psycopg2.extras
 import boto3
 import json
 import datetime
@@ -45,7 +46,7 @@ class Connector:
 
     def execute_query(self, query):
         con_pg = self.connection
-        cur = con_pg.cursor()
+        cur = con_pg.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(query)
         return cur
 

@@ -70,6 +70,36 @@ class Analysis:
 
         return 'FAILED'
 
+    def get_project_status(self, project_id):
+        status = self.db_conn.get_project_status("project", project_id)
+
+        return status
+
+    def get_text_result(self, project_id):
+        query = f"""SELECT 5,6,7,8,9 from result_text WHERE project_id = {project_id}"""
+        curr = self.db_conn.execute_query(query)
+        data = dict(curr.fetchall()[0])
+
+        return data
+
+    def get_photo_result(self, project_id):
+        query = f"""SELECT 5,6,7,8 FROM result_photo WHERE project_id = {project_id}"""
+        curr = self.db_conn.execute_query(query)
+        data = dict(curr.fetchall()[0])
+
+        return data
+
+    def get_call_result(self, project_id):
+        query = f"""SELECT 5,6,7,8,9 from result_text WHERE project_id = {project_id}"""
+        curr = self.db_conn.execute_query(query)
+        text_data = dict(curr.fetchall()[0])
+        query = f"""SELECT 5,6,7,8 FROM result_call WHERE project_id = {project_id}"""
+        curr = self.db_conn.execute_query(query)
+        audio_data = dict(curr.fetchall()[0])
+
+        return [text_data, audio_data]
+
+
 
 if __name__ == '__main__':
     r = Analysis()
