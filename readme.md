@@ -17,7 +17,7 @@
   ```
 
 ### Build and Run
-- Open file MHCare.xcworkspace
+- Open file **MHCare.xcworkspace**
 - Go to Signing & Capabilities tab and set your own Team / Bundle Identifier
   <img src="src/signings.png" width="70%" height="70%">
 
