@@ -18,7 +18,7 @@ while True:
     if response is not None:
         request_id = response['Body']
         query = conn.get_data_query("job_call", request_id)
-        cur = conn.execute_query(query)\
+        cur = conn.execute_query(query)
 
         try:
             data_info = dict(cur.fetchall()[0])

@@ -6,6 +6,8 @@ import json
 import yaml
 import logging
 import requests
+import logging
+import time
 
 import torch
 import numpy as np
@@ -20,7 +22,14 @@ from facial_emotion_recognition import facial_emotion_recognition_image
 from vgg19 import KitModel as VGG19
 from alexnet import KitModel as AlexNet
 
+from utils.config import CONFIG
+from utils.db_connector import Connector
+from utils.sqs import SQS
+
+sqs = SQS()
+conn = Connector()
 logger = logging.getLogger(__name__)
+
 
 class ImageListDataset (Dataset):
 
@@ -42,6 +51,7 @@ class ImageListDataset (Dataset):
     
     def __len__(self):
         return len(self.list)
+
 
 class model:
     def __init__(self):
@@ -131,17 +141,33 @@ class model:
     def run(self):
         print("Model successfully deployed")
         while True:
-            self.deploy()
+            response = SQS.receive_message(CONFIG["SQS"]["request"]["photo"])
+            if response is not None:
+                request_id = response['Body']
+                logger.info(f"Analysing {request_id} starting...")
+                query = conn.get_data_query("job_photo", request_id)
+                cur = conn.execute_query(query)
 
-if __name__=="__main__":
-    
-    ###########
-    # sqs queue initialization (backend)
-    # 
-    # 
-    # 
-    # 
-    ###########
+                try:
+                    data_info = dict(cur.fetchall()[0])
+                    data = data_info["img_url"]
+
+                    message = dict()
+                    message["input"] = data
+                    vision_result = model.inference(message)
+                    logger.info(f"Executing {request_id} Done: {vision_result}")
+                    sqs.delete_message(CONFIG["SQS"]["request"]["photo"], response["ReceiptHandle"])
+
+                except IndexError:
+                    logger.error(f"No id {request_id} in job_photo table")
+                    continue
+
+                #TODO: API to get result and put in database
+
+            else:
+                time.sleep(3)
+
+
+if __name__ == "__main__":
     model = model()
-
     model.run()

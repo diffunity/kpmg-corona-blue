@@ -3,6 +3,8 @@ import yaml
 import torch
 import numpy as np
 import sys
+import logging
+import time
 
 from transformers import BertTokenizer
 from BertModel import BertForMultiLabelClassification
@@ -14,6 +16,17 @@ from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
 from nltk import FreqDist
 import re
+
+from utils.config import CONFIG
+from utils.db_connector import Connector
+from utils.sqs import SQS
+
+sqs = SQS()
+conn = Connector()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s : %(message)s',
+                    datefmt="%Y-%m-%d %H:%M:%S")
+logger = logging.getLogger(__name__)
+
     
 class model:
     def __init__(self):
@@ -102,54 +115,31 @@ class model:
     def run(self):
         print("Model successfully deployed")
         while True:
-            self.deploy()
+            response = SQS.receive_message(CONFIG["SQS"]["request"]["text"])
+            if response is not None:
+                request_id = response['Body']
+                query = conn.get_data_query("job_text", request_id)
+                cur = conn.execute_query(query)
+
+                try:
+                    data_info = dict(cur.fetchall()[0])
+                    data = data_info["data"]
+
+                    message = dict()
+                    message["input"] = data
+                    nlp_result = model.inference(message)
+                    logger.info(f"Executing {request_id} Done: {nlp_result}")
+                    sqs.delete_message(CONFIG["SQS"]["request"]["text"], response["ReceiptHandle"])
+
+                except IndexError:
+                    logger.error(f"No id {request_id} in job_text table")
+                    continue
+            else:
+                time.sleep(3)
 
 
 if __name__ == "__main__":
-
-    ###########
-    # sqs queue initialization (backend)
-    #
-    #
-    #
-    #
-    ###########
     model = model()
-
     model.run()
 
 
-    def deploy(self):
-
-        ###########
-        # sqs queue initialization (backend)
-        #
-        ###########
-
-        look_at_queue = {"input": np.ndarray(
-            self.config["unittest_settings"]["input_dimension"])}
-        output = self.inference(look_at_queue)
-
-        ###########
-        # send back result to API by sqs (backend)
-        #
-        ###########
-
-    def run(self):
-        print("Model successfully deployed")
-        while True:
-            self.deploy()
-
-
-if __name__ == "__main__":
-
-    ###########
-    # sqs queue initialization (backend)
-    #
-    #
-    #
-    #
-    ###########
-    model = model()
-
-    model.run()

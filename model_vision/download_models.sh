@@ -10,6 +10,4 @@ for MODEL in 'hybrid_finetuned_fc6+' 'hybrid_finetuned_all' 'vgg19_finetuned_fc6
   fi
 done
 
-python3 conf/download_weights.py
-
 cd ../
