@@ -99,9 +99,13 @@ class Connector:
 
     @staticmethod
     def values_query_formatter(values_list):
-        format_str_values = ["NULL" if x is None else "'" + str(x).replace("'", "''") + "'" if x != '' else "'None'"
-                             for
-                             x in values_list]
+        format_str_values = []
+        for x in values_list:
+            if type(x) == type(dict()):
+                format_str_values.append("'" + str(x).replace("'", '"') + "'")
+            else:
+                format_str_values.append("'" + str(x).replace("'", "''") + "'")
+
         format_query_values_with_parenthesis = "(" + ','.join(format_str_values) + ")"
         return format_query_values_with_parenthesis
 
@@ -109,3 +113,4 @@ class Connector:
 if __name__ == "__main__":
     connector = Connector()
     print(connector.db_config)
+    print(connector.values_query_formatter([1, 'hello', {"hi": "test"}]))
