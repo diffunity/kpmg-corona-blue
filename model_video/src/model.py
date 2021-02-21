@@ -4,6 +4,7 @@ import sys
 import json
 import yaml
 import logging
+import requests
 
 import torch
 import numpy as np
@@ -19,15 +20,11 @@ logger = logging.getLogger(__name__)
 
 class model:
     def __init__(self):
-
-        self.config = yaml.load(open("./conf/config.yml", "r"), Loader=yaml.SafeLoader)
-        self.model = torch.load(self.config["model_settings"]["pretrained_filepath"])
-        self.model.eval()
-
+        self.user_image_URL = "https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/user_image.jpg"
 
     def inference(self, message:json):
 
-        result = facial_emotion_recognition_video(message["video_path"], message["user_image"])
+        result = facial_emotion_recognition_video(message["video_path"], self.user_image_URL)
 
         return result
         

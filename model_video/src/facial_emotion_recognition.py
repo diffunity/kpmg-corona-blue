@@ -1,6 +1,7 @@
 # code partially from: https://github.com/siqueira-hc/Efficient-Facial-Feature-Learning-with-Wide-Ensemble-based-Convolutional-Neural-Networks
 import cvision
 import torch
+import requests
 from fer_model.utils import uimage, ufile
 
 
@@ -8,7 +9,7 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
-from PIL import Image
+from PIL import Image, ImageOps
 import face_recognition
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
@@ -30,8 +31,10 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
     no_plot = False
     face_detection = 1
 
-    user_image = face_recognition.load_image_file(user_image_path)
-    user_image_enc = face_recognition.face_encodings(user_image)[0]
+    # user image encoding
+    user_image = Image.open(requests.get(user_image_path, stream=True).raw)
+    user_image = ImageOps.exif_transpose(user_image)
+    user_image_enc = face_recognition.face_encodings(np.array(user_image))[0]
 
     fer_demo = None
     write_to_file = not (output_csv_file is None)
