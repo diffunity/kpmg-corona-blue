@@ -1,0 +1,6 @@
+framework module Pods_MHCareTests {
+  umbrella header "Pods-MHCareTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
