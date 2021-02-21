@@ -144,7 +144,7 @@ class model:
 
                     value_list = [project_id, job_id, result_time, create_date_time, type, model_result, word_count, sentences]
                     values = conn.values_query_formatter(value_list)
-                    query = conn.insert_query("result_text", self.columns["result_text"])
+                    query = conn.insert_query("result_text", self.columns["result_text"], values)
                     conn.execute_query(query)
                     conn.execute_query(conn.update_status_query("project", project_id, "DONE"))
                     conn.execute_query(conn.update_status_query("job_text", job_id, "DONE"))
