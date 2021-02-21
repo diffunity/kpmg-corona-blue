@@ -3,8 +3,8 @@
 > For 2021 KPMG Ideathon
 
 <div>
-    <p align center>
-		<img width = "300" src = "https://user-images.githubusercontent.com/61009073/108615472-e184aa00-7447-11eb-8ca2-228747e4a582.png">
+    <p align = "center">
+	<img width = "300" src = "https://user-images.githubusercontent.com/61009073/108615472-e184aa00-7447-11eb-8ca2-228747e4a582.png">
     </p>
 </div>
 
@@ -35,10 +35,10 @@ Caramel is an application that lets you know your mental status. It can analyze 
 - Overall display
 
 <div>
-    <img width="100", src="https://user-images.githubusercontent.com/61009073/108615739-77213900-744a-11eb-9993-b39de8968c14.png">
-    <img width="100", src="https://user-images.githubusercontent.com/61009073/108615871-ae441a00-744b-11eb-9ea2-7ca71d5b9f75.png">
-    <img width="100", src="https://user-images.githubusercontent.com/61009073/108615872-af754700-744b-11eb-8cc3-809ae1a21075.png">
-    <img width="100", src="https://user-images.githubusercontent.com/61009073/108615873-b2703780-744b-11eb-8311-d46366b0a304.png">
+    <img width="200", src="https://user-images.githubusercontent.com/61009073/108615739-77213900-744a-11eb-9993-b39de8968c14.png">
+    <img width="200", src="https://user-images.githubusercontent.com/61009073/108615871-ae441a00-744b-11eb-9ea2-7ca71d5b9f75.png">
+    <img width="200", src="https://user-images.githubusercontent.com/61009073/108615872-af754700-744b-11eb-8cc3-809ae1a21075.png">
+    <img width="200", src="https://user-images.githubusercontent.com/61009073/108615873-b2703780-744b-11eb-8311-d46366b0a304.png">
 </div>
 
 - Main tab
