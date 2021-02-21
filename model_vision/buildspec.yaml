@@ -17,7 +17,7 @@ phases:
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/
       - docker pull 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image:dev | true
       - cd model_vision
-      - DOCKER_BUILDKIT=1 docker build --tag  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-images:$CODEBUILD_SOURCE_VERSION .
-      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-images:$CODEBUILD_SOURCE_VERSION
-      - docker tag 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-images:$CODEBUILD_SOURCE_VERSION  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-images:dev
-      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-images
+      - DOCKER_BUILDKIT=1 docker build --tag  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image:$CODEBUILD_SOURCE_VERSION .
+      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image:$CODEBUILD_SOURCE_VERSION
+      - docker tag 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image:$CODEBUILD_SOURCE_VERSION  475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image:dev
+      - docker push 475985888665.dkr.ecr.ap-northeast-2.amazonaws.com/kpmg-image

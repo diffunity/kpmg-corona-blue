@@ -1,3 +1,4 @@
+#/bin/bash
 mkdir -p saved_models/
 cd saved_models/
 
