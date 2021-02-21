@@ -79,7 +79,7 @@ class model:
 #        word_count_result = []
 #        sentence_count_result = []
 #        for post in posts:
-        print(post)
+#         print(post)
         words = punct.tokenize(post)
         words = [lm.lemmatize(w) for w in words]
 
@@ -123,17 +123,18 @@ class model:
 
                 try:
                     data_info = dict(cur.fetchall()[0])
-                    data = data_info["data"]
+                    data = data_info["content"]
 
                     message = dict()
                     message["input"] = data
                     nlp_result = model.inference(message)
                     logger.info(f"Executing {request_id} Done: {nlp_result}")
-                    sqs.delete_message(CONFIG["SQS"]["request"]["text"], response["ReceiptHandle"])
 
                 except IndexError:
                     logger.error(f"No id {request_id} in job_text table")
                     continue
+
+                sqs.delete_message(CONFIG["SQS"]["request"]["text"], response["ReceiptHandle"])
             else:
                 time.sleep(3)
 
