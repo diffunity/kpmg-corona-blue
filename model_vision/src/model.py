@@ -30,6 +30,7 @@ sqs = SQS()
 conn = Connector()
 logger = logging.getLogger(__name__)
 
+user_image_URL = "https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/user_image.jpg"
 
 class ImageListDataset (Dataset):
 
@@ -81,20 +82,14 @@ class model:
 
         result = dict()
 
-        message["user_image"] = "./user_image.jpg"
-
         # user image encoding
-        user_image = face_recognition.load_image_file(message["user_image"])
-        user_image_enc = face_recognition.face_encodings(user_image)[0]
-
-        # retrieve image data to be analyzed
-#        data = ImageListDataset(message["file_list"], root=message["db_directory"], transform=self.transform)
+        user_image = Image.open(requests.get(user_image_URL, stream=True).raw)
+        user_image = ImageOps.exif_transpose(user_image)
+        user_image_enc = face_recognition.face_encodings(np.array(user_image))[0]
 
         # for individual files from url
         x = Image.open(requests.get(message["input"], stream=True).raw)
-#        data = [im]
         with torch.no_grad():
-#            for e, x in enumerate(tqdm(data)):
 
             x = ImageOps.exif_transpose(x) 
             x_np = np.array(x)
@@ -112,7 +107,6 @@ class model:
                     Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
                     result[f"output"] = {"results": {"emotions": fer_result.list_emotion, "affects": fer_result.list_affect},
                                              "method": "FER"}
-#                    continue
                     return result
 
                 # inference for non-facial image (inferenced also when face was detected but no face matched user's face)
