@@ -65,16 +65,16 @@ class model:
             
         class_result = self.goemotions([post])[0]
 #        for i in range(len(class_result)):
-        if len(class_result['labels'])>1:
-            best_score = max(class_result['scores'])
-            best_index = class_result['scores'].index(best_score)
-            best_label = class_result['labels'][best_index]
+        if len(class_result["labels"])>1:
+            best_score = max(class_result["scores"])
+            best_index = class_result["scores"].index(best_score)
+            best_label = class_result["labels"][best_index]
 
-            class_result['labels'] = best_label
-            class_result['scores'] = best_score
+            class_result["labels"] = best_label
+            class_result["scores"] = best_score
         else:
-            class_result['labels'] = class_result['labels'][0]
-            class_result['scores'] = class_result['scores'][0]
+            class_result["labels"] = class_result["labels"][0]
+            class_result["scores"] = class_result["scores"][0]
         
         punct = self.punct
         lm = self.lm

@@ -4,7 +4,6 @@ import os
 import sys
 import json
 import yaml
-import logging
 import requests
 import logging
 import time
@@ -155,14 +154,14 @@ class model:
 
                     project_id = data_info["project_id"]
                     job_id = data_info["id"]
-                    result_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                    result_time = time.strftime("%Y-%m-%d %H:%M:%S")
                     create_date_time = data_info["create_date_time"]
 
                     if vision_result["method"] == "FER":
-                        face = 'true'
+                        face = "true"
                         model_result = vision_result["results"]
                     else:
-                        face = 'false'
+                        face = "false"
                         model_result = vision_result["contents"]
                     value_list = [project_id, job_id, result_time, create_date_time, "photo", face, model_result]
                     values = conn.values_query_formatter(value_list)
