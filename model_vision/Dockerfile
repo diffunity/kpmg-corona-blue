@@ -27,7 +27,10 @@ RUN apt-get install -y --fix-missing \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
-RUN download_models.sh
+
+RUN pip install --upgrade pip
+RUN pip install -r ./conf/requirements.txt
+RUN ["bash", "download_models.sh"]
 
 RUN cd ~ && \
     mkdir -p dlib && \
@@ -35,10 +38,6 @@ RUN cd ~ && \
     cd  dlib/ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
-
-RUN pip install --upgrade pip
-
-RUN pip install -r ./conf/requirements.txt
 
 RUN echo "export PYTHONPATH=/worker:${PYTHONPATH}" >> ~/.profile
 
