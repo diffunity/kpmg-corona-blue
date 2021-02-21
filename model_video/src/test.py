@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
             r = {"input": np.ndarray(dim).tolist()}
         
         r["db_directory"] = "../"
-        r["video_path"] = "../test_ver2.mp4"
+        r["video_path"] = "./video_call_2.mp4"
         r["user_image"] = "../known_image.jpg"
 
         output = self.model.inference(r)

@@ -25,6 +25,10 @@ class model:
     def inference(self, message:json):
 
         result = facial_emotion_recognition_video(message["video_path"], self.user_image_URL)
+        
+        fname = message["video_path"]+"_result.json"
+        json.dump(result, open(fname, "w"))
+        print(f"Result dumped in JSON in {fname}")
 
         return result
         

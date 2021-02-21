@@ -142,4 +142,6 @@ model_video/face_results
 model_vision/images
 model_video/images
 *.pt*
+model_video/_result.json
+model_video/video_call_2.mp4_result.json
 

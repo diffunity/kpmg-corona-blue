@@ -1,4 +1,5 @@
 # code partially from: https://github.com/siqueira-hc/Efficient-Facial-Feature-Learning-with-Wide-Ensemble-based-Convolutional-Neural-Networks
+import json
 import cvision
 import torch
 import requests
@@ -26,10 +27,14 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
     output_csv_file = None ## review for what to save
     screen_size = 2
     device = torch.cuda.is_available()
-    frames = 5
+    frames = 1
     branch = False
     no_plot = False
     face_detection = 1
+
+    fname = input_video_path.split(".")[0]+"_result.json"
+    saved_results = {"video_path": input_video_path}
+    json.dump(saved_results, open(fname, "w"))
 
     # user image encoding
     user_image = Image.open(requests.get(user_image_path, stream=True).raw)
@@ -46,7 +51,7 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
                            "\nCheck whether working versions of ffmpeg or gstreamer is installed." +
                            "\nSupported file format: MPEG-4 (*.mp4).")
 
-    uimage.set_fps(5)
+    uimage.set_fps(frames)
 
     # Initialize screen
     if display:
@@ -73,14 +78,17 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
                                                                                      gradcam,
                                                                                      user_image_enc)
  
-                cumulated_fer.append(fer.__dict__)
                 
                 # save images
                 if fer.list_emotion is not None:
                     Image.fromarray(fer.face_image).save(f"./face_results/frame_{timestamp}.jpg","JPEG")
-
-                    result[f"output_{timestamp}"] = {"results": {"emotions": fer.list_emotion, "affects": fer.list_affect},
+                    saved_results = json.load(open(fname, "r"))
+                    result[f"output_{timestamp}"] = {"results": {"emotions": fer.list_emotion[-1], "affects": fer.list_affect.tolist()[-1]},
                                                      "method": "FER"}
+                    saved_results.update(result)
+                    print(saved_results)
+                    json.dump(saved_results, open(fname, "w"))
+                    print(f"Result dumped in JSON in {fname}")
 
                 # Display blank screen if no face is detected, otherwise,
                 # display detected faces and perceived facial expression labels
@@ -99,5 +107,5 @@ def facial_emotion_recognition_video(input_video_path, user_image_path):
 
         if write_to_file:
             ufile.close_file()
+
     return result
-    return cumulated_fer
