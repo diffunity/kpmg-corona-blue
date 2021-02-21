@@ -25,6 +25,16 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var detailCircleView: UIView!
     
     
+    var graphArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    let bardata1 = [90.0, 60.0, 16.0, 78.0, 34.0, 53.0, 33.0]
+
+    // Radar Chart
+    let subjects = ["Happy", "Sadness", "Surprise", "Fear", "Anger", "Disgust", "Neutral" ]
+    let array = [60.0, 50.0, 10.0, 10.0, 40.0, 30.0, 70.0]
+    
+    
+    
+    
     let overallColor = UIColor(displayP3Red: 249/255, green: 114/255, blue: 40/255, alpha: 1.0)
     let textLightColor = UIColor(displayP3Red: 255/255, green: 196/255, blue: 211/255, alpha: 1.0)
     let textDarkColor = UIColor(displayP3Red: 235/255, green: 81/255, blue: 190/255, alpha: 1.0)
@@ -38,6 +48,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        GraphData.shared.textData = TextData(lineChartDays: graphArray, lineChartData: bardata1, emotions: subjects, emotionData: array)
+        GraphData.shared.voiceData = VoiceData(contentLineChartDays: graphArray, contentLineChartData: bardata1, contentEmotions: subjects, contentEmotionData: array, toneLineChartDays: graphArray, toneLineChartData: bardata1)
+        GraphData.shared.photoData = PhotoData(photoLineChartDays: graphArray, photoLineChartData: bardata1, videoLineChartDays: graphArray, videoLineChartData: bardata1)
         
         setNavigationBar()
         setProfileImageView()

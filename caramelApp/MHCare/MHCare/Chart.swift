@@ -32,9 +32,10 @@ class YAxisFormatter: IAxisValueFormatter {
     }
 }
 
+
 class ChartMarker: MarkerView {
     var text = ""
-    @IBOutlet var subView: [SubView]!
+
     
     override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
         super.refreshContent(entry: entry, highlight: highlight)
@@ -47,11 +48,11 @@ class ChartMarker: MarkerView {
 
         var drawAttributes = [NSAttributedString.Key : Any]()
         drawAttributes[.font] = UIFont.systemFont(ofSize: 15)
-        drawAttributes[.foregroundColor] = UIColor.white
-        drawAttributes[.backgroundColor] = UIColor.darkGray
+        drawAttributes[.foregroundColor] = UIColor.gray
+        drawAttributes[.backgroundColor] = UIColor.clear
 
         self.bounds.size = (" \(text) " as NSString).size(withAttributes: drawAttributes)
-        self.offset = CGPoint(x: 0, y: -self.bounds.size.height - 2)
+        self.offset = CGPoint(x: -20, y: -self.bounds.size.height - 40 )
 
         let offset = self.offsetForDrawing(atPoint: point)
 
@@ -64,6 +65,7 @@ class ChartMarker: MarkerView {
         text.draw(in: centeredRect, withAttributes: attributes)
     }
 }
+
 class SubViewController: UIViewController {
     func setupView() {
         view = SubView()

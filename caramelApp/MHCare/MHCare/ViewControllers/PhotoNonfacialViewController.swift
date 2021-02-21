@@ -2,7 +2,7 @@
 //  PhotoNonfacialViewController.swift
 //  MHCare
 //
-//  Created by 허진욱 on 2021/02/21.
+//  Created by Jinwook Huh on 2021/02/21.
 //
 
 import UIKit

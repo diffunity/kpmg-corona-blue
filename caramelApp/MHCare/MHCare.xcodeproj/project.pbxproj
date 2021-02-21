@@ -26,6 +26,7 @@
 		0E8E0C1A25CFAF560096413C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C1925CFAF560096413C /* Audio.swift */; };
 		0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C3225D11BDB0096413C /* RecordingManager.swift */; };
 		0E93E12825CEFA8700404409 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E93E12725CEFA8700404409 /* HistoryViewController.swift */; };
+		0EB4D97325E1C73B00D8B70E /* GraphData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB4D97225E1C73B00D8B70E /* GraphData.swift */; };
 		0EE278DC25E186F70012A16C /* DetailPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */; };
 		0EE278ED25E18A470012A16C /* PhotoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */; };
 		0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278F125E18AF70012A16C /* PhotoCell.swift */; };
@@ -89,6 +90,7 @@
 		0E8E0C1925CFAF560096413C /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		0E8E0C3225D11BDB0096413C /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		0E93E12725CEFA8700404409 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		0EB4D97225E1C73B00D8B70E /* GraphData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphData.swift; sourceTree = "<group>"; };
 		0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoViewController.swift; sourceTree = "<group>"; };
 		0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoNonfacialViewController.swift; sourceTree = "<group>"; };
 		0EE278F125E18AF70012A16C /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				0E8E0C2B25CFBDE30096413C /* Call */,
 				0EE278F125E18AF70012A16C /* PhotoCell.swift */,
 				0EEC48C925E1A8A2008776A8 /* Networking.swift */,
+				0EB4D97225E1C73B00D8B70E /* GraphData.swift */,
 			);
 			path = MHCare;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				0E3D21E925CEC48B00AE8EA0 /* PhotoViewController.swift in Sources */,
 				0E2805A925CC5A4A00CF8837 /* HomeViewController.swift in Sources */,
 				0EE2790825E1989C0012A16C /* VideoNonfacialViewController.swift in Sources */,
+				0EB4D97325E1C73B00D8B70E /* GraphData.swift in Sources */,
 				0E8E0C1025CF90E40096413C /* Call.swift in Sources */,
 				0E3D21E425CEC48000AE8EA0 /* TextViewController.swift in Sources */,
 				0E93E12825CEFA8700404409 /* HistoryViewController.swift in Sources */,

@@ -12,7 +12,9 @@ import ConcentricProgressRingView
 class TextViewController: UIViewController {
 
     
+    @IBOutlet weak var levelLabel: UILabel!
     
+    @IBOutlet weak var averageLabel: UILabel!
     
     @IBOutlet weak var overallOuterView: UIView!
     @IBOutlet weak var overallView: UIView!
@@ -20,8 +22,10 @@ class TextViewController: UIViewController {
     @IBOutlet weak var combinedTabOuterView: UIView!
     @IBOutlet weak var combinedTabView: UIView!
 
+    
 
-    @IBOutlet weak var barChartView: BarChartView!
+    @IBOutlet weak var lineChartView: LineChartView!
+    
     
     @IBOutlet weak var pieChartView: PieChartView!
     @IBOutlet weak var pieChartOuterView: UIView!
@@ -37,59 +41,46 @@ class TextViewController: UIViewController {
     @IBOutlet weak var radarChartTabView: UIView!
     @IBOutlet weak var radarChartView: RadarChartView!
     
+    @IBOutlet weak var barChartView: BarChartView!
 
     @IBOutlet weak var circleChartView: UIView!
+    
+    var textData: TextData!
     
     
     let lightColor = UIColor(displayP3Red: 255/255, green: 196/255, blue: 211/255, alpha: 1.0)
     let darkColor = UIColor(displayP3Red: 235/255, green: 81/255, blue: 190/255, alpha: 1.0)
 
     
-    var graphArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    let bardata1 = [50.0, 60.0, 16.0, 78.0, 34.0, 53.0, 33.0]
-    let bardata2 = [12.0, 20.0, 14.0, 5.0, 16.0, 15.0, 20.0]
-
-    let linedata = [10.0, 17.0, 9.0, 1.0, 8.0, 13.0, 16.0]
-    
-    // Pie Chart
-    let emotions = ["Positive", "Negative"]
-    let unitsSold = [34.0, 66.0]
-    
-    
-    // Radar Chart
-    let subjects = ["Happy", "Sadness", "Surprise", "Fear", "Anger", "Disgust", "Neutral" ]
-    let array = [60.0, 50.0, 10.0, 10.0, 40.0, 30.0, 70.0]
-    
-    // Horizontal Bar Chart
-    let wordList = ["tired", "lonely", "lost", "regret", "happy"]
-    let wordcount = [20.0, 15.0, 10.0, 5.0, 5.0]
-    
-    
-    let circlevalues = [0.3]
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
         setOverallTabUI()
 
+        setOverall()
 //        combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
-        
-        barChart(dataPoints: graphArray, barValues: bardata1)
+        lineChart(textData.lineChartDays, values: textData.lineChartData)
+        barChart(dataPoints: textData.emotions, barValues: textData.emotionData)
 
 
         // Pie Chart
 //        pieChart(dataPoints: emotions, values: unitsSold)
-        circleChart(Values: circlevalues)
+        circleChart(Values: [textData.circleValue])
 
         // Radar Chart
-        radarChart(dataPoints: subjects, values: array)
+//        radarChart(dataPoints: textData.emotions, values: textData.emotionData)
         setHorizontalBarChartUI()
         
         // Horizontal Bar Chart
 //        horizontalBarChart(dataPoints: wordList, barValues: wordcount)
         // Do any additional setup after loading the view.
     }
+    
+    
     
     
     func setOverallTabUI() {
@@ -161,7 +152,15 @@ class TextViewController: UIViewController {
     }
     
     
-    
+    func setOverall() {
+        let label = String(textData.overall) + "%"
+        averageLabel.text = label
+        if textData.overall > 50 {
+            levelLabel.text = "High"
+        } else {
+            levelLabel.text = "Low"
+        }
+    }
     
     func circleChart(Values: [Double]){
         setPieChartUI()
@@ -187,8 +186,77 @@ class TextViewController: UIViewController {
     }
     
     
-    func barChart(dataPoints: [String], barValues: [Double]) {
+    func lineChart(_ dataPoints: [String], values: [Double]) {
         setCombinedChartUI()
+        lineChartView.noDataText = "No data available!"
+        var dataEntries: [ChartDataEntry] = []
+        
+        for i in 0..<values.count {
+//            print("chart point : \(values[i])")
+            let dataEntry = ChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
+        }
+        
+        let line1 = LineChartDataSet(entries: dataEntries, label: "Units Consumed")
+        line1.colors = [darkColor]
+        line1.mode = .cubicBezier
+        line1.cubicIntensity = 0.2
+        //line1.drawCirclesEnabled = false
+        //line1.drawCircleHoleEnabled = false
+        line1.circleColors = [lightColor]
+        line1.circleHoleColor = darkColor
+        line1.circleHoleRadius = 2.5
+        line1.circleRadius = 3.5
+        let gradient = getGradientFilling()
+        line1.fill = Fill.fillWithLinearGradient(gradient, angle: 90.0)
+        line1.drawFilledEnabled = true
+        let bcolor = NSUIColor.clear
+        let tcolor = darkColor
+        line1.valueFont = UIFont.systemFont(ofSize: 15)
+        line1.valueColors = [bcolor, bcolor, bcolor, bcolor, bcolor, bcolor, tcolor]
+        line1.highlightLineDashLengths = [3.0]
+        line1.highlightLineWidth = 0.7
+        line1.drawHorizontalHighlightIndicatorEnabled = false
+        line1.highlightColor = UIColor.systemGray4
+        
+        let data = LineChartData()
+        data.addDataSet(line1)
+        lineChartView.data = data
+        lineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 15)
+        lineChartView.xAxis.labelTextColor = UIColor.systemGray4
+        
+        lineChartView.setScaleEnabled(false)
+        
+        lineChartView.animate(xAxisDuration: 1.5)
+        lineChartView.drawGridBackgroundEnabled = false
+        lineChartView.leftAxis.drawAxisLineEnabled = false
+        lineChartView.leftAxis.drawGridLinesEnabled = false
+        lineChartView.rightAxis.drawAxisLineEnabled = false
+        lineChartView.rightAxis.drawGridLinesEnabled = false
+        lineChartView.legend.enabled = false
+        lineChartView.xAxis.enabled = true
+        lineChartView.xAxis.labelPosition = .bottom
+        lineChartView.xAxis.drawGridLinesEnabled = false
+        lineChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        lineChartView.leftAxis.enabled = false
+        lineChartView.rightAxis.enabled = false
+        lineChartView.rightAxis.drawLabelsEnabled = false
+        //lineChartView.xAxis.drawLabelsEnabled = false
+        lineChartView.drawMarkers = true
+        lineChartView.marker = ChartMarker()
+        lineChartView.highlightPerDragEnabled = true
+        lineChartView.animate(xAxisDuration: 1.5, yAxisDuration: 2.0, easingOption: .easeInBounce)
+        lineChartView.setExtraOffsets(left: 15.0, top: -10.0, right: 15.0, bottom: 15.0)
+        
+        
+        
+    }
+    
+    
+    
+    
+    func barChart(dataPoints: [String], barValues: [Double]) {
+        setRadarChartUI()
         barChartView.noDataText = "You need to provide data for the chart."
         // bar, line 엔트리 생성
         var barDataEntries: [BarChartDataEntry] = []
@@ -229,7 +297,7 @@ class TextViewController: UIViewController {
         barChartView.xAxis.drawAxisLineEnabled = false
 
         // X축 레이블 포맷 ( index -> 실제데이터 )
-        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
 //        let font =  UIFont.init(name: "Open Sans", size: 13.0)!
 //        barChartView.xAxis.labelFont = font
 
@@ -259,8 +327,7 @@ class TextViewController: UIViewController {
         // bar chart
         // 바 컬러, 바 두께
 
-        let G = UIColor(red: 0.4471, green: 1, blue: 0.8157, alpha: 1.0)
-        barChartDataSet.colors = [lightColor, lightColor, lightColor, lightColor, lightColor, lightColor,darkColor ]
+        barChartDataSet.colors = [UIColor(red: 1, green: 0.7686, blue: 0.8941, alpha: 1.0), UIColor(red: 1, green: 0.8824, blue: 0.749, alpha: 1.0), UIColor(red: 1, green: 0.9922, blue: 0.7686, alpha: 1.0), UIColor(red: 0.7686, green: 1, blue: 0.9255, alpha: 1.0), UIColor(red: 0.7686, green: 0.9843, blue: 1, alpha: 1.0), UIColor(red: 0.7686, green: 0.8039, blue: 1, alpha: 1.0), UIColor(red: 0.8196, green: 0.7686, blue: 1, alpha: 1.0) ]
 
         let barWidth = 0.5
         data.barWidth = barWidth
@@ -279,119 +346,9 @@ class TextViewController: UIViewController {
         barChartView.animate(yAxisDuration: 2.0, easingOption: .easeInBounce)
         barChartView.drawMarkers = true
         barChartView.marker = ChartMarker()
-        barChartView.setExtraOffsets(left: 30.0, top: 0.0, right: 30.0, bottom: 15.0)
+        barChartView.setExtraOffsets(left: 15.0, top: 0.0, right: 15.0, bottom: 15.0)
     }
-    
-    
-//    func combinedChart(dataPoints: [String], barValues: [Double],barValues2: [Double], lineValues: [Double]) {
-//        setCombinedChartUI()
-//        combinedChartView.noDataText = "You need to provide data for the chart."
-//        // bar, line 엔트리 생성
-//        var barDataEntries: [BarChartDataEntry] = []
-//        var lineDataEntries: [ChartDataEntry] = []
-//
-//        // bar, line 엔트리 삽입
-//        for i in 0..<dataPoints.count {
-//            let barDataEntry = BarChartDataEntry(x: Double(i), yValues: [barValues[i], barValues2[i]])
-//            let lineDataEntry = ChartDataEntry(x: Double(i), y: lineValues[i])
-//            barDataEntries.append(barDataEntry)
-//            lineDataEntries.append(lineDataEntry)
-//        }
-//
-//        // 데이터셋 생성
-//        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
-//        let lineChartDataSet = LineChartDataSet(entries: lineDataEntries, label: "일일 우울")
-//
-//
-//
-//        // 데이터 생성
-//        let data: CombinedChartData = CombinedChartData()
-//
-//        // bar 데이터 지정
-//        data.barData = BarChartData(dataSet: barChartDataSet)
-//        // line 데이터 지정
-//        data.lineData = LineChartData(dataSet: lineChartDataSet)
-//
-//        // combined 데이터 지정
-//        combinedChartView.data = data
-//
-//
-//        // 여기서부터는 그래프 예쁘게 수정하는 내용
-//        // 전체
-//        // X축 데이터 설정
-//        combinedChartView.xAxis.axisMaximum = data.xMax + 0.25
-//        combinedChartView.xAxis.axisMinimum = data.xMin - 0.25
-//
-//        // X축 레이블 포맷 ( index -> 실제데이터 )
-//        combinedChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: graphArray)
-//
-//        // 배경 그리드 라인 그릴지 여부
-//        combinedChartView.xAxis.drawGridLinesEnabled = false
-//        combinedChartView.leftAxis.drawGridLinesEnabled = false
-//        combinedChartView.backgroundColor = .white
-//        // 리미트 라인 생성 (평균 라인)
-//        //combinedChartView.leftAxis.addLimitLine(ChartLimitLine(limit: 10, label: "평균"))
-//
-//        // 우측 레이블 제거
-//        combinedChartView.rightAxis.enabled = false
-//
-//        // X축 레이블 위치 조정
-//        combinedChartView.xAxis.labelPosition = .bottom
-//        combinedChartView.leftAxis.axisMinimum = 0
-//        combinedChartView.rightAxis.axisMinimum = 0
-//
-//        // legend
-//        let l = combinedChartView.legend
-//        l.wordWrapEnabled = true
-//        l.horizontalAlignment = .center
-//        l.verticalAlignment = .bottom
-//        l.orientation = .horizontal
-//        l.drawInside = false
-//
-//
-//
-//        // line chart
-//        // 라인 굵기
-//        lineChartDataSet.lineWidth = 4.5
-//
-//        // 라인 및 라인 원 색깔 변경
-//        lineChartDataSet.colors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-//        lineChartDataSet.circleColors = [UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1)]
-//
-//        // 원 구멍 반경
-//        lineChartDataSet.circleHoleRadius = 5.0
-//
-//        // 원 반경 (꽉채우려면 홀 반경이랑 똑같게)
-//        lineChartDataSet.circleRadius = 5.0
-//        lineChartDataSet.mode = .cubicBezier
-//        // 라인 차트에 대한 value값 보이게 할 건지
-//        lineChartDataSet.drawValuesEnabled = false
-//
-//
-//        // bar chart
-//        // 바 컬러, 바 두께
-//        barChartDataSet.colors = [UIColor(red: 60/255, green: 220/255, blue: 78/255, alpha: 1),  UIColor.systemGray5]
-//
-//        let barWidth = 0.3
-//        data.barData.barWidth = barWidth
-//
-//
-//
-//        // 차트 선택 되게 할지 여부
-//        lineChartDataSet.highlightEnabled = false
-//        barChartDataSet.highlightEnabled = true
-//        barChartDataSet.axisDependency = .left
-//        // 줌 안되게
-//
-//        combinedChartView.doubleTapToZoomEnabled = false
-//
-//        // 애니메이션 효과
-//        // 기본 애니메이션
-//        combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-//
-//        // 옵션 애니메이션
-//        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInBounce)
-//    }
+
     
     
     func pieChart(dataPoints: [String], values: [Double]) {
@@ -439,46 +396,6 @@ class TextViewController: UIViewController {
         pieChartView.marker = ChartMarker()
     }
     
-    
-//    func pieChart(dataPoints: [String], values: [Double]) {
-//        pieChartView.noDataText = "You need to provide data for the chart."
-//
-//        setPieChartUI()
-//        var dataEntries: [ChartDataEntry] = []
-//        for i in 0..<dataPoints.count {
-//            let dataEntry1 = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i])
-//            dataEntries.append(dataEntry1)
-//        }
-//
-//        let pieChartDataSet = PieChartDataSet(entries: dataEntries)
-//        let pieChartData = PieChartData(dataSet: pieChartDataSet)
-//
-//        pieChartView.data = pieChartData
-//        pieChartView.centerText = ""
-//
-//        // 랜덤 컬러 지정
-//        let colors: [UIColor] = [lightColor, darkColor]
-//
-//        // 숫자 퍼센트 formatter
-//        let pFormatter = NumberFormatter()
-//        pFormatter.numberStyle = .percent
-//        pFormatter.maximumFractionDigits = 1
-//        pFormatter.multiplier = 1
-//        pFormatter.percentSymbol = " %"
-//        pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-//
-//        // value 값 폰트 지정
-//        pieChartData.setValueFont(.systemFont(ofSize: 11, weight: .light))
-//        pieChartData.setValueTextColor(.black)
-//
-//        // chart 컬러 설정
-//        pieChartDataSet.colors = colors
-//
-//        // 애니메이션 효과
-//        pieChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-//        pieChartView.legend.enabled = false
-//
-//    }
     
     func horizontalBarChart(dataPoints: [String], barValues: [Double]) {
         
@@ -638,4 +555,18 @@ class TextViewController: UIViewController {
 //        radarChartView.setExtraOffsets(left: 30.0, top: 30.0, right: 30.0, bottom: 30.0)
 //    }
 
+    
+    private func getGradientFilling() -> CGGradient {
+        // Setting fill gradient color
+        let coloTop = lightColor.cgColor
+        let colorBottom = NSUIColor.white.cgColor
+        // Colors of the gradient
+        let gradientColors = [coloTop, colorBottom] as CFArray
+        // Positioning of the gradient
+        let colorLocations: [CGFloat] = [0.3, 0.0]
+        // Gradient Object
+        return CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors, locations: colorLocations)!
+
+    }
+    
 }
