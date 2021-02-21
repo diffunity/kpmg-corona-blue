@@ -1,4 +1,5 @@
-FROM python:3.8.3
+#FROM python:3.8.3
+FROM pytorch/pytorch
 
 COPY . /worker
 WORKDIR /worker
