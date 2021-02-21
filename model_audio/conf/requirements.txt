@@ -16,8 +16,11 @@ google-auth==1.24.0
 google-auth-oauthlib==0.4.2
 google-cloud-speech==2.0.1
 google-pasta==0.2.0
+pygelf==0.4.0
+scikit-learn
+pytz
 boto3==1.17.5
 pygelf==0.4.0
 psycopg2-binary==2.8.6
-scikit-learn
-pytz
+pyyaml
+requests

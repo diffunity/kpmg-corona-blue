@@ -13,3 +13,8 @@ Pillow==8.1.0
 PyYAML==5.4.1
 scikit-learn==0.24.1
 skimage==0.0
+boto3==1.17.5
+pygelf==0.4.0
+psycopg2-binary==2.8.6
+pyyaml
+requests
