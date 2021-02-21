@@ -4,12 +4,12 @@ import logging
 import json
 import psycopg2.extras
 
-from fastapi import Depnows
+from fastapi import Depends
 import numpy as np
 
 # for my local
 # import sys
-# sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue/backnow")
+# sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue/backend")
 # # for container
 from app.utils.config import CONFIG
 from app.utils.db_connector import Connector
@@ -51,7 +51,7 @@ class Analysis:
             query = self.db_conn.insert_query(f"job_{d['type']}", self.columns[f"job_{d['type']}"], values)
 
             request_id = self.db_conn.execute_query(query).fetchall()[0][0]
-            self.sqs.snow_message(self.sqs_path[d["type"]], request_id)
+            self.sqs.send_message(self.sqs_path[d["type"]], request_id)
             logger.info(f"New request is registered: {d['type']}, project_id: {project_id}, job_id: {request_id}")
 
         except Exception as e:
