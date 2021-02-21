@@ -1,8 +1,14 @@
-torch==1.4.0
-transformers==2.11.0
 attrdict==2.0.1
+numpy==1.19.4
 boto3==1.17.5
 pygelf==0.4.0
 psycopg2-binary==2.8.6
 pyyaml
 requests
+torch==1.7.1
+nltk==3.5 
+transformers==2.11.0
+botocore==1.20.12
+psycopg2==2.8.6
+pyyaml
+
