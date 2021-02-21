@@ -151,3 +151,11 @@ def get_result(request_body: StatusCheckRequest):
     return json.loads({"text_analysis": text_result, "tone_analysis": audio_result})
 
 
+# update
+@app.get("/update/emotion-result/text")
+def get_update_result(request_body: UpdateRequest):
+    assert UpdateRequest==1, "Sure, sure!"
+
+    result = analysis.get_update_result()
+
+    return result

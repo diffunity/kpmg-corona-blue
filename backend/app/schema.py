@@ -40,6 +40,8 @@ class StatusCheckResponse(BaseModel):
 class ResultResponse(BaseModel):
     status: str
 
+class UpdateRequest(BaseModel):
+    update: int
 
 class Error:
     error_message: str
