@@ -46,6 +46,8 @@ class model:
         )
         self.punct = WordPunctTokenizer()
         self.lm = WordNetLemmatizer()
+        self.columns = CONFIG["Columns"]
+
 
     def inference(self, message: json):
         ## Expected input: {input: [whole text of the day until requested moment]}
@@ -117,8 +119,9 @@ class model:
         while True:
             response = SQS.receive_message(CONFIG["SQS"]["request"]["text"])
             if response is not None:
-                request_id = response['Body']
-                query = conn.get_data_query("job_text", request_id)
+                project_id = response['Body']
+                logger.info(f"Analysing {project_id} starting...")
+                query = conn.get_data_query("job_text", project_id)
                 cur = conn.execute_query(query)
 
                 try:
@@ -128,15 +131,38 @@ class model:
                     message = dict()
                     message["input"] = data
                     nlp_result = model.inference(message)
-                    logger.info(f"Executing {request_id} Done: {nlp_result}")
+                    logger.info(f"Executing {project_id} Done: {nlp_result}")
+
+                    project_id = data_info["project_id"]
+                    job_id = data_info["id"]
+                    result_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                    create_date_time = data_info["create_date_time"]
+                    type = data_info["type"]
+                    model_result = nlp_result["class"]
+                    word_count = nlp_result["word_count"]
+                    sentences = nlp_result["sentence_count"]
+
+                    value_list = [project_id, job_id, result_time, create_date_time, type, model_result, word_count, sentences]
+                    values = conn.values_query_formatter(value_list)
+                    query = conn.insert_query("result_text", self.columns["result_text"])
+                    conn.execute_query(query)
+                    conn.execute_query(conn.update_status_query("project", project_id, "DONE"))
+                    conn.execute_query(conn.update_status_query("job_text", job_id, "DONE"))
+
+                    logger.info(f"Analysis for image Done. project_id: {project_id}")
 
                 except IndexError:
-                    logger.error(f"No id {request_id} in job_text table")
+                    logger.error(f"No id {project_id} in job_text table")
                     continue
+                except Exception as e:
+                    logger.error(e)
+                    conn.execute_query(conn.update_status_query("project", project_id, "FAILED"))
 
                 sqs.delete_message(CONFIG["SQS"]["request"]["text"], response["ReceiptHandle"])
+                logger.info(f"Sqs message for request_id {project_id} is deleted.")
+
             else:
-                time.sleep(3)
+                time.sleep(1)
 
 
 if __name__ == "__main__":

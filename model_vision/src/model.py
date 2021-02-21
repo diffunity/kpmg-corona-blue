@@ -139,9 +139,9 @@ class model:
         while True:
             response = SQS.receive_message(CONFIG["SQS"]["request"]["photo"])
             if response is not None:
-                request_id = response['Body']
-                logger.info(f"Analysing {request_id} starting...")
-                query = conn.get_data_query("job_photo", request_id)
+                project_id = response['Body']
+                logger.info(f"Analysing {project_id} starting...")
+                query = conn.get_data_query("job_photo", project_id)
                 cur = conn.execute_query(query)
 
                 try:
@@ -151,7 +151,7 @@ class model:
                     message = dict()
                     message["input"] = data
                     vision_result = model.inference(message)["output"]
-                    logger.info(f"Executing {request_id} Done: {vision_result}")
+                    logger.info(f"Executing {project_id} Done: {vision_result}")
 
                     project_id = data_info["project_id"]
                     job_id = data_info["id"]
@@ -166,21 +166,23 @@ class model:
                         model_result = vision_result["contents"]
                     value_list = [project_id, job_id, result_time, create_date_time, "photo", face, model_result]
                     values = conn.values_query_formatter(value_list)
-                    query = conn.insert_query("result_photo", self.columns, values)
+                    query = conn.insert_query("result_photo", self.columns["result_photo"], values)
                     conn.execute_query(query)
                     conn.execute_query(conn.update_status_query("project", project_id, "DONE"))
+                    conn.execute_query(conn.update_status_query("job_photo", job_id, "DONE"))
+
                     logger.info(f"Analysis for image Done. project_id: {project_id}")
 
                 except IndexError:
-                    logger.error(f"No id {request_id} in job_photo table")
+                    logger.error(f"No id {project_id} in job_photo table")
                     continue
 
                 except UnidentifiedImageError:
-                    logger.error(f"Invalid images!!! id: {request_id}")
-                    conn.execute_query(conn.update_status_query("project", request_id, "FAILED"))
+                    logger.error(f"Invalid images!!! job_id: {job_id}")
+                    conn.execute_query(conn.update_status_query("project", project_id, "FAILED"))
 
                 sqs.delete_message(CONFIG["SQS"]["request"]["photo"], response["ReceiptHandle"])
-                logger.info(f"Sqs message for request_id {request_id} is deleted.")
+                logger.info(f"Sqs message for request_id {project_id} is deleted.")
 
             else:
                 time.sleep(1)
