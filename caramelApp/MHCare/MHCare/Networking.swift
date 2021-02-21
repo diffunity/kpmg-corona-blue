@@ -20,6 +20,10 @@ struct AudioObj: Codable {
 }
 
 
+struct UpdateRequestObj: Codable {
+    let datetime: String
+}
+
 
 struct ResponseObj: Codable {
     let textDays: [String]

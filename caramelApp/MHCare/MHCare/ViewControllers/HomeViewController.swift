@@ -185,4 +185,39 @@ class HomeViewController: UIViewController {
     }
     
     
+    func buildRequestData() -> Data {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let current_date_string = formatter.string(from: Date())
+        
+        let updateRequestObj = UpdateRequestObj(datetime: current_date_string)
+        
+        let encoder = JSONEncoder()
+        let jsonData = try! encoder.encode(updateRequestObj)
+        return jsonData
+        
+    }
+    
+    func sendUpdateRequest(url: String) -> Data {
+        var resultData = Data()
+        let postData = buildRequestData()
+        
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                resultData = data
+            }
+            semaphore.signal()
+        }
+        task.resume()
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        
+        return resultData
+        
+    }
+    
 }
