@@ -1,8 +1,36 @@
-from PIL import Image
-import stylecloud
+# from PIL import Image
+# import stylecloud
 import random
 import string
 import boto3
+from collections import Counter
+
+# for my local
+import sys
+sys.path.append("/Users/sieun/Desktop/kpmg-corona-blue/backend")
+# # for container
+from app.utils.config import CONFIG
+from app.utils.db_connector import Connector
+from app.utils.sqs import SQS
+from app.schema import InputData, Error
+
+con = Connector()
+cur = con.execute_query("select * from result_text where type = 'twitter'")
+result = cur.fetchall()
+print(cur.fetchall())
+
+words1 = Counter()
+words2 = Counter()
+print(len(result))
+for r in result[:30]:
+    word = r["word_count"]
+    words1 += Counter(word)
+
+for r in result[20:]:
+    word = r["word_count"]
+    words2 += Counter(word)
+print(words1)
+print(words2)
 
 
 def generate_wordcloud(word_counts, TAB):
@@ -41,4 +69,8 @@ def save_into_s3(name):
 
     return img_url
 
+
+
+generate_wordcloud(words1, "text")
+generate_wordcloud(words2, "voice")
 
