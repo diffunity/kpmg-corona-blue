@@ -75,5 +75,3 @@ class SQS:
         #                                       'content-length': '215'},
         #                       'RetryAttempts': 0}}
         logger.info(f"message {ReceiptHandle} deleted")
-
-        return response["HTTPStatusCode"]

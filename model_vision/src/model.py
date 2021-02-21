@@ -107,7 +107,7 @@ class model:
                                                               path=False)
                 if fer_result is not False:
                     Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
-                    result[f"output"] = {"results": {"emotions": fer_result.list_emotion, "affects": list(fer_result.list_affect)[-1]},
+                    result[f"output"] = {"results": {"emotions": fer_result.list_emotion[-1], "affects": fer_result.list_affect.tolist()[-1]},
                                              "method": "FER"}
                     return result
 
