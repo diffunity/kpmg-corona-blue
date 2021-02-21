@@ -8,6 +8,8 @@ import requests
 
 import pandas as pd
 import numpy as np
+import logging
+import time
 
 import librosa
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -18,6 +20,13 @@ from pydub import AudioSegment, effects
 
 import boto3
 from google.oauth2 import service_account
+
+from utils.config import CONFIG
+from utils.db_connector import Connector
+from utils.sqs import SQS
+sqs = SQS()
+conn = Connector()
+logger = logging.getLogger(__name__)
 
 import warnings
 warnings.filterwarnings(action='ignore')
@@ -52,7 +61,7 @@ class model:
 
         self.scaler = StandardScaler()
         self.x_train = self.scaler.fit_transform(self.x_train)
-
+        self.columns = CONFIG["Columns"]
 
     def inference(self, message:json):
         # temp directory
@@ -91,7 +100,7 @@ class model:
                 feature_vector = self.scaler.transform(feature_vector)
                 feature_vector = np.expand_dims(feature_vector, axis=2)
 
-                Y = np.array(['Depressed', 'Non-depressed'], dtype=object)
+                Y = np.array(["Depressed", "Non-depressed"], dtype=object)
                 encoder = OneHotEncoder()
                 Y = encoder.fit_transform(np.array(Y).reshape(-1, 1)).toarray()
 
@@ -144,7 +153,52 @@ class model:
     def run(self):
         print("Model successfully deployed")
         while True:
-            self.deploy()
+            response = SQS.receive_message(CONFIG["SQS"]["request"]["call"])
+            if response is not None:
+                project_id = response['Body']
+                logger.info(f"Analysing {project_id} starting...")
+                query = conn.get_data_query("job_call", project_id)
+                cur = conn.execute_query(query)
+
+                try:
+                    data_info = dict(cur.fetchall()[0])
+                    data = data_info["data"]
+
+                    message = dict()
+                    message["input"] = data
+                    audio_result = model.inference(message)["output"]
+                    logger.info(f"Executing {project_id} Done: {audio_result}")
+
+                    project_id = data_info["project_id"]
+                    job_id = data_info["id"]
+                    result_time = time.strftime("%Y-%m-%d %H:%M:%S")
+                    create_date_time = data_info["create_date_time"]
+                    type = data_info["type"]
+                    model_result = audio_result["output"]
+
+                    api_endpoint = "http://ec2co-ecsel-f2k8u3ar7ixb-1602496836.ap-northeast-2.elb.amazonaws.com:8000/emotion-check/stt-text"
+                    stt_text = audio_result["text"]["text"]
+                    stt_request_body = {"project_id": project_id,
+                                        "data": {"type": "text",
+                                                 "create_date_time": create_date_time,
+                                                 "content": stt_text}}
+                    r = requests.post(api_endpoint, data=json.dumps(stt_request_body))
+                    logger.info(f"Request for STT analysis done: {r.status_code}")
+
+                    value_list = [project_id, job_id, result_time, create_date_time, type, model_result]
+                    values = conn.values_query_formatter(value_list)
+                    query = conn.insert_query("result_call", self.columns["result_call"], values)
+                    conn.execute_query(query)
+                    conn.execute_query(conn.update_status_query("job_call", job_id, "DONE"))
+
+                    logger.info(f"Analysis for image Done. project_id: {project_id}")
+
+                except IndexError:
+                    logger.error(f"No id {project_id} in job_photo table")
+                    continue
+
+
+
 
 if __name__=="__main__":
     
