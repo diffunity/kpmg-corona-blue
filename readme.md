@@ -19,5 +19,5 @@
 ### Build and Run
 - Open file MHCare.xcworkspace
 - Go to Signing & Capabilities tab and set your own Team / Bundle Identifier
-- Set the device to a physical iOS device (Some function might now work when running on a simulator)
+- Set the device to a physical iOS device (Some functions might not work when running on a simulator)
 - Run!!
