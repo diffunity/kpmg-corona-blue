@@ -119,7 +119,7 @@ def emotion_check_text(
     return JobRequestResponse(project_id=request_id)
 
 
-@app.get("/emotion-check/status", response_model=StatusCheckResponse)
+@app.post("/emotion-check/status", response_model=StatusCheckResponse)
 def get_status(request_body: StatusCheckRequest):
     status = analysis.get_project_status(request_body.project_id)
     return StatusCheckResponse(status=status)
