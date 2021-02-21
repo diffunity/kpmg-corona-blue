@@ -142,14 +142,14 @@ class Analysis:
             if i == 0:
                 tomorrow = now.replace(hour=0, minute=0, second=0, microsecond=0)
             else:
-                tomorrow += dt.timedelta(days=1)
+                tomorrow -= dt.timedelta(days=1)
 
             text_results["text_days"].append(tomorrow.strftime("%m/%d"))
             voice_results["voice_content_days"].append(tomorrow.strftime("%m/%d"))
             voice_tone_results["voice_tone_days"].append(tomorrow.strftime("%m/%d"))
             photo_results["photo_days"].append(tomorrow.strftime("%m/%d"))
             
-
+            ############
             # text
             query = f"""SELECT model_result, word_count, sentence_count, create_data_time FROM result_text WHERE {tomorrow} <= create_date_time < {now} and type="text";"""
             curr = self.db_conn.execute_query(query)
@@ -160,11 +160,11 @@ class Analysis:
 
             sentence_counts = sum([x[2] for x in results_today])
 
-            text_results["text_values"].append(convert_7to2(labels))
+            text_results["text_values"].append(self.convert_7to2(labels))
             text_results["text_count"].append(sentence_counts)
             cumulated_text_emotion_values += Counter(labels)
 
-
+            ############
             # voice content
             query = f"""SELECT model_result, sentence_count, create_data_time FROM result_text WHERE {tomorrow} <= create_date_time < {now} and type="call"; """
             curr = self.db_conn.execute_query(query)
@@ -175,12 +175,15 @@ class Analysis:
 
             sentence_counts = sum([x[1] for x in results_today])
 
-            voice_results["voice_content_values"].append(convert_7to2(labels))
+            voice_results["voice_content_values"].append(self.convert_7to2(labels))
             voice_results["voice_content_count"].append(sentence_counts)
             cumulated_voice_content_emotion_values += Counter(labels)
 
+
+            ############
             # voice tone
             query = f"""SELECT model_result, create_data_time FROM result_call WHERE {tomorrow} <= create_date_time < {now}; """
+
             curr = self.db_conn.execute_query(query)
 
             results_today = curr
@@ -193,6 +196,7 @@ class Analysis:
             )
             voice_tone_results["voice_tone_count"].append(N)
 
+            ############
             # photo 
             query = f"""SELECT r.model_result, r.face, r.create_data_time, j.img_url
                         FROM result_photo r, job_photo j 
@@ -214,9 +218,10 @@ class Analysis:
             
 
             # daily tally of caramels
-            photo_positive, photo_negative = convert_FERto2(facial_photos)
+            photo_positive, photo_negative = self.convert_FERto2(facial_photos)
 
 
+            # nonfacial photos
             nonfacial_photos = list(filter(curr, key=lambda x: x[0]["method"]=="VSA"))
             for nonfacial_photo in nonfacial_photos:
                 photo_nonfacial_results["photo_nonfacial_url"].append(nonfacial_photo[-1])
@@ -225,8 +230,9 @@ class Analysis:
                     "neutral": nonfacial_photo[0][0][1],
                     "positive": nonfacial_photo[0][0][2]
                 })
-            
-            VSAresults = convert_VSAto2(nonfacial_photos)
+
+            # daily tally of caramels
+            VSAresults = self.convert_VSAto2(nonfacial_photos)
             photo_positive += VSAresults[0]
             photo_negative += VSAresults[1]
             N = (photo_negative+photo_positive)
@@ -235,6 +241,7 @@ class Analysis:
 
             now = tomorrow
 
+        # top emotions by each week
         text_emotion_values_count = sum(cumulated_text_emotion_values.values())
         for key, value in cumulated_text_emotion_values.items():
             text_results["text_emotions"].append(key)
@@ -245,7 +252,16 @@ class Analysis:
             voice_results["voice_content_emotions"].append(key)
             voice_results["voice_content_emotion_values"].append(value / voice_content_emotion_values_count)
 
-        return text_results
+
+        final_output = dict()
+        final_output.update(text_results)
+        final_output.update(voice_results)
+        final_output.update(voice_tone_results)
+        final_output.update(photo_results)
+        final_output.update(photo_facial_results)
+        final_output.update(photo_nonfacial_results)
+
+        return final_output
 
     def convert_7to2(self, emotions):
         positive = ["anger", "disgust","fear", "sadness"]

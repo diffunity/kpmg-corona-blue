@@ -130,6 +130,9 @@ def get_result(request_body: StatusCheckRequest):
 
 # update
 @app.get("/update/emotion-result/text")
-def get_update_result(request_body: UpdateREquest):
+def get_update_result(request_body: UpdateRequest):
     assert UpdateRequest==1, "Sure, sure!"
-    result = analysis.
+
+    result = analysis.get_update_result()
+
+    return result
