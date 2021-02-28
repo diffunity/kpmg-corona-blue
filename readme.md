@@ -102,9 +102,11 @@ Caramel is an application that lets you know your mental status. It can analyze 
   
 # Backend
 
-Details on the models are provided in the respective folders
-![image](https://user-images.githubusercontent.com/61009073/109413907-2d5cc380-79f3-11eb-9bb0-6c24ce474885.png)
-![image](https://user-images.githubusercontent.com/61009073/109413918-4d8c8280-79f3-11eb-9f6b-2e49c1c9bc48.png)
+<div>
+	<img width="500" src="https://user-images.githubusercontent.com/61009073/109413907-2d5cc380-79f3-11eb-9bb0-6c24ce474885.png">
+	<img width="500" src="https://user-images.githubusercontent.com/61009073/109413918-4d8c8280-79f3-11eb-9f6b-2e49c1c9bc48.png">
+</div>
+Details on the models are provided in the respective folders  
 
 ## Detached API service
 
