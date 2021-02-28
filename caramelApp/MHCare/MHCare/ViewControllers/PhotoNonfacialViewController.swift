@@ -11,6 +11,8 @@ class PhotoNonfacialViewController: UIViewController {
 
     let photoManager = PhotoManager()
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,7 +24,7 @@ class PhotoNonfacialViewController: UIViewController {
 
 extension PhotoNonfacialViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoManager.photos.count
+        return GraphData.shared.photoData.photoNonFacialImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -30,17 +32,18 @@ extension PhotoNonfacialViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let photo = photoManager.photos[indexPath.item]
+        let photo = GraphData.shared.photoData.photoNonFacialImages[indexPath.item]
         cell.updateUI(photo: photo)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let detailVC = storyboard.instantiateViewController(identifier: "DetailPhotoViewController") as? DetailPhotoViewController else {
+        guard let detailVC = storyboard.instantiateViewController(identifier: "DetailNonFacialViewController") as? DetailNonFacialViewController else {
             return
         }
-        detailVC.image = photoManager.photos[indexPath.item]
+        detailVC.image = GraphData.shared.photoData.photoNonFacialImages[indexPath.item]
+        detailVC.results = GraphData.shared.photoData.photoNonFacialResults[indexPath.item]
         present(detailVC, animated: true, completion: nil)
     }
     

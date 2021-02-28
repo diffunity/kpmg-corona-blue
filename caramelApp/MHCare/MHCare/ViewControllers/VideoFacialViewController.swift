@@ -22,7 +22,7 @@ class VideoFacialViewController: UIViewController {
 
 extension VideoFacialViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoManager.photos.count
+        return GraphData.shared.photoData.videoImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -30,7 +30,7 @@ extension VideoFacialViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let photo = photoManager.photos[indexPath.item]
+        let photo = GraphData.shared.photoData.videoImages[indexPath.item]
         cell.updateUI(photo: photo)
         return cell
     }
@@ -40,7 +40,7 @@ extension VideoFacialViewController: UICollectionViewDataSource {
         guard let detailVC = storyboard.instantiateViewController(identifier: "DetailPhotoViewController") as? DetailPhotoViewController else {
             return
         }
-        detailVC.image = photoManager.photos[indexPath.item]
+        detailVC.image = GraphData.shared.photoData.videoImages[indexPath.item]
         present(detailVC, animated: true, completion: nil)
     }
 }

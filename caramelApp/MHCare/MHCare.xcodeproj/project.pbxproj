@@ -27,6 +27,7 @@
 		0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E0C3225D11BDB0096413C /* RecordingManager.swift */; };
 		0E93E12825CEFA8700404409 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E93E12725CEFA8700404409 /* HistoryViewController.swift */; };
 		0EB4D97325E1C73B00D8B70E /* GraphData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB4D97225E1C73B00D8B70E /* GraphData.swift */; };
+		0EC9012625E2B0F2001B57D2 /* DetailNonFacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC9012525E2B0F2001B57D2 /* DetailNonFacialViewController.swift */; };
 		0EE278DC25E186F70012A16C /* DetailPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */; };
 		0EE278ED25E18A470012A16C /* PhotoNonfacialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */; };
 		0EE278F225E18AF70012A16C /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE278F125E18AF70012A16C /* PhotoCell.swift */; };
@@ -90,6 +91,7 @@
 		0E8E0C3225D11BDB0096413C /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		0E93E12725CEFA8700404409 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		0EB4D97225E1C73B00D8B70E /* GraphData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphData.swift; sourceTree = "<group>"; };
+		0EC9012525E2B0F2001B57D2 /* DetailNonFacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNonFacialViewController.swift; sourceTree = "<group>"; };
 		0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoViewController.swift; sourceTree = "<group>"; };
 		0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoNonfacialViewController.swift; sourceTree = "<group>"; };
 		0EE278F125E18AF70012A16C /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				0EE278EC25E18A470012A16C /* PhotoNonfacialViewController.swift */,
 				0EE2790225E194D70012A16C /* VideoFacialViewController.swift */,
 				0EE278DB25E186F70012A16C /* DetailPhotoViewController.swift */,
+				0EC9012525E2B0F2001B57D2 /* DetailNonFacialViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				0E3D21DF25CEC46B00AE8EA0 /* VoiceViewController.swift in Sources */,
 				0E8E0C1525CF910B0096413C /* CallManager.swift in Sources */,
 				0EEC48CA25E1A8A2008776A8 /* Networking.swift in Sources */,
+				0EC9012625E2B0F2001B57D2 /* DetailNonFacialViewController.swift in Sources */,
 				0E2805C225CC653300CF8837 /* HomeTableViewController.swift in Sources */,
 				0E28057325CC5A1000CF8837 /* AppDelegate.swift in Sources */,
 				0E8E0C3325D11BDB0096413C /* RecordingManager.swift in Sources */,

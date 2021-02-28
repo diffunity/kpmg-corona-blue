@@ -58,29 +58,27 @@ class TextViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        setLabels()
         setOverallTabUI()
 
-        setOverall()
-//        combinedChart(dataPoints: graphArray, barValues: bardata1, barValues2: bardata2, lineValues: linedata)
+
         lineChart(textData.lineChartDays, values: textData.lineChartData)
         barChart(dataPoints: textData.emotions, barValues: textData.emotionData)
 
 
-        // Pie Chart
-//        pieChart(dataPoints: emotions, values: unitsSold)
+
         circleChart(Values: [textData.circleValue])
 
-        // Radar Chart
-//        radarChart(dataPoints: textData.emotions, values: textData.emotionData)
+
         setHorizontalBarChartUI()
         
-        // Horizontal Bar Chart
-//        horizontalBarChart(dataPoints: wordList, barValues: wordcount)
-        // Do any additional setup after loading the view.
+
     }
     
-    
+    func setLabels() {
+        averageLabel.text = String(textData.overall)
+        setOverall()
+    }
     
     
     func setOverallTabUI() {
@@ -175,14 +173,10 @@ class TextViewController: UIViewController {
         let radius: CGFloat = 70
         let progressRingView = ConcentricProgressRingView(center: circleChartView.center, radius: radius, margin: margin, rings: rings)
         progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
-        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
-        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
 
         circleChartView.addSubview(progressRingView)
         
-//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
     }
     
     
@@ -222,7 +216,7 @@ class TextViewController: UIViewController {
         let data = LineChartData()
         data.addDataSet(line1)
         lineChartView.data = data
-        lineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 15)
+        lineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 10)
         lineChartView.xAxis.labelTextColor = UIColor.systemGray4
         
         lineChartView.setScaleEnabled(false)
@@ -507,53 +501,6 @@ class TextViewController: UIViewController {
         radarChartView.setExtraOffsets(left: 15.0, top: 30.0, right: 15.0, bottom: 10.0)
     }
     
-    
-//    func radarChart(dataPoints: [String], values: [Double]) {
-//        setRadarChartUI()
-//
-//        radarChartView.noDataText = "You need to provide data for the chart."
-//        var dataEntries: [ChartDataEntry] = []
-//        for i in 0..<dataPoints.count {
-//            let dataEntry = RadarChartDataEntry(value: values[i], data: dataPoints[i])
-//            dataEntries.append(dataEntry)
-//        }
-//        let RadarchartDataSet = RadarChartDataSet(entries: dataEntries, label: "Units Sold")
-//
-//        let data3: RadarChartData = RadarChartData(dataSet: RadarchartDataSet)
-//
-//
-//        // 데이터 지정
-//        radarChartView.data = data3
-//
-//        //Options of radarChart
-//        radarChartView.sizeToFit()
-//
-//        //Options for the axis from here. The range is 0-100, the interval is 20
-//        radarChartView.yAxis.labelCount = 7
-//        //RadarChartView.yAxis.axisMinValue = 0.0
-//        //RadarChartView.yAxis.axisMaxValue = 100.0
-//
-//        radarChartView.rotationEnabled = false
-//        RadarchartDataSet.drawFilledEnabled = true
-//
-//        // value formatter
-//        RadarchartDataSet.valueFormatter = DataSetValueFormatter()
-//
-//        //Other options
-//        radarChartView.legend.enabled = false
-//        radarChartView.yAxis.gridAntialiasEnabled = true
-//        radarChartView.animate(yAxisDuration: 2.0)
-//
-//        let xAxis = radarChartView.xAxis
-//        xAxis.labelFont = .systemFont(ofSize: 9, weight: .bold)
-//        xAxis.labelTextColor = .black
-//        xAxis.xOffset = 10
-//        xAxis.yOffset = 10
-//        xAxis.valueFormatter = XAxisFormatter()
-//
-//        // 여백 지정
-//        radarChartView.setExtraOffsets(left: 30.0, top: 30.0, right: 30.0, bottom: 30.0)
-//    }
 
     
     private func getGradientFilling() -> CGGradient {
