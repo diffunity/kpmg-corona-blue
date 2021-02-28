@@ -53,9 +53,6 @@ class model:
         ## Expected input: {input: [whole text of the day until requested moment]}
         
         post = message["input"]
-#        if type(posts) != list:
-#            print("Input text must be a list")
-#            sys.exit()
 
         GET_SENTENCE_COUNT = False
         try:
@@ -64,7 +61,7 @@ class model:
         except: pass
             
         class_result = self.goemotions([post])[0]
-#        for i in range(len(class_result)):
+
         if len(class_result["labels"])>1:
             best_score = max(class_result["scores"])
             best_index = class_result["scores"].index(best_score)
@@ -78,10 +75,7 @@ class model:
         
         punct = self.punct
         lm = self.lm
-#        word_count_result = []
-#        sentence_count_result = []
-#        for post in posts:
-#         print(post)
+
         words = punct.tokenize(post)
         words = [lm.lemmatize(w) for w in words]
 
@@ -90,9 +84,9 @@ class model:
         words = [t[0] for t in pos_tag(words) if t[1] not in ["IN", "CC", "TO", "PRP", "MD", "DT", "CD", "EX"]]
             #print(words)
         word_count_result = dict(FreqDist(words))        
-#        word_count_result.append(dict(FreqDist(words)))
+
         if GET_SENTENCE_COUNT == False:
-#            sentence_count_result.append(len(sent_tokenize(post)))
+
             sentence_count_result = len(sent_tokenize(post))
                 
         return {"class": class_result, "word_count": word_count_result, "sentence_count": sentence_count_result}

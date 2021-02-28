@@ -4,7 +4,7 @@
 
 * conduct face detection on the submitted image
 
-* if face is detected, compare with the submitted user's image. If it matches, conduct facial emotion recognition analysis
+* if face is detected, compare with the submitted user's image. If it matches, conduct Facial Emotion Recognition analysis
 
 * if no face is detected, conduct Visual Sentiment Analysis
 
@@ -18,13 +18,8 @@ message = {"db_directory" = <directory-of-saved-images>,
            "user_image" = <user-image-for-face-matching>}
 
 # example
-message = {"db_directory" = "./TestData"
-           "file_list" = "./image_list.txt",
-           "user_image" = "./known_image.jpg"}
+message = {"input": "input-for-vision-analysis"}
 ```
-
-
-**pending fixes**: use Twitter API to extract images directly, and not save them on the local machine
 
 ### Output
 
@@ -54,8 +49,6 @@ result = {
                             [-0.23750032,  0.50748545]], dtype=float32)}, 
           'method': 'FER'}}
 ```
-
-* Note that FER saves the facial image
 
 ## Pretrained Models
 

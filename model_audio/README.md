@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-# Frontend - iOS App
-## Caramel
-![gif](https://media.giphy.com/media/A63Mo8DzOgMJTsPKmv/giphy.gif)
-![gif](https://media.giphy.com/media/nJ8RMHSnnzu7rlWblb/giphy.gif)
-![gif](https://media.giphy.com/media/5JrIM35lZGCJy22ORt/giphy.gif)
-
-## Requirements
-- Swift 5
-- Xcode
-- Cocoapods
-
-## Run project
-### Installation
-- Install CocoaPods
-  ```
-  $ sudo gem install cocoapods
-  ```
-- Navigate to the directory where file MHCare.xcworkspace is located and enter command
-  ```
-  pod install
-  ```
-
-### Build and Run
-- Open file **MHCare.xcworkspace**
-- Go to Signing & Capabilities tab and set your own Team / Bundle Identifier
-  <img src="src/signings.png" width="70%" height="70%">
-
-- Set the device to a physical iOS device (Some functions might not work when running on a simulator)
-  <img src="src/device.png" width="70%" height="70%">
-- Run!!
-=======
 ## Audio model
 This model predicts whether your feeling is depressed or not through voice files.
 
@@ -73,4 +41,3 @@ Output: Analyzed Emotions and Speech Recognition Text
 # Example 
 {'output': {'Depressed': 6, 'Non-depressed': 76}, 'text': {'count': 82, 'text': "chocolate cookies would be fine with me you probably want your ice cream I better write down all these things otherwise I will forget them by the time I get to the market right as far as meat mom wants some beef and some chicken  just any kind of beef I forgot to ask Mom about that but I think it would be...
 ```
->>>>>>> audio

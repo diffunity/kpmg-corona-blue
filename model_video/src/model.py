@@ -28,24 +28,15 @@ class model:
         
         fname = message["video_path"]+"_result.json"
         json.dump(result, open(fname, "w"))
-        print(f"Result dumped in JSON in {fname}")
+        print(f"Results dumped in JSON in {fname}")
 
         return result
         
 
     def deploy(self):
-
-        ###########
-        # sqs queue initialization (backend)
-        ###########
         
         look_at_queue = {"input": np.ndarray(self.config["unittest_settings"]["input_dimension"])}
         output = self.inference(look_at_queue)
-
-        ###########
-        # send back result to API by sqs (backend)
-        # 
-        ###########
 
     def run(self):
         print("Model successfully deployed")
@@ -53,14 +44,7 @@ class model:
             self.deploy()
 
 if __name__=="__main__":
-    
-    ###########
-    # sqs queue initialization (backend)
-    # 
-    # 
-    # 
-    # 
-    ###########
+
     model = model()
 
     model.run()

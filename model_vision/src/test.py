@@ -20,9 +20,6 @@ class Test(unittest.TestCase):
             r = {"input": np.ndarray(dim).tolist()}
 
         # mock message from backend
-#        r["db_directory"] = "../TestData"
-#        r["file_list"] = "../image_list.txt"
-#        r["user_image"] = "../known_image.jpg"
         r["input"] = "https://raw.githubusercontent.com/diffunity/kpmg-corona-blue/vision/vision_model/images/image_UML.jpg"
 
         output = self.model.inference(r)

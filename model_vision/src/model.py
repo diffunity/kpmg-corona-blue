@@ -12,10 +12,10 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import face_recognition
-from PIL import Image, ImageOps, UnidentifiedImageError
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
+from PIL import Image, ImageOps, UnidentifiedImageError
 from facial_emotion_recognition import facial_emotion_recognition_image
 
 from vgg19 import KitModel as VGG19

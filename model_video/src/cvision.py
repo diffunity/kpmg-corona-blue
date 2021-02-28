@@ -78,7 +78,7 @@ def recognize_facial_expression(image, on_gpu, face_detection_method, grad_cam, 
     if not face_coordinates:
         to_return_fer = FER(image)
     else:
-#        face_coordinates = sorted(face_coordinates, key=lambda x: x[0]*x[1]*x[2])
+        face_coordinates = sorted(face_coordinates, key=lambda x: x[0]*x[1]*x[2])
         for face_coordinate in face_coordinates:
             face = image[face_coordinate[0]:face_coordinate[2], face_coordinate[3]:face_coordinate[1]]
             face_enc = face_recognition.face_encodings(face)

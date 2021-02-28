@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-
 .DS_Store
 
 .idea/inspectionProfiles/
 
-<<<<<<< HEAD
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -35,7 +31,6 @@ share/python-wheels/
 *.egg
 MANIFEST
 
->>>>>>> model
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -136,12 +131,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-<<<<<<< HEAD
-
-.DS_Store
-
-=======
->>>>>>> backend
 .idea/
 
 
@@ -153,14 +142,9 @@ video_call.mp4
 video_model/
 vision_model/
 
-=======
 *jpg
 *.mp4
 .idea/inspectionProfiles/
-
-.DS_Store
-
-.idea/
 
 TestData
 image_list.txt
@@ -171,5 +155,3 @@ model_video/images
 *.pt*
 model_video/_result.json
 model_video/video_call_2.mp4_result.json
->>>>>>> model
-

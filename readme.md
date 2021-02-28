@@ -1,6 +1,6 @@
-# caramel: Mental Health Assistant
+# Caramel: Mental Health Assistant
 
-> For 2021 KPMG Ideathon
+> 1st Runner-up in 2021 KPMG Ideathon, South Korea
 
 <div>
     <p align = "center">
@@ -11,24 +11,23 @@
 * [Introduction](https://github.com/diffunity/kpmg-corona-blue#Introduction)
 
 * [Overview](https://github.com/diffunity/kpmg-corona-blue#Overview)
-
   * Overall display
+* [Frontend](https://github.com/diffunity/kpmg-corona-blue#Frontend)
+
   * Main tab
   * Text tab
   * Voice tab
   * Visual tab
 
+* [Backend](https://github.com/diffunity/kpmg-corona-blue#Backend)
+
 * [Branch Structure](https://github.com/diffunity/kpmg-corona-blue#Branch-Structure)
-
-* [Further Steps](https://github.com/diffunity/kpmg-corona-blue#Further-Steps)
-
-  
 
 # Introduction
 
-Caramel is an application that lets you know your mental status. It can analyze your emotions in your phone call, SNS texts and picture, etc. 
+The protracted COVID-19 social-distancing situation is emotionally exhausting people. Our normal pre-COVID day-to-day social interactions are slowly fading into the past. We are thus seeking ways to fulfil our unmet social desires. It is easy to overlook the gradual collapse of our emotions in such an era, and we are in dire need of a service that allows us to effortlessly track our emotions.
 
-
+Caramel is an application that lets you know your mental status. It can analyze your emotions in your phone call, SNS texts and picture, etc. Emotions contained in various forms of data (videos, pictures, texts, audio) are, in fact, subjective. Therefore, we attempted to provide as many statistics of our analysis as possible. We hope that this contributes to the development of mental healthcare services so as to aid in the understanding of our own emotional status.
 
 # Overview 
 
@@ -44,6 +43,36 @@ Caramel is an application that lets you know your mental status. It can analyze 
 ![gif](https://media.giphy.com/media/A63Mo8DzOgMJTsPKmv/giphy.gif)
 ![gif](https://media.giphy.com/media/nJ8RMHSnnzu7rlWblb/giphy.gif)
 ![gif](https://media.giphy.com/media/5JrIM35lZGCJy22ORt/giphy.gif)
+
+
+# Frontend
+
+## Requirements
+- Swift 5
+- Xcode
+- Cocoapods
+
+## Run project
+### Installation
+- Install CocoaPods
+  ```
+  $ sudo gem install cocoapods
+  ```
+- Navigate to the directory where file MHCare.xcworkspace is located and enter command
+  ```
+  pod install
+  ```
+
+### Build and Run
+- Open file **MHCare.xcworkspace**
+- Go to Signing & Capabilities tab and set your own Team / Bundle Identifier
+  <img src="src/signings.png" width="70%" height="70%">
+
+- Set the device to a physical iOS device (Some functions might not work when running on a simulator)
+  <img src="src/device.png" width="70%" height="70%">
+- Run!!
+
+## Functions
 
 - Main tab
 
@@ -71,6 +100,21 @@ Caramel is an application that lets you know your mental status. It can analyze 
   - Divided into two sections: Photo & Video
 
   
+# Backend
+
+Details on the models are provided in the respective folders
+
+## Detached API service
+
+We believe that the future potentials of multimodal emotion recognition tasks are boundless. As such, we have developed completely detached APIs for each tasks (audio, vision, nlp) in docker containers with scheduling maintained by AWS SQS, and deployed them using AWS ECS.  We also automated deployment process using AWS CodeBuild. The API demo for the tasks can be found in the google colab links below.
+
+* API: text/image
+https://colab.research.google.com/drive/1D-E6IOy1LieElvAn9c8tRVfKdJxIs_un?usp=sharing
+* API: audio
+https://colab.research.google.com/drive/1zQURDnBu91oc0USzRfNQvEx3jVxVe_QS?usp=sharing
+
+**Note**: Due to the maintenance costs, we have disabled the APIs for now. If you wish to use them, please contact us by spacefor555@gmail.com
+
 
 # Branch Structure 
 
@@ -86,8 +130,3 @@ Caramel is an application that lets you know your mental status. It can analyze 
     ├── backend
     └── frontend
 ```
-
-
-
-# Further Steps 
-
