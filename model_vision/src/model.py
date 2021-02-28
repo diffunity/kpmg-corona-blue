@@ -7,12 +7,12 @@ import yaml
 import requests
 import logging
 import time
-
+from os import path
 import torch
 import numpy as np
 from tqdm import tqdm
 import face_recognition
-from PIL import Image, ImageOps, UnidentifiedImageError
+from PIL import Image, ImageOps
 import torchvision.transforms as t
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets.folder import default_loader
@@ -76,6 +76,21 @@ class model:
         print('./saved_models/{}.pth'.format(models[-1]))
         self.model = self.model('./saved_models/{}.pth'.format(models[-1])).to(machine)
         self.model.eval()
+        weights = ["./saved_models/Net-Base-Shared_Representations.pt",
+                   "./saved_models/Net-Branch_1.pt",
+                   "./saved_models/Net-Branch_2.pt",
+                   "./saved_models/Net-Branch_3.pt",
+                   "./saved_models/Net-Branch_4.pt",
+                   "./saved_models/Net-Branch_5.pt",
+                   "./saved_models/Net-Branch_6.pt",
+                   "./saved_models/Net-Branch_7.pt",
+                   "./saved_models/Net-Branch_8.pt",
+                   "./saved_models/Net-Branch_9.pt"]
+
+        for weight in weights:
+            logger.info("="*40)
+            logger.info("Does the file exist? ", path.isfile(weight))
+            assert path.isfile(weight), f"{weight} does not exist"
 
         self.columns = CONFIG["Columns"]
 
@@ -105,7 +120,7 @@ class model:
                                                               face_locations,
                                                               path=False)
                 if fer_result is not False:
-                    Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
+#                    Image.fromarray(fer_result.face_image).save(f"./face_results/output.jpg","JPEG")
                     result[f"output"] = {"results": {"emotions": fer_result.list_emotion[-1], "affects": fer_result.list_affect.tolist()[-1]},
                                              "method": "FER"}
                     return result
@@ -177,9 +192,9 @@ class model:
                     logger.error(f"No id {project_id} in job_photo table")
                     continue
 
-                except UnidentifiedImageError:
-                    logger.error(f"Invalid images!!! job_id: {response}")
-                    conn.execute_query(conn.update_status_query("project", project_id, "FAILED"))
+            #    except UnidentifiedImageError:
+            #        logger.error(f"Invalid images!!! job_id: {response}")
+            #        conn.execute_query(conn.update_status_query("project", project_id, "FAILED"))
                 except Exception as e:
                     logger.error(e)
 

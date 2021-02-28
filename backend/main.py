@@ -125,35 +125,35 @@ def get_status(request_body: StatusCheckRequest):
     return StatusCheckResponse(status=status)
 
 
-@app.post("/emotion-result/text", response_model=ResultResponse)
+@app.post("/emotion-result/text")
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_text_result(project_id)
 
-    return json.loads(result)
+    return result
 
 
-@app.post("/emotion-result/photo", response_model=ResultResponse)
+@app.post("/emotion-result/photo")
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_photo_result(project_id)
 
-    return json.loads(result)
+    return result
 
 
-@app.post("/emotion-result/call", response_model=ResultResponse)
+@app.post("/emotion-result/call")
 def get_result(request_body: StatusCheckRequest):
     project_id = request_body.project_id
     result = analysis.get_call_result(project_id)
     text_result = result[0]
     audio_result = result[1]
 
-    return json.loads({"text_analysis": text_result, "tone_analysis": audio_result})
+    return {"text_analysis": text_result, "tone_analysis": audio_result}
 
 
 # update
 @app.get("/update/emotion-result/text")
-def get_update_result():
+def get_update_result(request_body: UpdateRequest):
 
     result = analysis.get_update_result()
 

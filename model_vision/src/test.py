@@ -23,7 +23,8 @@ class Test(unittest.TestCase):
 #        r["db_directory"] = "../TestData"
 #        r["file_list"] = "../image_list.txt"
 #        r["user_image"] = "../known_image.jpg"
-        r["input"] = "https://raw.githubusercontent.com/diffunity/kpmg-corona-blue/vision/vision_model/images/image_UML.jpg"
+        # r["input"] = "https://raw.githubusercontent.com/diffunity/kpmg-corona-blue/vision/vision_model/images/image_UML.jpg"
+        r["input"] = "./self_6.jpg"
 
         output = self.model.inference(r)
 
