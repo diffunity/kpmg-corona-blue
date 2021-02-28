@@ -34,7 +34,7 @@ def save_audio(decoded_audio, filename):
 # audio segmentation
 ############################################################
 def split_audio(record):
-    sound_file = AudioSegment.from_wav(record)
+    sound_file = AudioSegment.from_file(record)
     audio_chunks = split_on_silence(sound_file, min_silence_len=500, silence_thresh=-40)
 
     for i, chunk in enumerate(audio_chunks):

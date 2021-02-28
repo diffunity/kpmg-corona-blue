@@ -155,3 +155,10 @@ model_video/images
 *.pt*
 model_video/_result.json
 model_video/video_call_2.mp4_result.json
+<<<<<<< HEAD
+=======
+>>>>>>> model
+
+
+.ipynb_checkpoints/
+>>>>>>> 6ae42bc180ae401ff5ff0311e3f7d7117b99b23d
