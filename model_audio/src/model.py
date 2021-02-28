@@ -31,9 +31,8 @@ logger = logging.getLogger(__name__)
 import warnings
 warnings.filterwarnings(action='ignore')
 
-url = 'https://drive.google.com/uc?id=1m2NDz9MBvKIh5E26i_4ke_tgPRd9ZmZc'
-output = 'features.csv'
-gdown.download(url, output, quiet=False)
+s3 = boto3.client("s3")
+s3.download_file("kpmg-ybigta-image", "features.csv", "features.csv")
 
 r = requests.get("https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/audio_config.json")
 with open("audio_config.json", "w") as f:
@@ -76,10 +75,11 @@ class model:
         # f = open(message["input"], 'rb')
         # encoded_string = f.read()  # bytes
         # f.close()
-
+        logger.info(f"request input data: ", message)
         decoded_audio = decode_audio(message["input"])
 
         save_audio(decoded_audio, "sample.wav")
+        logger.info("save_audio DONE.")
 
         split_audio("sample.wav")
 
@@ -118,6 +118,7 @@ class model:
         num_depressed = output_list.count('Depressed')
         num_non_depressed = output_list.count('Non-depressed')
         model_output["output"] = {"Depressed": num_depressed, "Non-depressed": num_non_depressed}
+        logger.info(f"model_output of inference: ", model_output)
 
         ##############################################################
         # Speech to text
@@ -132,6 +133,7 @@ class model:
 
         shutil.rmtree("./chunk")
         shutil.rmtree("./stt_chunk")
+        logger.info(f"model_output of stt_model: ", model_output)
 
         return model_output
 
@@ -166,13 +168,13 @@ class model:
 
                     message = dict()
                     message["input"] = data
-                    audio_result = model.inference(message)["output"]
+                    audio_result = model.inference(message)
                     logger.info(f"Executing {project_id} Done: {audio_result}")
 
                     project_id = data_info["project_id"]
                     job_id = data_info["id"]
                     result_time = time.strftime("%Y-%m-%d %H:%M:%S")
-                    create_date_time = data_info["create_date_time"]
+                    create_date_time = str(data_info["create_date_time"])
                     type = data_info["type"]
                     model_result = audio_result["output"]
 
@@ -192,9 +194,11 @@ class model:
                     conn.execute_query(conn.update_status_query("job_call", job_id, "DONE"))
 
                     logger.info(f"Analysis for image Done. project_id: {project_id}")
+                    sqs.delete_message(CONFIG["SQS"]["request"]["call"], response["ReceiptHandle"])
+                    logger.info(f"Sqs message for request_id {project_id} is deleted.")
 
                 except IndexError:
-                    logger.error(f"No id {project_id} in job_photo table")
+                    logger.error(f"No id {project_id} in job_call table")
                     continue
 
 

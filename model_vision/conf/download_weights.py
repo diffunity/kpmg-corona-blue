@@ -1,7 +1,8 @@
 import os
 import requests
 
-path = "./src/fer_model/ml/trained_models/esr_9/"
+# path = "./src/fer_model/ml/trained_models/esr_9/"
+path = "./"
 sr = "Net-Base-Shared_Representations"
 url = f"https://kpmg-ybigta-image.s3.ap-northeast-2.amazonaws.com/{sr}.pt"
 r = requests.get(url, allow_redirects=True)
