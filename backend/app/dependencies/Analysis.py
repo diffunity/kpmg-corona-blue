@@ -80,29 +80,29 @@ class Analysis:
         return status
 
     def get_text_result(self, project_id):
-        query = f"""SELECT 5,6,7,8,9 from result_text WHERE project_id = {project_id}"""
+        query = f"""SELECT create_date_time, type, model_result, word_count, sentence_count from result_text WHERE project_id = {project_id}"""
         curr = self.db_conn.execute_query(query)
         data = dict(curr.fetchall()[0])
-
+        print(data)
         return data
 
     def get_photo_result(self, project_id):
-        query = f"""SELECT 5,6,7,8 FROM result_photo WHERE project_id = {project_id}"""
+        query = f"""SELECT create_date_time, type, face, model_result FROM result_photo WHERE project_id = {project_id}"""
         curr = self.db_conn.execute_query(query)
         data = dict(curr.fetchall()[0])
+        print(data)
 
         return data
 
     def get_call_result(self, project_id):
-        query = f"""SELECT 5,6,7,8,9 from result_text WHERE project_id = {project_id}"""
+        query = f"""SELECT create_date_time, type, model_result, word_count, sentence_count from result_text WHERE project_id = {project_id}"""
         curr = self.db_conn.execute_query(query)
         text_data = dict(curr.fetchall()[0])
-        query = f"""SELECT 5,6,7,8 FROM result_call WHERE project_id = {project_id}"""
+        query = f"""SELECT create_date_time, type, model_result FROM result_call WHERE project_id = {project_id}"""
         curr = self.db_conn.execute_query(query)
         audio_data = dict(curr.fetchall()[0])
 
         return [text_data, audio_data]
-
 
     def get_update_result(self):
 
@@ -151,11 +151,11 @@ class Analysis:
             
             ############
             # text
-            query = f"""SELECT model_result, word_count, sentence_count, create_data_time FROM result_text WHERE '{tomorrow}' <= create_date_time < '{now}' and type="text";"""
+            query = f"""SELECT model_result, word_count, sentence_count, create_date_time FROM result_text WHERE '{tomorrow}' <= create_date_time and create_date_time < '{now}' and type='text';"""
             curr = self.db_conn.execute_query(query)
 
             # results_today = list(filter(curr, key=lambda x: tomorrow < x[-1] <= now))
-            results_today = curr
+            results_today = curr.fetchall()
             labels = [x[0]["labels"] for x in results_today]
 
             sentence_counts = sum([x[2] for x in results_today])
@@ -166,11 +166,11 @@ class Analysis:
 
             ############
             # voice content
-            query = f"""SELECT model_result, sentence_count, create_data_time FROM result_text WHERE '{tomorrow}' <= create_date_time < '{now}' and type="call"; """
+            query = f"""SELECT model_result, sentence_count, create_date_time FROM result_text WHERE '{tomorrow}' <= create_date_time and create_date_time < '{now}' and type='call'; """
             curr = self.db_conn.execute_query(query)
 
             # results_today = list(filter(curr, key=lambda x: tomorrow < x[-1] <= now))
-            results_today = curr
+            results_today = curr.fetchall()
             labels = [x[0]["labels"] for x in results_today]
 
             sentence_counts = sum([x[1] for x in results_today])
@@ -182,23 +182,25 @@ class Analysis:
 
             ############
             # voice tone
-            query = f"""SELECT model_result, create_data_time FROM result_call WHERE '{tomorrow}' <= create_date_time < '{now}'; """
+            query = f"""SELECT model_result, create_date_time FROM result_call WHERE '{tomorrow}' <= create_date_time and create_date_time < '{now}'; """
 
             curr = self.db_conn.execute_query(query)
+            results_today = curr.fetchall()
+            if len(results_today) > 0:
+               labels = [x[0] for x in results_today]
 
-            results_today = curr
-            labels = [x[0] for x in results_today]
 
-            cumulated_voice_tone_contents += Counter(labels)
-            N = sum(labels.values())
-            voice_tone_results["voice_tone_values"].append(
-                (labels["Non-depressed"]) / N
-            )
+               cumulated_voice_tone_contents += Counter(labels)
+               N = sum(labels.values())
+            else:
+                ce_tone_results["voice_tone_values"].append(
+                 (labels["Non-depressed"]) / N
+                
             voice_tone_results["voice_tone_count"].append(N)
 
             ############
             # photo 
-            query = f"""SELECT r.model_result, r.face, r.create_data_time, j.img_url
+            query = f"""SELECT r.model_result, r.face, r.create_date_time, j.img_url
                         FROM result_photo r, job_photo j 
                         JOIN ON r.job_id=j.id
                         WHERE {tomorrow} <= r.create_date_time < {now} ; """
@@ -207,7 +209,7 @@ class Analysis:
             photo_negative = photo_positive = 0
 
             # facial photos
-            facial_photos = list(filter(curr, key=lambda x: x[1]))
+            facial_photos = list(filter(curr.fefchall(), key=lambda x: x[1]))
             for facial_photo in facial_photos:
                 photo_facial_results["photo_facial_url"].append(facial_photo[-1])
                 photo_facial_results["photo_facial_result"].append({
@@ -273,8 +275,11 @@ class Analysis:
                 pos_val += 1
             else:
                 neg_val += 1
-
-        return (pos_val) / (pos_val+neg_val)
+        try:
+            result = (pos_val) / (pos_val+neg_val)
+            return result
+        except ZeroDivisionError:
+            return 0
         
     def convert_VSAto2(self, emotions):
         neg_val = pos_val = 0
@@ -283,7 +288,12 @@ class Analysis:
                 neg_val += 1
             else:
                 pos_val += 1
-        return pos_val, neg_val
+
+        try:
+            result = (pos_val) / (pos_val+neg_val)
+            return result
+        except ZeroDivisionError:
+            return 0
 
     def convert_FERto2(self, emotions):
         positive = ["Happiness", "Contempt", "Neutral", "Surprise"]
@@ -299,6 +309,7 @@ class Analysis:
 
 if __name__ == '__main__':
     r = Analysis()
-    projectid = r.make_project('test', time.strftime('%Y-%m-%d %H:%M:%S'))
-    r.make_job(projectid, 'test', time.strftime('%Y-%m-%d %H:%M:%S'), {"create_date_time": time.strftime('%Y-%m-%d %H:%M:%S'), "content": "test data", "type": "call"})
-    print(r.wait_project_done(projectid))
+    # projectid = r.make_project('test', time.strftime('%Y-%m-%d %H:%M:%S'))
+    # r.make_job(projectid, 'test', time.strftime('%Y-%m-%d %H:%M:%S'), {"create_date_time": time.strftime('%Y-%m-%d %H:%M:%S'), "content": "test data", "type": "call"})
+    # print(r.wait_project_done(projectid))
+    print(r.get_update_result())
