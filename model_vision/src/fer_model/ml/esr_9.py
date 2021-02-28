@@ -28,6 +28,8 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torch
 
+from os import path
+
 
 class Base(nn.Module):
     """
@@ -183,8 +185,11 @@ class ESR(nn.Module):
     INPUT_IMAGE_NORMALIZATION_MEAN = [0.0, 0.0, 0.0]
     INPUT_IMAGE_NORMALIZATION_STD = [1.0, 1.0, 1.0]
     # Path to saved network
-    PATH_TO_SAVED_NETWORK = "./src/fer_model/ml/trained_models/esr_9"
+    # PATH_TO_SAVED_NETWORK = "./src/fer_model/ml/trained_models/esr_9"
+    PATH_TO_SAVED_NETWORK = "./saved_models"
     FILE_NAME_BASE_NETWORK = "Net-Base-Shared_Representations.pt"
+    print("="*20)
+    print("FILE PATH EXISTS??? ",path.isfile(PATH_TO_SAVED_NETWORK+"/"+FILE_NAME_BASE_NETWORK))
     FILE_NAME_CONV_BRANCH = "Net-Branch_{}.pt"
 
     def __init__(self, device):
