@@ -46,7 +46,19 @@ func stopAudio() {
     print("Stopping audio")
     finishRecording(success: true)
 //    saveConvertedAudio()
-    let postResult = sendAudio(url: apiUrl)
+    
+    var postResult = Data()
+    var statusCode = 502
+    
+    while statusCode==502 || statusCode==503 {
+        let tup = sendAudio(url: apiUrl)
+        postResult = tup.data
+        statusCode = tup.statusCode
+        print("re-requesting call")
+    }
+    
+    let tup = sendAudio(url: apiUrl)
+    postResult = tup.data
     let str = String(decoding: postResult, as: UTF8.self)
     print(str)
 
@@ -115,9 +127,10 @@ func saveConvertedAudio() {
     print(RecordingManager.shared.count())
 }
 
-func sendAudio(url: String) -> Data {
+func sendAudio(url: String) -> (data: Data, statusCode:Int) {
     var resultData = Data()
     let postData = buildPostData()
+    var statusCode = -1
     
     var request = URLRequest(url: URL(string: url)!)
 //    request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -128,13 +141,15 @@ func sendAudio(url: String) -> Data {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let data = data {
             resultData = data
+            let status = response as! HTTPURLResponse
+            statusCode = status.statusCode
         }
         semaphore.signal()
     }
     task.resume()
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     
-    return resultData
+    return (resultData, statusCode)
 
 }
 
@@ -153,6 +168,6 @@ func buildPostData() -> Data {
     let jsonData = try! encoder.encode(requestObj)
     
     
-    print("---> Request: \(String(data: jsonData, encoding: .utf8)!)")
+//    print("---> Request: \(String(data: jsonData, encoding: .utf8)!)")
     return jsonData
 }

@@ -56,8 +56,7 @@ class HistoryViewController: UIViewController {
         line1.colors = [darkColor]
         line1.mode = .cubicBezier
         line1.cubicIntensity = 0.2
-        //line1.drawCirclesEnabled = false
-        //line1.drawCircleHoleEnabled = false
+
         line1.circleColors = [lightColor]
         line1.circleHoleColor = darkColor
         line1.circleHoleRadius = 2.5

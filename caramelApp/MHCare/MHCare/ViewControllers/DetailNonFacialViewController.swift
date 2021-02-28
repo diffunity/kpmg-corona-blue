@@ -1,41 +1,39 @@
 //
-//  DetailPhotoViewController.swift
+//  DetailNonFacialViewController.swift
 //  MHCare
 //
-//  Created by Jinwook Huh on 2021/02/21.
+//  Created by 허진욱 on 2021/02/22.
 //
 
 import UIKit
 
-class DetailPhotoViewController: UIViewController {
+class DetailNonFacialViewController: UIViewController {
 
+    var results: NonFacialResult!
+    
     
     var image = UIImage()
     
-    var results: FacialResult!
+    @IBOutlet weak var positiveLabel: UILabel!
+    
+    @IBOutlet weak var neutralLabel: UILabel!
     
     
-    
-    @IBOutlet weak var arousalLabel: UILabel!
-    
-    @IBOutlet weak var valenceLabel: UILabel!
-    
-    
-    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var negativeLabel: UILabel!
     
     
     @IBOutlet weak var photoOuterView: UIView!
+    
     @IBOutlet weak var photoTabView: UIView!
     @IBOutlet weak var photoImageView: UIImageView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTabUI()
         photoImageView.image = image
-
         // Do any additional setup after loading the view.
     }
+    
     
     func setTabUI() {
         photoOuterView.clipsToBounds = false
@@ -49,10 +47,11 @@ class DetailPhotoViewController: UIViewController {
         
         photoOuterView.addSubview(photoTabView)
         
-        arousalLabel.text = String((results.arousal + 100)/2) + "%"
-        valenceLabel.text = String((results.valence + 100)/2) + "%"
-        resultLabel.text = String(results.label)
-    }
+        positiveLabel.text = String(results.positive) + "%"
+        neutralLabel.text = String(results.neutral) + "%"
 
+        negativeLabel.text = String(results.negative) + "%"
+
+    }
 
 }

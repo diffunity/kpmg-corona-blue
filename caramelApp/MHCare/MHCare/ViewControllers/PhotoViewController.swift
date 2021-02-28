@@ -100,7 +100,7 @@ class PhotoViewController: UIViewController {
     
     // Horizontal Bar Chart
     let wordList = ["tired", "lonely", "lost", "regret", "happy"]
-    let wordcount = [20.0, 15.0, 10.0, 5.0, 5.0]
+    let wordcount = [20, 15, 10, 5, 5]
     
     let circlevalues = [0.7]
 
@@ -114,14 +114,14 @@ class PhotoViewController: UIViewController {
         videoScrollView.isHidden = true
         
         
-        setOverall()
+        setLabels()
         setOverallTabUI()
         circleChart(Values: [photoData.photoCircleValue])
         // Do any additional setup after loading the view.
         lineChart(photoData.photoLineChartDays, values: photoData.photoLineChartData)
 //        barChart(dataPoints: graphArray, barValues: bardata1)
         setPhotoResultUI()
-
+        
         // Pie Chart
     }
     
@@ -129,7 +129,7 @@ class PhotoViewController: UIViewController {
     @IBAction func photoToggled(_ sender: Any) {
         if photoScrollView.isHidden {
             
-            setOverall()
+            setLabels()
             setOverallTabUI()
             lineChart(photoData.photoLineChartDays, values: photoData.photoLineChartData)
 //            barChart(dataPoints: graphArray, barValues: bardata1)
@@ -147,7 +147,7 @@ class PhotoViewController: UIViewController {
     @IBAction func videoToggled(_ sender: Any) {
         if videoScrollView.isHidden {
             
-            setVideoOverall()
+            setVideoLabels()
             setVideoOverallTabUI()
             videoLineChart(photoData.videoLineChartDays, values: photoData.videoLineChartData)
 //            videoBarChart(dataPoints: graphArray, barValues: bardata1)
@@ -160,6 +160,11 @@ class PhotoViewController: UIViewController {
             photoScrollView.isHidden = true
             videoScrollView.isHidden = false
         }
+    }
+    
+    func setLabels() {
+        averageLabel.text = String(photoData.photoOverall)
+        setOverall()
     }
     
     func setOverall() {
@@ -232,14 +237,10 @@ class PhotoViewController: UIViewController {
         let radius: CGFloat = 70
         let progressRingView = ConcentricProgressRingView(center: circleChartView.center, radius: radius, margin: margin, rings: rings)
         progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
-        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
-        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
 
         circleChartView.addSubview(progressRingView)
         
-//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
     }
     
     func lineChart(_ dataPoints: [String], values: [Double]) {
@@ -268,7 +269,7 @@ class PhotoViewController: UIViewController {
         line1.drawFilledEnabled = true
         let bcolor = NSUIColor.clear
         let tcolor = darkColor
-        line1.valueFont = UIFont.systemFont(ofSize: 15)
+        line1.valueFont = UIFont.systemFont(ofSize: 10)
         line1.valueColors = [bcolor, bcolor, bcolor, bcolor, bcolor, bcolor, tcolor]
         line1.highlightLineDashLengths = [3.0]
         line1.highlightLineWidth = 0.7
@@ -306,6 +307,11 @@ class PhotoViewController: UIViewController {
         
         
         
+    }
+    
+    func setVideoLabels() {
+        videoAverageLabel.text = String(photoData.videoOverall)
+        setVideoOverall()
     }
     
     
@@ -377,14 +383,11 @@ class PhotoViewController: UIViewController {
         let radius: CGFloat = 70
         let progressRingView = ConcentricProgressRingView(center: videoCircleChartView.center, radius: radius, margin: margin, rings: rings)
         progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
-        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
-        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
 
         videoCircleChartView.addSubview(progressRingView)
         
-//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
+
     }
     
     func videoLineChart(_ dataPoints: [String], values: [Double]) {
@@ -423,7 +426,7 @@ class PhotoViewController: UIViewController {
         let data = LineChartData()
         data.addDataSet(line1)
         videoLineChartView.data = data
-        videoLineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 15)
+        videoLineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 10)
         videoLineChartView.xAxis.labelTextColor = UIColor.systemGray4
         
         videoLineChartView.setScaleEnabled(false)

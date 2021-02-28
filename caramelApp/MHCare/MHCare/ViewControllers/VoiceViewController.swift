@@ -92,7 +92,7 @@ class VoiceViewController: UIViewController {
         toneScrollView.isHidden = true
         
         setOverallTabUI()
-        setOverall()
+        setLabels()
         
         setHorizontalBarChartUI()
 
@@ -101,6 +101,11 @@ class VoiceViewController: UIViewController {
         lineChart(voiceData.contentLineChartDays, values: voiceData.contentLineChartData)
         barChart(dataPoints: voiceData.contentEmotions, barValues: voiceData.contentEmotionData)
 
+        print("--->\(voiceData.contentLineChartDays)")
+        print("--->\(voiceData.contentLineChartData)")
+        print("--->\(voiceData.contentOverall)")
+        print("--->\(voiceData.contentEmotions)")
+        print("--->\(voiceData.contentEmotionData)")
 
     }
     
@@ -109,7 +114,7 @@ class VoiceViewController: UIViewController {
         if toneScrollView.isHidden {
             
             setToneOverallTabUI()
-            setToneOverall()
+            setToneLabels()
             toneLineChart(voiceData.toneLineChartDays, values: voiceData.toneLineChartData)
             toneCircleChart(Values: [voiceData.toneCircleValue])
             
@@ -125,7 +130,7 @@ class VoiceViewController: UIViewController {
         if contentScrollView.isHidden {
             
             setOverallTabUI()
-            setOverall()
+            setLabels()
 
             // Do any additional setup after loading the view.
             circleChart(Values: [voiceData.contentCircleValue])
@@ -139,6 +144,10 @@ class VoiceViewController: UIViewController {
         }
     }
     
+    func setLabels() {
+        averageLabel.text = String(voiceData.contentOverall)
+        setOverall()
+    }
     
     func setOverall() {
         let label = String(voiceData.contentOverall) + "%"
@@ -224,22 +233,16 @@ class VoiceViewController: UIViewController {
         let fgColor1 = darkColor
         let bgColor1 = UIColor.systemGray5
         let rings = [
-            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15),
-            //ProgressRing(color: fgColor2, backgroundColor: bgColor2, width: 20),
-            //ProgressRing(color: fgColor3, backgroundColor: bgColor2, width: 20),
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15)
         ]
         let margin: CGFloat = 2
         let radius: CGFloat = 70
         let progressRingView = ConcentricProgressRingView(center: circleChartView.center, radius: radius, margin: margin, rings: rings)
         progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
-        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
-        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
 
         circleChartView.addSubview(progressRingView)
         
-//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
     }
     
     
@@ -279,7 +282,7 @@ class VoiceViewController: UIViewController {
         let data = LineChartData()
         data.addDataSet(line1)
         lineChartView.data = data
-        lineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 15)
+        lineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 10)
         lineChartView.xAxis.labelTextColor = UIColor.systemGray4
         
         lineChartView.setScaleEnabled(false)
@@ -388,71 +391,22 @@ class VoiceViewController: UIViewController {
         barChartDataSet.barShadowColor = UIColor.systemGray6
         barChartDataSet.highlightEnabled = false
         barChartDataSet.axisDependency = .left
-        // 줌 안되게
         
         barChartView.doubleTapToZoomEnabled = false
 
-        // 애니메이션 효과
-        // 기본 애니메이션
-        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-        
-        // 옵션 애니메이션
+
         barChartView.animate(yAxisDuration: 2.0, easingOption: .easeInBounce)
         barChartView.drawMarkers = true
         barChartView.marker = ChartMarker()
         barChartView.setExtraOffsets(left: 15.0, top: 0.0, right: 15.0, bottom: 15.0)
     }
     
-//    func horizontalBarChart(dataPoints: [String], barValues: [Double]) {
-//
-//        setHorizontalBarChartUI()
-//
-//        // bar, line 엔트리 생성
-//        var barDataEntries: [BarChartDataEntry] = []
-//
-//        // bar, line 엔트리 삽입
-//        for i in 0..<barValues.count {
-//            let barDataEntry = BarChartDataEntry(x: Double(i), y: barValues[i])
-//            barDataEntries.append(barDataEntry)
-//        }
-//
-//
-//        // 데이터 생성
-//        let barWidth = 0.5
-//        let horizonChartDataSet = BarChartDataSet(entries: barDataEntries)
-//
-//        horizonChartDataSet.drawIconsEnabled = true
-//        horizonChartDataSet.colors = [NSUIColor.green]
-//        horizonChartDataSet.drawValuesEnabled = true
-//
-//        let horizonChartData = BarChartData(dataSet: horizonChartDataSet)
-//        horizonChartData.barWidth = barWidth
-//
-//
-//        horizontalBarChartView.data =  horizonChartData
-//        horizontalBarChartView.drawBarShadowEnabled = false
-//        horizontalBarChartView.drawValueAboveBarEnabled = true
-//
-//
-//        horizontalBarChartView.drawGridBackgroundEnabled = false
-//        horizontalBarChartView.xAxis.drawGridLinesEnabled = false
-//        horizontalBarChartView.leftAxis.drawGridLinesEnabled = false
-//
-//        horizontalBarChartView.xAxis.labelPosition = .bottom
-//        horizontalBarChartView.xAxis.labelTextColor = UIColor.black
-//        horizontalBarChartView.xAxis.drawLabelsEnabled = true
-//        horizontalBarChartView.xAxis.labelCount = 5
-//
-//
-//
-//
-//        horizontalBarChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-//        horizontalBarChartView.setExtraOffsets(left: 40.0, top: 30.0, right: 50.0, bottom: 30.0)
-//        horizontalBarChartView.legend.enabled = false
-//        horizontalBarChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInBounce)
-//        horizontalBarChartView.doubleTapToZoomEnabled = false
-//    }
     
+    
+    func setToneLabels() {
+        toneAverageLabel.text = String(voiceData.toneOverall)
+        setToneOverall()
+    }
 
     func setToneOverall() {
         let label = String(voiceData.toneOverall) + "%"
@@ -515,118 +469,19 @@ class VoiceViewController: UIViewController {
         let fgColor1 = darkColor
         let bgColor1 = UIColor.systemGray5
         let rings = [
-            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15),
-            //ProgressRing(color: fgColor2, backgroundColor: bgColor2, width: 20),
-            //ProgressRing(color: fgColor3, backgroundColor: bgColor2, width: 20),
+            ProgressRing(color: fgColor1, backgroundColor: bgColor1, width: 15)
         ]
         let margin: CGFloat = 2
         let radius: CGFloat = 70
         let progressRingView = ConcentricProgressRingView(center: toneCircleChartView.center, radius: radius, margin: margin, rings: rings)
         progressRingView.arcs[0].setProgress(CGFloat(Values[0]), duration: 2)
-        //progressRingView.arcs[1].setProgress(0.8, duration: 2)
-        //progressRingView.arcs[2].setProgress(0.4, duration: 2)
+
 
         toneCircleChartView.addSubview(progressRingView)
         
-//        let horizontalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-//        let verticalConstraint = NSLayoutConstraint(item: progressRingView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: circleChartView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-//        circleChartView.addConstraints([horizontalConstraint, verticalConstraint])
     }
     
     
-//    func toneBarChart(dataPoints: [String], barValues: [Double]) {
-//        setToneCombinedChartUI()
-//        toneBarChartView.noDataText = "You need to provide data for the chart."
-//        // bar, line 엔트리 생성
-//        var barDataEntries: [BarChartDataEntry] = []
-//
-//        // bar, line 엔트리 삽입
-//        for i in 0..<dataPoints.count {
-//            let barDataEntry = BarChartDataEntry(x: Double(i), y: barValues[i])
-//            barDataEntries.append(barDataEntry)
-//
-//        }
-//
-//        // 데이터셋 생성
-//        let barChartDataSet = BarChartDataSet(entries: barDataEntries, label: "일일 우울지수")
-//
-//
-//        // bar 데이터 지정
-//        let data = BarChartData(dataSet: barChartDataSet)
-//
-//        // combined 데이터 지정
-//        toneBarChartView.data = data
-////        let font2 =  UIFont.init(name: "Open Sans", size: 10.0)!
-////        barChartView.data!.setValueFont(font2)
-//        toneBarChartView.data!.setValueTextColor(UIColor.systemGray2)
-//        let pFormatter = NumberFormatter()
-//        pFormatter.numberStyle = .percent
-//        pFormatter.maximumFractionDigits = 1
-//        pFormatter.multiplier = 1
-//        pFormatter.percentSymbol = " %"
-//
-//        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-//
-//
-//        // 여기서부터는 그래프 예쁘게 수정하는 내용
-//        // 전체
-//        // X축 데이터 설정
-//        toneBarChartView.xAxis.axisMaximum = data.xMax + 0.25
-//        toneBarChartView.xAxis.axisMinimum = data.xMin - 0.25
-//        toneBarChartView.xAxis.drawAxisLineEnabled = false
-//
-//        // X축 레이블 포맷 ( index -> 실제데이터 )
-//        toneBarChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-////        let font =  UIFont.init(name: "Open Sans", size: 13.0)!
-////        barChartView.xAxis.labelFont = font
-//
-//        // 배경 그리드 라인 그릴지 여부
-//        toneBarChartView.xAxis.drawGridLinesEnabled = false
-//
-//        toneBarChartView.leftAxis.drawGridLinesEnabled = false
-//        toneBarChartView.backgroundColor = .white
-//        toneBarChartView.drawBarShadowEnabled = false
-//
-//        // 우측 레이블 제거
-//        toneBarChartView.rightAxis.enabled = false
-//        toneBarChartView.leftAxis.enabled = false
-//
-//
-//        // X축 레이블 위치 조정
-//        toneBarChartView.xAxis.labelPosition = .bottom
-//        toneBarChartView.xAxis.labelTextColor = UIColor.systemGray
-//        toneBarChartView.leftAxis.axisMinimum = 0
-//        toneBarChartView.rightAxis.axisMinimum = 0
-//
-//
-//        // legend
-//        toneBarChartView.legend.enabled = false
-//
-//
-//        // bar chart
-//        // 바 컬러, 바 두께
-//
-//        barChartDataSet.colors = [lightColor, lightColor, lightColor, lightColor, lightColor, lightColor,darkColor ]
-//
-//        let barWidth = 0.5
-//        data.barWidth = barWidth
-//        barChartDataSet.barShadowColor = UIColor.systemGray6
-//        barChartDataSet.highlightEnabled = false
-//        barChartDataSet.axisDependency = .left
-//        // 줌 안되게
-//
-//        toneBarChartView.doubleTapToZoomEnabled = false
-//
-//        // 애니메이션 효과
-//        // 기본 애니메이션
-//        //combinedChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-//
-//        // 옵션 애니메이션
-//        toneBarChartView.animate(yAxisDuration: 2.0, easingOption: .easeInBounce)
-//        toneBarChartView.drawMarkers = true
-//        toneBarChartView.marker = ChartMarker()
-//        toneBarChartView.setExtraOffsets(left: 30.0, top: 0.0, right: 30.0, bottom: 15.0)
-//    }
     
     func toneLineChart(_ dataPoints: [String], values: [Double]) {
         setToneCombinedChartUI()
@@ -664,7 +519,7 @@ class VoiceViewController: UIViewController {
         let data = LineChartData()
         data.addDataSet(line1)
         toneLineChartView.data = data
-        toneLineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 15)
+        toneLineChartView.xAxis.labelFont = UIFont.systemFont(ofSize: 10)
         toneLineChartView.xAxis.labelTextColor = UIColor.systemGray4
         
         toneLineChartView.setScaleEnabled(false)
