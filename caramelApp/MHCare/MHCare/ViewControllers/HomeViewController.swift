@@ -8,8 +8,20 @@
 import UIKit
 import ConcentricProgressRingView
 
-class HomeViewController: UIViewController {
+let updateUrl = "http://ec2co-ecsel-f2k8u3ar7ixb-1602496836.ap-northeast-2.elb.amazonaws.com:8000/update/emotion-result/text"
 
+class HomeViewController: UIViewController {
+    
+    let photoManager = PhotoManager()
+    
+    var facialResults:[[Double]] = [[10.0, 53.6, 14.8],[10.0, 53.6, 14.8],
+                                    [10.0, 53.6, 14.8],[10.0, 53.6, 14.8],
+                                    [10.0, 53.6, 14.8],[10.0, 53.6, 14.8],
+                                    [10.0, 53.6, 14.8]]
+    
+    
+    
+    @IBOutlet weak var overallLabel: UILabel!
     
     @IBOutlet weak var overviewView: UIView!
     @IBOutlet weak var outerOverviewView: UIView!
@@ -51,7 +63,7 @@ class HomeViewController: UIViewController {
         
         GraphData.shared.textData = TextData(lineChartDays: graphArray, lineChartData: bardata1, emotions: subjects, emotionData: array)
         GraphData.shared.voiceData = VoiceData(contentLineChartDays: graphArray, contentLineChartData: bardata1, contentEmotions: subjects, contentEmotionData: array, toneLineChartDays: graphArray, toneLineChartData: bardata1)
-        GraphData.shared.photoData = PhotoData(photoLineChartDays: graphArray, photoLineChartData: bardata1, videoLineChartDays: graphArray, videoLineChartData: bardata1)
+        GraphData.shared.photoData = PhotoData(photoLineChartDays: graphArray, photoLineChartData: bardata1, videoLineChartDays: graphArray, videoLineChartData: bardata1, photoFacialUrls: [], photoFacialResults: [], photoNonFacialUrls: [], photoNonFacialResults: [], videoImages: [], videoResults: [])
         
         setNavigationBar()
         setProfileImageView()
@@ -60,7 +72,9 @@ class HomeViewController: UIViewController {
         setTitleImage()
         // Do any additional setup after loading the view.
         circleChart(Values: circlevalues)
-        detailCircleChart(Values: circlevalues)
+        
+        let circles = [Double(GraphData.shared.voiceData.contentOverall) / 100, 0.2, Double(GraphData.shared.textData.overall) / 100]
+        detailCircleChart(Values: circles)
     }
     
     func setNavigationBar() {
@@ -182,15 +196,38 @@ class HomeViewController: UIViewController {
     
     
     @IBAction func updateButtonToggled(_ sender: Any) {
+        DispatchQueue.global(qos: .background).async {
+            var result = Data()
+            var statusCode = 502
+            while statusCode==502 || statusCode==503 {
+                let tup = self.sendUpdateRequest(url: updateUrl)
+                result = tup.data
+                statusCode = tup.statusCode
+                print("re-reqesting")
+                sleep(1)
+            }
+            let str = String(decoding: result, as: UTF8.self)
+            print(str)
+            self.parseAnnotations(result)
+            DispatchQueue.main.async {
+                self.circleChart(Values: self.circlevalues)
+                let circles = [Double(GraphData.shared.voiceData.contentOverall) / 100, Double(GraphData.shared.photoData.photoOverall) / 100, Double(GraphData.shared.textData.overall) / 100]
+                self.detailCircleChart(Values: circles)
+                let overallTotal = circles.reduce(0, +)
+                let overallAvg = overallTotal / 3
+                self.circleChart(Values: [overallAvg])
+                
+                self.overallLabel.text = String(Int(overallAvg * 100)) + "%"
+            }
+            
+        }
+        
     }
     
     
     func buildRequestData() -> Data {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let current_date_string = formatter.string(from: Date())
         
-        let updateRequestObj = UpdateRequestObj(datetime: current_date_string)
+        let updateRequestObj = UpdateRequestObj(query: 1)
         
         let encoder = JSONEncoder()
         let jsonData = try! encoder.encode(updateRequestObj)
@@ -198,26 +235,45 @@ class HomeViewController: UIViewController {
         
     }
     
-    func sendUpdateRequest(url: String) -> Data {
+    func sendUpdateRequest(url: String) -> (data: Data, statusCode: Int) {
         var resultData = Data()
         let postData = buildRequestData()
+        var statusCode = -1
         
         var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "POST"
-        request.httpBody = postData
+        request.httpMethod = "GET"
         
         let semaphore = DispatchSemaphore(value: 0)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
                 resultData = data
+                let status = response as! HTTPURLResponse
+                statusCode = status.statusCode
             }
             semaphore.signal()
+            
         }
         task.resume()
         _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
-        return resultData
         
+        return (resultData, statusCode)
+        
+    }
+    
+    private func parseAnnotations(_ data: Data) {
+        let decoder = JSONDecoder()
+        
+        do {
+            let response = try decoder.decode(ResponseObj.self, from: data)
+            GraphData.shared.textData = TextData(lineChartDays: response.textDays, lineChartData: response.textValues, emotions: response.textEmotions, emotionData: response.textEmotionValues)
+            GraphData.shared.voiceData = VoiceData(contentLineChartDays: response.voiceContentDays, contentLineChartData: response.voiceContentValues, contentEmotions: response.voiceContentEmotions, contentEmotionData: response.voiceContentEmotionValues, toneLineChartDays: response.voiceToneDays, toneLineChartData: response.voiceToneValues)
+            GraphData.shared.photoData = PhotoData(photoLineChartDays: response.photoDays, photoLineChartData: response.photoValues, videoLineChartDays: graphArray, videoLineChartData: bardata1, photoFacialUrls: response.photoFacialUrl, photoFacialResults: response.photoFacialResult, photoNonFacialUrls: response.photoNonFacialUrl, photoNonFacialResults: response.photoNonFacialResult, videoImages: photoManager.photos, videoResults: facialResults)
+            
+        } catch let error {
+            print("---> errort: \(error)")
+            return
+        }
     }
     
 }

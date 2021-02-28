@@ -21,7 +21,7 @@ struct AudioObj: Codable {
 
 
 struct UpdateRequestObj: Codable {
-    let datetime: String
+    let query: Int
 }
 
 
@@ -42,6 +42,18 @@ struct ResponseObj: Codable {
     let voiceToneValues: [Double]
     let voiceToneCount: [Int]
     
+    let photoDays: [String]
+    let photoValues: [Double]
+    let photoCount: [Int]
+    
+    
+    let photoFacialUrl: [String]
+    let photoFacialResult: [FacialResult]
+    let photoNonFacialUrl: [String]
+    let photoNonFacialResult: [NonFacialResult]
+    
+    
+    
     enum CodingKeys: String, CodingKey {
         case textDays = "text_days"
         case textValues = "text_values"
@@ -58,6 +70,30 @@ struct ResponseObj: Codable {
         case voiceToneDays = "voice_tone_days"
         case voiceToneValues = "voice_tone_values"
         case voiceToneCount = "voice_tone_count"
+        
+        case photoDays = "photo_days"
+        case photoValues = "photo_values"
+        case photoCount = "photo_count"
+        
+        
+        case photoFacialUrl = "photo_facial_url"
+        case photoFacialResult = "photo_facial_result"
+        case photoNonFacialUrl = "photo_nonfacial_url"
+        case photoNonFacialResult = "photo_nonfacial_result"
+        
+
     }
     
+}
+
+struct FacialResult: Codable {
+    let label: String
+    let valence: Int
+    let arousal: Int
+}
+
+struct NonFacialResult: Codable {
+    let positive: Int
+    let neutral: Int
+    let negative: Int
 }
